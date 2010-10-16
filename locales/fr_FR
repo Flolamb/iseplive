@@ -1,0 +1,336 @@
+
+### Controller: Layout
+
+# View: index.php
+NAV_PUBLICATIONS
+	Publications
+NAV_ASSOCIATIONS
+	Associations
+NAV_DIRECTORY
+	Annuaire
+NAV_LINKS
+	Liens
+NAV_PROFILE
+	Mon profil
+NAV_LOGOUT
+	Déconnexion
+NAV_SIGNIN
+	Connexion
+
+### Controller: Page
+
+# View: error404
+PAGE_ERROR404_TITLE
+	Erreur 404
+PAGE_ERROR404_MESSAGE
+	Page introuvable !
+
+# View: error
+PAGE_ERROR_TITLE
+	Erreur
+PAGE_ERROR_MESSAGE
+	Une est survenue, l'équipe de développement en a été avertie.<br />
+	Merci de bien vouloir revenir plus tard.
+
+
+### Controller: Post
+
+# View: index / view
+POST_TITLE_OFFICIAL
+	Publications des associations
+POST_TITLE_NONOFFICIAL
+	Publications des élèves
+POST_CATEGORIES
+	Catégories
+POST_CATEGORIES_ALL
+	Toutes
+POST_COMMENT_LINK
+	Commenter
+POST_COMMENT_PLACEHOLDER
+	Rédiger un commentaire...
+POST_COMMENT_SUBMIT
+	Commenter
+POST_PRIVATE
+	Visible uniquement par les élèves
+POST_SHOW_MORE
+	Publications plus anciennes...
+POST_LINK_PHOTOS
+	Voir les {nb} photos
+POST_SURVEY_ENDING_DATE
+	Date de fin :
+POST_SURVEY_NB_VOTES
+	({votes} votes)
+POST_SURVEY_SUBMIT
+	Voter
+POST_SURVEY_SHOW_VOTE
+	Voter
+POST_SURVEY_SHOW_RESULTS
+	Voir les résultats
+
+CALENDAR_PREV_MONTH
+	«
+CALENDAR_NEXT_MONTH
+	»
+CALENDAR_ICAL_OFFICIAL
+	iCal associations
+CALENDAR_ICAL_NON_OFFICIAL
+	iCal élèves
+
+# View: events
+EVENTS_TITLE_OFFICIAL
+	Événements des associations
+EVENTS_TITLE_NONOFFICIAL
+	Événements des élèves
+
+
+# View: iframe_add
+POST_ADD_ERROR_SESSION_EXPIRED
+	Votre session semble avoir expiré, merci de bien vouloir vous reconnecter !
+POST_ADD_ERROR_NO_MESSAGE
+	Vous devez écrire un message !
+POST_ADD_ERROR_NO_CATEGORY
+	Vous devez choisir une catégorie !
+POST_ADD_ERROR_OFFICIAL
+	Vous ne pouvez pas poster une message officiel dans cette association !
+POST_ADD_ERROR_ASSOCIATION_NOT_FOUND
+	Association introuvable !
+POST_ADD_ERROR_PRIVATE
+	Vous n'avez pas l'autorisation de poster un message privé !
+POST_ADD_ERROR_PHOTO_SIZE
+	Une photo envoyée ne doit pas excéder {size} !
+POST_ADD_ERROR_PHOTO_FORMAT
+	Format de photo non supporté ! Les formats supportés sont : jpg, png, gif
+POST_ADD_ERROR_VIDEO_SIZE
+	Une vidéo envoyée ne doit pas excéder {size} !
+POST_ADD_ERROR_VIDEO_FORMAT
+	Format de vidéo non supporté ! Les formats supportés sont : avi, mov ou flv
+POST_ADD_ERROR_VIDEO_CONVERT
+	Erreur lors du traitement de la vidéo
+POST_ADD_ERROR_AUDIO_SIZE
+	Un fichier mp3 envoyé ne doit pas excéder {size} !
+POST_ADD_ERROR_AUDIO_FORMAT
+	Format audio non supporté ! Les formats supportés sont : mp3
+POST_ADD_ERROR_FILE_SIZE
+	Un fichier envoyé ne doit pas excéder {size} !
+POST_ADD_ERROR_FILE_FORMAT
+	Format de document non supporté !
+POST_ADD_ERROR_FILE_FORMAT2
+	Pour envoyer une photo, une vidéo, ou une musique, merci d'utiliser le type d'envoi approprié !
+POST_ADD_ERROR_EVENT_NO_TITLE
+	Vous devez entrer un titre pour l'événement !
+POST_ADD_ERROR_EVENT_DATE
+	Les dates de début et de fin de l'événement doivent être de la forme : dd/mm/yyyy à hh:ss
+POST_ADD_ERROR_EVENT_DATE_ORDER
+	La date de fin doit être ultérieure à la date de début...
+POST_ADD_ERROR_SURVEY_NO_QUESTION
+	Vous devez entrer une question pour le sondage !
+POST_ADD_ERROR_SURVEY_DATE
+	La date de fin du sondage doit être de la forme : dd/mm/yyyy à hh:ss
+POST_ADD_ERROR_SURVEY_ANSWERS
+	Le sondage doit comporter au moins 2 questions !
+
+
+### Controller: Student
+
+# View: view
+PROFILE_PROMO
+	Promo :
+PROFILE_STUDENT_NUMBER
+	Numéro :
+PROFILE_MAIL
+	Adresse email :
+PROFILE_MSN
+	Adresse MSN :
+PROFILE_JABBER
+	Adresse Jabber :
+PROFILE_ADDRESS
+	Adresse postale :
+PROFILE_PHONE
+	Tél :
+PROFILE_BIRTHDAY
+	Date de naissance :
+PROFILE_BIRTHDAY_FORMAT
+	d/m/Y
+
+
+### Controller: User
+
+# View: signin
+SIGNIN_TITLE
+	Connexion
+SIGNIN_USERNAME
+	Login ISEP
+SIGNIN_PASSWORD
+	Mot de passe
+SIGNIN_SUBMIT
+	Connexion
+SIGNIN_BAD_USERNAME_OR_PASSWORD
+	Nom d'utilisateur ou mot de passe incorrect
+
+
+### Common views
+
+# View: publish.php
+PUBLISH_TITLE
+	Publier :
+PUBLISH_DEFAULT_MESSAGE
+	Écrivez votre message ici...
+PUBLISH_ATTACHMENTS
+	Joindre :
+PUBLISH_CATEGORY
+	Catégorie :
+PUBLISH_ASSOCIATION
+	Association :
+PUBLISH_ASSOCIATION_NONE
+	-- Aucune --
+PUBLISH_ASSOCIATION_OFFICIAL
+	Officiel
+PUBLISH_PRIVATE
+	Visible uniquement par les élèves
+PUBLISH_SUBMIT
+	Envoyer
+PUBLISH_ATTACHMENT_PHOTO
+	Photo
+PUBLISH_ATTACHMENT_PHOTO_INFO
+	Taille maximum par photo : {size}
+PUBLISH_ATTACHMENT_VIDEO
+	Vidéo
+PUBLISH_ATTACHMENT_VIDEO_INFO
+	Taille maximum par vidéo : {size}
+PUBLISH_ATTACHMENT_AUDIO
+	Son / musique
+PUBLISH_ATTACHMENT_AUDIO_INFO
+	Taille maximum par mp3 : {size}
+PUBLISH_ATTACHMENT_FILE
+	Document
+PUBLISH_ATTACHMENT_FILE_INFO
+	Taille maximum par document : {size}
+PUBLISH_ATTACHMENT_EVENT
+	Événement
+PUBLISH_ATTACHMENT_SEND
+	Envoyer :
+PUBLISH_EVENT_TITLE
+	Titre :
+PUBLISH_EVENT_START
+	Date de début :
+PUBLISH_EVENT_END
+	Date de fin :
+PUBLISH_EVENT_DATE_FORMAT
+	d/m/Y à H:i
+PUBLISH_ATTACHMENT_SURVEY
+	Sondage
+PUBLISH_SURVEY_QUESTION
+	Question :
+PUBLISH_SURVEY_END
+	Date de fin :
+PUBLISH_SURVEY_DATE_FORMAT
+	d/m/Y à H:i
+PUBLISH_SURVEY_ANSWERS
+	Réponses possibles :
+PUBLISH_SURVEY_ADD_ANSWER
+	Ajouter une réponse
+PUBLISH_SURVEY_MULTIPLE
+	Plusieurs réponses possibles
+
+
+### Common phrases
+
+WEEK_FIRST_DAY	# 0 = sunday, 1 = monday, ...
+	1
+
+DAY_SUNDAY
+	Dimanche
+DAY_MONDAY
+	Lundi
+DAY_THUESDAY
+	Mardi
+DAY_WEDNESDAY
+	Mercredi
+DAY_THURSDAY
+	Jeudi
+DAY_FRIDAY
+	Vendredi
+DAY_SATERDAY
+	Samedi
+
+MONTH_JANUARY
+	Janvier
+MONTH_FEBRUARY
+	Février
+MONTH_MARCH
+	Mars
+MONTH_APRIL
+	Avril
+MONTH_MAY
+	Mai
+MONTH_JUNE
+	Juin
+MONTH_JULY
+	Juillet
+MONTH_AUGUST
+	Août
+MONTH_SEPTEMBER
+	Septembre
+MONTH_OCTOBER
+	Octobre
+MONTH_NOVEMBER
+	Novembre
+MONTH_DECEMBER
+	Décembre
+
+DATE_NUMBER_SUFFIX_DEFAULT	# In english : th
+	
+DATE_NUMBER_SUFFIX_ONE		# In english : st
+	er
+DATE_NUMBER_SUFFIX_FIRST	# In english : st
+	
+DATE_NUMBER_SUFFIX_SECOND	# In english : nd
+	
+DATE_NUMBER_SUFFIX_THIRD	# In english : rd
+	
+
+DATE_RECENT
+	Il y a {interval}
+DATE_YEAR
+	an
+DATE_YEARS
+	ans
+DATE_MONTH
+	mois
+DATE_MONTHS
+	mois
+DATE_DAY
+	jour
+DATE_DAYS
+	jours
+DATE_HOUR
+	heure
+DATE_HOURS
+	heures
+DATE_MINUTE
+	min
+DATE_MINUTES
+	min
+DATE_SECOND
+	s
+DATE_SECONDS
+	s
+DATE_INTERVAL_SEPARATOR
+	,
+DATE_INTERVAL_SEPARATOR_LAST
+	, et
+
+DATE_YESTERDAY
+	Hier à {hour}:{min}
+DATE_FULL
+	{day} {date} {month} à {hour}:{min}
+DATE_FULL_WITH_YEAR
+	{day} {date} {month} {year} à {hour}:{min}
+DATE_MONTH
+	{day} {date} {month}
+DATE_MONTH_WITH_YEAR
+	{day} {date} {month} {year}
+DATE_EVENT_TYPE1
+	{day} {date} {month} {year}, de {hour1}:{min1} à {hour2}:{min2}
+DATE_EVENT_TYPE2
+	Du {day1} {date1} {month1} {year1} à {hour1}:{min1} au {day2} {date2} {month2} {year2} à {hour2}:{min2}

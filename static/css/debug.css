@@ -1,0 +1,14 @@
+
+#debug {
+	margin-top: 50px;
+	position: absolute;
+	left: 0;
+	border-top: 2px solid #ddd;
+	background-color: #f5f5f5;
+	width: 96%;
+	padding: 2%;
+}
+#debug td, #debug th {
+	padding: 3px;
+	border: 1px solid #ddd;
+}
