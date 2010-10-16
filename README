@@ -1,0 +1,23 @@
+README
+======
+
+This is the website of ISEPLive : www.iseplive.fr
+ISEPLive is the association which manages all the internal communication
+at ISEP (Institut Supérieur d'Électronique de Paris, an engineering
+school in Paris).
+
+The main features are :
+ * Timeline with photos, videos, podcasts, events, surveys (Facebook-like)
+ * Directory of students
+ * Associations management
+
+
+License
+-------
+
+This website was conceived and written by:
+Godefroy de Compreignac <godefroy@eklaweb.com>
+
+It's based on the framework Confeature: http://github.com/Skreo/confeature
+
+ISEPLive.fr is released under the terms of the GNU General PublicLicence v3 (see COPYING)

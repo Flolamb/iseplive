@@ -1,0 +1,26 @@
+
+This website uses the Confeature framework:
+	http://github.com/Skreo/confeature
+You should rename the ISEPLive's root dir "app" and put it in the Confeature's root dir.
+
+Required packages :
+	apache2
+	php5
+	php5-gd
+	php5-ldap
+	php5-memcache
+	php-apc
+	php5-ffmpeg
+	ffmpeg
+	memmcached
+	mysql-server
+	
+Required Apache mods :
+	rewrite
+	deflate
+	headers
+	expires
+
+PHP config :
+	upload_max_filesize = 700M
+	post_max_size = 700M
