@@ -96,6 +96,9 @@ final class Config extends ConfigAbstract {
 	// Number of displayed photos per post in the timeline
 	const PHOTOS_PER_POST = 3;
 	
+	// Max number of comments displayed by default
+	const COMMENTS_PER_POST = 5;
+	
 	// Galleries
 	const GALLERY_COLS = 5;
 	const GALLERY_ROWS = 8;

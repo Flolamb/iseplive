@@ -303,6 +303,11 @@ var Comment = {
 						message.addClass("hidden");
 					}
 				});
+	},
+	
+	showAll : function(post_id){
+		$("post-"+post_id+"-comment-show-all").destroy();
+		$$("#post-"+post_id+" .post-comment").removeClass("hidden");
 	}
 };
 

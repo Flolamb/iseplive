@@ -112,7 +112,8 @@ class Post_Controller extends Controller {
 		$this->set(array(
 			'is_logged'		=> $is_logged,
 			'is_student'	=> $is_student,
-			'post'			=> $posts[0]
+			'post'			=> $posts[0],
+			'one_post'		=> true
 		));
 		
 		if($is_logged){

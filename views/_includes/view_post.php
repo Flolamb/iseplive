@@ -214,9 +214,27 @@ if($post['private'] == '1'){
 <?php
 if(!isset($post['comments']))
 	$post['comments'] = array();
+$nb_comments = count($post['comments']);
+$n = 0;
+$comment_hidden = false;
+$comments_at_the_beginning = floor(Config::COMMENTS_PER_POST / 2);
+$comments_at_the_end = Config::COMMENTS_PER_POST - $comments_at_the_beginning;
 foreach($post['comments'] as $comment){
+	$n++;
+	if($nb_comments > Config::COMMENTS_PER_POST && !isset($one_post)){
+		if($n == $comments_at_the_beginning+1){
+			$comment_hidden = true;
 ?>
-			<div id="post-comment-<?php echo $comment['id']; ?>" class="post-comment">
+			<div id="post-<?php echo $post['id']; ?>-comment-show-all" class="post-comment">
+				<a href="javascript:;" onclick="Comment.showAll(<?php echo $post['id']; ?>)"><?php echo __('POST_COMMENT_SHOW_ALL', array('nb' => $nb_comments)); ?></a>
+			</div>
+<?php
+		}else if($n == $nb_comments - $comments_at_the_end+1){
+			$comment_hidden = false;
+		}
+	}
+?>
+			<div id="post-comment-<?php echo $comment['id']; ?>" class="post-comment<?php if($comment_hidden) echo ' hidden'; ?>">
 				<?php
 $comment_user_url = Config::URL_ROOT.Routes::getPage('student', array('username' => $comment['username']));
 ?>
