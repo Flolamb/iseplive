@@ -29,7 +29,7 @@ PAGE_ERROR404_MESSAGE
 PAGE_ERROR_TITLE
 	Erreur
 PAGE_ERROR_MESSAGE
-	Une est survenue, l'équipe de développement en a été avertie.<br />
+	Une erreur est survenue, l'équipe de développement en a été avertie.<br />
 	Merci de bien vouloir revenir plus tard.
 
 

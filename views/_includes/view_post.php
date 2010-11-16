@@ -2,8 +2,14 @@
 <div id="post-<?php echo $post['id']; ?>" class="post">
 
 <?php
-$post_user_url = Config::URL_ROOT.Routes::getPage('student', array('username' => $post['username']));
-$post_user_name = isset($post['firstname']) ? $post['firstname'].' '.$post['lastname'] : $post['username'];
+if(isset($post['association_id']) && $post['official']=='1'){
+	$post_user_url = Config::URL_ROOT.Routes::getPage('association', array('name' => $post['association_url']));
+	$post_user_name = $post['association_name'];
+}else{
+	$post_user_url = Config::URL_ROOT.Routes::getPage('student', array('username' => $post['username']));
+	$post_user_name = isset($post['firstname']) ? $post['firstname'].' '.$post['lastname'] : $post['username'];
+}
+
 if(isset($post['avatar_url'])){
 ?>
 	<a href="<?php echo $post_user_url; ?>"><img src="<?php echo $post['avatar_url']; ?>" alt="" class="avatar" /></a>
