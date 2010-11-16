@@ -211,6 +211,7 @@ class Post_Controller extends Controller {
 			// Association
 			$association = isset($_POST['association']) && ctype_digit($_POST['association']) ? (int) $_POST['association'] : 0;
 			if($association == 0){
+				$association = null;
 				$official = false;
 			}else{
 				$association_model = new Association_Model();

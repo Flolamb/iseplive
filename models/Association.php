@@ -24,4 +24,29 @@ class Association_Model extends Model {
 		return $associations_auth;
 	}
 	
+	
+	/**
+	 * Returns  the path of an avatar
+	 *
+	 * @param int $id			Id of the association
+	 * @param boolean $thumb	Thumb's path if true, big photo otherwise
+	 * @return string
+	 */
+	public static function getAvatarPath($id, $thumb=false){
+		$id = (string) ((int) $id);
+		return DATA_DIR.Config::DIR_DATA_STORAGE.'associations/'.$id.($thumb ? '_thumb' : '').'.jpg';
+	}
+	
+	/**
+	 * Returns  the absolute URL of an avatar
+	 *
+	 * @param int $id			Id of the association
+	 * @param boolean $thumb	Thumb's path if true, big photo otherwise
+	 * @return string
+	 */
+	public static function getAvatarURL($id, $thumb=false){
+		$student_number = (string) ((int) $id);
+		return Config::URL_STORAGE.'associations/'.$id.($thumb ? '_thumb' : '').'.jpg';
+	}
+	
 }

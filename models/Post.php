@@ -33,13 +33,13 @@ class Post_Model extends Model {
 		$posts = DB::select('
 			SELECT
 				p.id, p.message, p.time, p.private, p.official,
-				a.id AS association_id, a.name AS association_name,
+				a.id AS association_id, a.name AS association_name, a.url_name AS association_url,
 				u.username,
 				s.student_number, s.firstname, s.lastname
 			FROM posts p
 			INNER JOIN categories c ON c.id = p.category_id
-			INNER JOIN associations a ON a.id = p.association_id
 			INNER JOIN users u ON u.id = p.user_id
+			LEFT JOIN associations a ON a.id = p.association_id
 			LEFT JOIN students s ON s.username = u.username
 			WHERE '.implode(' AND ', $where).'
 			ORDER BY p.time DESC
@@ -171,8 +171,10 @@ class Post_Model extends Model {
 					$post['attachments_nb_photos'] = $nb_photos_by_post_id[$post_id];
 				
 				// Avatar
-				if(isset($post['student_number']))
-					$post['avatar_url'] = User_Model::getAvatarURL($post['student_number'], true);
+				if(isset($post['association_id']) && $post['official']=='1')
+					$post['avatar_url'] = Association_Model::getAvatarURL((int) $post['association_id'], true);
+				else if(isset($post['student_number']))
+					$post['avatar_url'] = User_Model::getAvatarURL((int) $post['student_number'], true);
 			}
 			
 		}
