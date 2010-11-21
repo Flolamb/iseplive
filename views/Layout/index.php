@@ -57,7 +57,9 @@ foreach($cssFiles as $cssFile){
 					<?php } ?>
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('links'); ?>"><?php echo __('NAV_LINKS'); ?></a>
 					<?php if($is_logged){ ?>
+						<?php if($is_student){ ?>
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('profile'); ?>"><?php echo __('NAV_PROFILE'); ?></a>
+						<?php } ?>
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('logout', array('redirect', '/')); ?>"><?php echo __('NAV_LOGOUT'); ?></a>
 					<?php }else{ ?>
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('signin'); ?>"><?php echo __('NAV_SIGNIN'); ?></a>
@@ -109,7 +111,9 @@ foreach($cssFiles as $cssFile){
 					'MONTH_NOVEMBER',
 					'MONTH_DECEMBER',
 					'PUBLISH_EVENT_DATE_FORMAT',
-					'PUBLISH_SURVEY_DATE_FORMAT'
+					'PUBLISH_SURVEY_DATE_FORMAT',
+					'POST_DELETE_CONFIRM',
+					'POST_COMMENT_DELETE_CONFIRM'
 				);
 				foreach($js_translations as $i => $js_translation){
 					if($i != 0)

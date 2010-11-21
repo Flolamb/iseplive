@@ -24,4 +24,27 @@ class PostComment_Model extends Model {
 		return $id;
 	}
 	
+	
+	/**
+	 * Returns the information of a comment
+	 * 
+	 * @param int $id	Id of the comment
+	 */
+	public function get($id){
+		$comments = $this->createQuery()->select($id);
+		if(!isset($comments[0]))
+			throw new Exception('Comment not found');
+		return $comments[0];
+	}
+	
+	/**
+	 * Delete a comment
+	 * 
+	 * @param int $id	Id of the comment
+	 */
+	public function delete($id){
+		$id = $this->createQuery()->delete($id);
+		Post_Model::clearCache();
+	}
+	
 }

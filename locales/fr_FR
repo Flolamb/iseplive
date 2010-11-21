@@ -44,6 +44,8 @@ POST_CATEGORIES
 	Catégories
 POST_CATEGORIES_ALL
 	Toutes
+POST_DELETE_CONFIRM
+	Êtes-vous sûr de vouloir supprimer ce message ?
 POST_COMMENT_SHOW_ALL
 	Afficher les {nb} commentaires
 POST_COMMENT_LINK
@@ -52,6 +54,8 @@ POST_COMMENT_PLACEHOLDER
 	Rédiger un commentaire...
 POST_COMMENT_SUBMIT
 	Commenter
+POST_COMMENT_DELETE_CONFIRM
+	Êtes-vous sûr de vouloir supprimer ce commentaire ?
 POST_PRIVATE
 	Visible uniquement par les élèves
 POST_SHOW_MORE

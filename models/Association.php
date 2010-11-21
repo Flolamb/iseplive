@@ -7,19 +7,27 @@ class Association_Model extends Model {
 	 *
 	 * @return array
 	 */
-	public function getAuth(){
+	public static function getAuth(){
 		if(!isset(User_Model::$auth_data))
 			throw new Exception('No user authenticated');
 		$cache_entry = 'associations_auth_'.User_Model::$auth_data['id'];
 		if($categories = Cache::read($cache_entry))
 			return $categories;
 		
-		$associations_auth = DB::select('
+		$associations_data = DB::select('
 			SELECT a.id, a.name, au.admin
 			FROM associations_users au
 			INNER JOIN associations a ON a.id = au.association_id
 			WHERE au.user_id='.User_Model::$auth_data['id'].'
 		');
+		$associations_auth = array();
+		foreach($associations_data as &$asso){
+			$associations_auth[(int) $asso['id']] = array(
+				'name'	=> $asso['name'],
+				'admin'	=> $asso['admin']=='1'
+			);
+		}
+		
 		Cache::write($cache_entry, $associations_auth, 60*10);
 		return $associations_auth;
 	}
