@@ -64,12 +64,27 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'post/add'
 		),
 		
+		// Delete post
+		'post_delete'	=> array(
+			'regexp'	=> '^ajax/post/([0-9]+)/delete(?=\?|$)',
+			'vars'		=> 'controller=Post&action=delete&id=$1&mode=json',
+			'url'		=> 'ajax/post/{id}/delete'
+		),
+		
 		// Add a comment to a post
 		'post_comment'	=> array(
 			'regexp'	=> '^ajax/post/([0-9]+)/comment/add(?=\?|$)',
 			'vars'		=> 'controller=PostComment&action=add&post_id=$1&mode=raw',
 			'url'		=> 'ajax/post/{id}/comment/add'
 		),
+		
+		// Delete post
+		'post_comment_delete'	=> array(
+			'regexp'	=> '^ajax/post/comment/([0-9]+)/delete(?=\?|$)',
+			'vars'		=> 'controller=PostComment&action=delete&id=$1&mode=json',
+			'url'		=> 'ajax/post/comment/{id}/delete'
+		),
+		
 		// Events' posts in a month
 		'events'	=> array(
 			'regexp'	=> '^events/([0-9]{4})/([0-9]{2})(?=\?|$)',

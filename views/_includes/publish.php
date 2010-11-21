@@ -40,13 +40,13 @@
 			</select>
 		</div>
 		
-		<?php if(isset($associations_auth[0])){ ?>
+		<?php if(count($associations_auth) != 0){ ?>
 		<div id="publish-association">
 			<?php echo __('PUBLISH_ASSOCIATION'); ?>
 			<select name="association" id="publish-association-select">
 				<option value="0"><?php echo __('PUBLISH_ASSOCIATION_NONE'); ?></option>
-				<?php foreach($associations_auth as $asso){ ?>
-				<option value="<?php echo $asso['id']; ?>"<?php if($asso['admin']=='1') echo ' class="publish-association-admin"'; ?>><?php echo $asso['name']; ?></option>
+				<?php foreach($associations_auth as $association_id => $association_data){ ?>
+				<option value="<?php echo $association_id; ?>"<?php if($association_data['admin']) echo ' class="publish-association-admin"'; ?>><?php echo $association_data['name']; ?></option>
 				<?php } ?>
 			</select>
 			<span id="publish-association-official">

@@ -324,6 +324,17 @@ class Post_Model extends Model {
 	
 	
 	/**
+	 * Delete a post
+	 *
+	 * @param int $post_id		Post's id
+	 */
+	public function delete($post_id){
+		$this->createQuery()->delete($post_id);
+		self::clearCache();
+	}
+	
+	
+	/**
 	 * Delete all the cache entries related to the posts
 	 */
 	public static function clearCache(){

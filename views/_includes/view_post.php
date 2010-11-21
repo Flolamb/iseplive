@@ -15,6 +15,17 @@ if(isset($post['avatar_url'])){
 	<a href="<?php echo $post_user_url; ?>"><img src="<?php echo $post['avatar_url']; ?>" alt="" class="avatar" /></a>
 <?php
 }
+
+
+// Post delete button
+if(($is_logged && $username == $post['username'])
+	|| $is_admin
+	|| (isset($post['association_id']) && isset($associations_auth)
+		&& isset($associations_auth[(int) $post['association_id']])) && $associations_auth[(int) $post['association_id']]['admin']){
+?>
+	<a href="<?php echo Config::URL_ROOT.Routes::getPage('post_delete', array('id' => $post['id'])); ?>" class="post-delete">x</a>
+<?php
+}
 ?>
 
 	<div class="post-message">
@@ -245,6 +256,17 @@ foreach($post['comments'] as $comment){
 $comment_user_url = Config::URL_ROOT.Routes::getPage('student', array('username' => $comment['username']));
 ?>
 				<a href="<?php echo $comment_user_url; ?>"><img src="<?php echo $comment['avatar_url']; ?>" alt="" class="avatar" /></a>
+<?php
+// Post delete button
+if(($is_logged && $username == $comment['username'])
+	|| $is_admin
+	|| (isset($post['association_id']) && isset($associations_auth)
+		&& isset($associations_auth[(int) $post['association_id']])) && $associations_auth[(int) $post['association_id']]['admin']){
+?>
+				<a href="<?php echo Config::URL_ROOT.Routes::getPage('post_comment_delete', array('id' => $comment['id'])); ?>" class="post-comment-delete">x</a>
+<?php
+}
+?>
 				<div class="post-comment-message">
 					<a href="<?php echo $comment_user_url; ?>" class="post-comment-username"><?php echo $comment['firstname'].' '.$comment['lastname']; ?></a>
 					<?php echo Text::inHTML($comment['message']); ?>

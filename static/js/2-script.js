@@ -75,6 +75,7 @@ var Post = {
 	init : function(){
 		if($("publish-message"))
 			this.initForm();
+		this.initDelete();
 		
 		$$(".posts-more-link").each(function(link){
 			var url_more = link.get("href"),
@@ -92,6 +93,7 @@ var Post = {
 							if(el.get("html").trim() == ""){
 								link.tween("opacity", 0);
 							}else{
+								Post.initDelete(el);
 								Comment.init(el.getElements(".post-comments"));
 								Survey.init(el.getElements(".survey"));
 								Slimbox.scan(el);
@@ -102,6 +104,44 @@ var Post = {
 					}).post();
 				});
 		});
+	},
+	
+	initDelete : function(el){
+		if(!$defined(el))
+			el = $$(".post");
+		if($type(el) == "array"){
+			el.each(function(e){
+				Post.initDelete(e);
+			});
+			return;
+		}
+		if(!el.hasClass("post")){
+			Post.initDelete(el.getElements(".post"));
+			return;
+		}
+		var d = el.getElements(".post-delete")[0];
+		if(!d || d.retrieve("ajax_url"))
+			return;
+		d.addEvent("click", function(){
+			if(!confirm(__('POST_DELETE_CONFIRM')))
+				return;
+			new Request.JSON({
+				url: this.retrieve("ajax_url"),
+				onSuccess: function(data){
+					if(data.success && el){
+						el.get('tween', {
+							property : "opacity",
+							onComplete : function(){
+								el.destroy();
+							}
+						})
+						.start(0);
+					}
+				}
+			}).get();
+		})
+			.store("ajax_url", d.href)
+			.set("href", "javascript:;");
 	},
 	
 	
@@ -251,7 +291,8 @@ var Comment = {
 	init : function(e){
 		if(!$defined(e))
 			e = $$(".post-comments");
-		if($type(e) == 'array'){
+		this.initDelete(e);
+		if($type(e) == "array"){
 			e.each(function(e){
 				Comment.init(e);
 			});
@@ -276,12 +317,54 @@ var Comment = {
 				onSuccess: function(data){
 					var el = new Element("div", {html: data}).getElements("div")[0];
 					el.inject(f, "before");
+					Comment.initDelete(el);
 					f.getElements("input, textarea").set("disabled", false);
 					t.set("value", "").fireEvent("blur");
 				}
 			}).post({message: t.value});
 			return false;
 		});
+	},
+	
+	initDelete : function(el){
+		if(!$defined(el))
+			el = $$(".post-comment");
+		if($type(el) == "array"){
+			el.each(function(e){
+				Comment.initDelete(e);
+			});
+			return;
+		}
+		if(!el.hasClass("post-comment")){
+			Comment.initDelete(el.getElements(".post-comment"));
+			return;
+		}
+		
+		el.getElements(".post-comment-delete").each(function(d){
+			if(d.retrieve("ajax_url"))
+				return;
+			d.addEvent("click", function(){
+				if(!confirm(__('POST_COMMENT_DELETE_CONFIRM')))
+					return;
+				new Request.JSON({
+					url: this.retrieve("ajax_url"),
+					onSuccess: function(data){
+						if(data.success && el){
+							el.get('tween', {
+								property : "opacity",
+								onComplete : function(){
+									el.destroy();
+								}
+							})
+							.start(0);
+						}
+					}
+				}).get();
+			})
+				.store("ajax_url", d.href)
+				.set("href", "javascript:;");
+		});
+		
 	},
 	
 	write : function(post_id){
@@ -316,7 +399,7 @@ var Survey = {
 	init : function(e){
 		if(!$defined(e))
 			e = $$(".survey");
-		if($type(e) == 'array'){
+		if($type(e) == "array"){
 			e.each(function(e){
 				Survey.init(e);
 			});

@@ -306,6 +306,22 @@ h1 {
 	margin-bottom: 10px;
 	border-bottom: 1px solid #E9E9E9;
 }
+.post-delete, .post-comment-delete  {
+	width: 12px;
+	height: 12px;
+	overflow: hidden;
+	text-indent: -100px;
+	background: no-repeat url("../images/icons/close2.png");
+	display: none;
+	float: right;
+}
+.post:hover .post-delete, .post-comment:hover .post-comment-delete {
+	display: block;
+}
+.post-delete:hover, .post-comment-delete:hover {
+	background-position: 0 -12px;
+	text-decoration: none;
+}
 .post-message {
 	margin-left: 80px;
 }

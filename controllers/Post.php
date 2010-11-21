@@ -10,6 +10,7 @@ class Post_Controller extends Controller {
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_student = $is_logged && isset(User_Model::$auth_data['student_number']);
+		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		$category = isset($params['category']) ? $params['category'] : null;
 		
 		$category_model = new Category_Model();
@@ -17,19 +18,19 @@ class Post_Controller extends Controller {
 		$this->set(array(
 			'is_logged'			=> $is_logged,
 			'is_student'		=> $is_student,
+			'is_admin'			=> $is_admin,
 			'categories'		=> $category_model->getAll(),
 			'current_category'	=> $category
 		));
 		
 		// If the user is logged
 		if($is_logged){
-			$association_model = new Association_Model();
 			
 			$this->set(array(
 				'username'			=> User_Model::$auth_data['username'],
 				'firstname'			=> User_Model::$auth_data['firstname'],
 				'lastname'			=> User_Model::$auth_data['lastname'],
-				'associations_auth'	=> $association_model->getAuth(),
+				'associations_auth'	=> Association_Model::getAuth(),
 				// Non-official posts
 				'posts'				=> $this->model->getPosts(false, $is_student, $category, Config::POST_DISPLAYED)
 			));
@@ -61,20 +62,25 @@ class Post_Controller extends Controller {
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_student = $is_logged && isset(User_Model::$auth_data['student_number']);
+		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
+		
 		$category = isset($params['category']) ? $params['category'] : null;
 		$offset = (((int) $params['page']) - 1) * Config::POST_DISPLAYED;
 		
 		$this->set(array(
 			'is_logged'			=> $is_logged,
-			'is_student'		=> $is_student
+			'is_student'		=> $is_student,
+			'is_admin'			=> $is_admin
 		));
 		
 		// If the user is logged in
 		if($is_logged){
+			
 			$this->set(array(
 				'username'			=> User_Model::$auth_data['username'],
 				'firstname'			=> User_Model::$auth_data['firstname'],
-				'lastname'			=> User_Model::$auth_data['lastname']
+				'lastname'			=> User_Model::$auth_data['lastname'],
+				'associations_auth'	=> Association_Model::getAuth()
 			));
 			
 			// Non-official posts
@@ -104,6 +110,7 @@ class Post_Controller extends Controller {
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_student = $is_logged && isset(User_Model::$auth_data['student_number']);
+		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		
 		$posts = $this->model->getPost((int) $params['id'], $is_logged ? null : true, $is_student);
 		if(!isset($posts[0]))
@@ -112,6 +119,8 @@ class Post_Controller extends Controller {
 		$this->set(array(
 			'is_logged'		=> $is_logged,
 			'is_student'	=> $is_student,
+			'is_admin'		=> $is_admin,
+			'associations_auth'	=> Association_Model::getAuth(),
 			'post'			=> $posts[0],
 			'one_post'		=> true
 		));
@@ -136,6 +145,7 @@ class Post_Controller extends Controller {
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_student = $is_logged && isset(User_Model::$auth_data['student_number']);
+		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		
 		$year = (int) $params['year'];
 		$month = (int) $params['month'];
@@ -162,6 +172,8 @@ class Post_Controller extends Controller {
 		$this->set(array(
 			'is_logged'		=> $is_logged,
 			'is_student'	=> $is_student,
+			'is_admin'		=> $is_admin,
+			'associations_auth'	=> Association_Model::getAuth(),
 			'posts'			=> count($post_ids)==0 ? array() : $this->model->getPosts(null, $is_student, null, 1000, 0, $post_ids),
 			'events' 			=> $events,
 			'calendar_month'	=> $month,
@@ -214,19 +226,13 @@ class Post_Controller extends Controller {
 				$association = null;
 				$official = false;
 			}else{
-				$association_model = new Association_Model();
-				$associations_auth = $association_model->getAuth();
-				$asso_ok = false;
-				foreach($associations_auth as $association_auth){
-					if($association == $association_auth['id']){
-						if($official && $association_auth['admin']!='1')
-							throw new Exception(__('POST_ADD_ERROR_OFFICIAL'));
-						$asso_ok = true;
-						break;
-					}
-				}
-				if(!$asso_ok)
+				$associations_auth = Association_Model::getAuth();
+				if(isset($associations_auth[$association])){
+					if($official && $associations_auth[$association]['admin'])
+						throw new Exception(__('POST_ADD_ERROR_OFFICIAL'));
+				}else{
 					throw new Exception(__('POST_ADD_ERROR_ASSOCIATION_NOT_FOUND'));
+				}
 			}
 			
 			// Private message
@@ -484,6 +490,36 @@ class Post_Controller extends Controller {
 					Post.errorForm('.json_encode($e->getMessage()).');
 				}
 			');
+		}
+	}
+	
+	
+	/**
+	 * Delete a post
+	 */
+	public function delete($params){
+		$this->setView('delete.php');
+		
+		try {
+			$post = $this->model->getRawPost((int) $params['id']);
+			
+			$is_logged = isset(User_Model::$auth_data);
+			$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
+			$associations_auth = Association_Model::getAuth();
+			
+			if(($is_logged && User_Model::$auth_data['id'] == $post['user_id'])
+			|| $is_admin
+			|| (isset($post['association_id']) && isset($associations_auth[(int) $post['association_id']])) && $associations_auth[(int) $post['association_id']]['admin']){
+				
+				$this->model->delete((int) $params['id']);
+				$this->set('success', true);
+				
+			}else{
+				$this->set('success', false);
+			}
+		}catch(Exception $e){
+			// Post not found
+			$this->set('success', true);
 		}
 	}
 	
