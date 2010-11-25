@@ -46,11 +46,11 @@ class Layout_Controller extends Controller {
 			// Authentication by cookies
 			}else if(($login = Cookie::read('login')) !== null){
 				try {
-					if(!preg_match('#^[a-z0-9-]+$#', $username))
-						throw new Exception('Invalid username');
 					if(isset($login) && $login = Encryption::decode($login)){
 						$login = explode(':', $login);
 						$username = $login[0];
+						if(!preg_match('#^[a-z0-9-]+$#', $username))
+							throw new Exception('Invalid username');
 						array_splice($login, 0, 1);
 						$password = implode(':', $login);
 						if($user_model->authenticate($username, $password)){
