@@ -1,14 +1,10 @@
 
-* Page d'une photo, avec commentaires et tags
+* Pouvoir taguer des gens sur les photos
 
 * Afficher les associations
 * Ajouter une association
 * Modifier une association
 * Supprimer une association
-
-* Ajouter une catégorie
-* Supprimer une catégorie
-* Classer les catégories
 
 * Ajouter une membre d'association
 * Modifier une membre d'association (titre, admin)

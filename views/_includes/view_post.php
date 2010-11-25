@@ -149,15 +149,15 @@ foreach($post['attachments'] as $attachment){
 <?php
 			}
 ?>
-		<a href="<?php echo $attachment['url']; ?>" rel="lightbox-post-<?php echo $post['id']; ?>"><img src="<?php echo $attachment['thumb']; ?>" alt="" /></a>
+			<a href="<?php echo Config::URL_ROOT.Routes::getPage('post', array('id' => $post['id'])).'#photo-'.$attachment['id']; ?>"><img src="<?php echo $attachment['thumb']; ?>" alt="" /></a>
 <?php
 			$nb_photos++;
-			if($nb_photos == Config::PHOTOS_PER_POST && Config::PHOTOS_PER_POST < $post['attachments_nb_photos']){
+			if(!isset($one_post) && $nb_photos == Config::PHOTOS_PER_POST && Config::PHOTOS_PER_POST < $post['attachments_nb_photos']){
 ?>
-		<a href="<?php echo Config::URL_ROOT.Routes::getPage('post', array('id' => $post['id'])); ?>" class="photos-more"><?php echo __('POST_LINK_PHOTOS', array('nb' => $post['attachments_nb_photos'])); ?></a>
+			<a href="<?php echo Config::URL_ROOT.Routes::getPage('post', array('id' => $post['id'])); ?>" class="photos-more"><?php echo __('POST_LINK_PHOTOS', array('nb' => $post['attachments_nb_photos'])); ?></a>
+		</div>
 <?php
-			}
-			if($nb_photos == min(Config::PHOTOS_PER_POST, $post['attachments_nb_photos'])){
+			}else if($nb_photos == $post['attachments_nb_photos']){
 ?>
 		</div>
 <?php
@@ -207,6 +207,18 @@ foreach($post['attachments'] as $attachment){
 		
 	}
 }
+
+
+// Si on affiche uniquement ce post, on prépare l'affichage des photos en grand
+if(isset($one_post) && $post['attachments_nb_photos'] != 0){
+?>
+		<div id="attachment-photo" class="hidden">
+			<a href="javascript:;" id="attachment-photo-prev"><?php echo __('POST_PHOTO_PREV'); ?></a>
+			<a href="javascript:;" id="attachment-photo-next"><?php echo __('POST_PHOTO_NEXT'); ?></a>
+			<a href="javascript:;" id="attachment-photo-album"><?php echo __('POST_PHOTOS_ALBUM'); ?></a>
+		</div>
+<?php
+}
 ?>
 
 		<div class="post-info">
@@ -251,7 +263,12 @@ foreach($post['comments'] as $comment){
 		}
 	}
 ?>
-			<div id="post-comment-<?php echo $comment['id']; ?>" class="post-comment<?php if($comment_hidden) echo ' hidden'; ?>">
+			<div id="post-comment-<?php echo $comment['id']; ?>" class="post-comment<?php
+		if($comment_hidden)
+			echo ' hidden';
+		if(isset($one_post))
+			echo ' post-comment-attachment'.(isset($comment['attachment_id']) ? $comment['attachment_id'].' hidden' : '0');
+?>">
 				<?php
 $comment_user_url = Config::URL_ROOT.Routes::getPage('student', array('username' => $comment['username']));
 ?>

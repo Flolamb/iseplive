@@ -134,6 +134,18 @@ class Post_Controller extends Controller {
 			));
 		}
 		
+		if($posts[0]['attachments_nb_photos'] != 0){
+			$photos = array();
+			foreach($posts[0]['attachments'] as $attachment){
+				if(in_array($attachment['ext'], array('jpg', 'png', 'gif')))
+					$photos[] = array(
+						'id'	=> (int) $attachment['id'],
+						'url'	=> $attachment['url']
+					);
+			}
+			$this->addJSCode('Post.photos = '.json_encode($photos).';');
+		}
+		
 	}
 	
 	

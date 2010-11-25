@@ -72,9 +72,13 @@ var Post = {
 	pageNonOfficial : 1,
 	busy : false,
 	
+	currentPhoto : -1,
+	
 	init : function(){
 		if($("publish-message"))
 			this.initForm();
+		if($("attachment-photo"))
+			this.initPhoto();
 		this.initDelete();
 		
 		$$(".posts-more-link").each(function(link){
@@ -103,6 +107,89 @@ var Post = {
 						}
 					}).post();
 				});
+		});
+		
+	},
+	
+	
+	// Viewing a photo gallery
+	initPhoto : function(){
+		
+		window.addEvent('hashchange', function(hash){
+			var photos = $$('.photos');
+			if(photos.length == 0)
+				return;
+			
+			var m = hash.match(/^photo-([0-9]+)$/);
+			if(m){
+				photos[0].addClass('hidden');
+				$("attachment-photo").removeClass('hidden');
+				
+				var i = -1;
+				for(var j=0; j < Post.photos.length; j++){
+					if(Post.photos[j].id == m[1]){
+						i = j;
+						break;
+					}
+				}
+				if(i == -1){
+					location.hash = '';
+				}else{
+					
+					Post.currentPhoto = i;
+					var photo = Post.photos[i],
+						img = $("attachment-photo-img");
+					if(img)
+						img.set("src", photo.url);
+					else
+						new Element("img", {
+							"id" : "attachment-photo-img",
+							"src" : photo.url
+						})
+						.addEvent("click", function(){
+							$("attachment-photo-next").fireEvent("click");
+						})
+						.inject($("attachment-photo"));
+					
+					$$(".post-comment").each(function(e){
+						if(e.hasClass("post-comment-attachment"+photo.id))
+							e.removeClass("hidden");
+						else
+							e.addClass("hidden");
+					});
+				}
+				
+			}else if(photos[0].hasClass('hidden')){
+				photos[0].removeClass('hidden');
+				$("attachment-photo").addClass('hidden');
+				
+				Post.currentPhoto = -1;
+				
+				$$(".post-comment").each(function(e){
+					if(e.hasClass("post-comment-attachment0"))
+						e.removeClass("hidden");
+					else
+						e.addClass("hidden");
+				});
+			}
+		});
+		if(location.hash.indexOf('#') == 0)
+			window.fireEvent('hashchange', location.hash.substr(1));
+		
+		$("attachment-photo-prev").addEvent("click", function(){
+			var i = Post.currentPhoto-1;
+			if(i < 0)
+				i = Post.photos.length-1;
+			location.hash = '#photo-'+Post.photos[i].id;
+		});
+		$("attachment-photo-next").addEvent("click", function(){
+			var i = Post.currentPhoto+1;
+			if(i >= Post.photos.length)
+				i = 0;
+			location.hash = '#photo-'+Post.photos[i].id;
+		});
+		$("attachment-photo-album").addEvent("click", function(){
+			location.hash = '';
 		});
 	},
 	
@@ -312,6 +399,11 @@ var Comment = {
 			// Disabling form
 			f.getElements("input, textarea").set("disabled", true);
 			// Sending form trough AJAX
+			var obj = {
+				message: t.value
+			};
+			if(Post.currentPhoto != -1)
+				obj.attachment = Post.photos[Post.currentPhoto].id;
 			new Request({
 				url: f.action,
 				onSuccess: function(data){
@@ -321,7 +413,7 @@ var Comment = {
 					f.getElements("input, textarea").set("disabled", false);
 					t.set("value", "").fireEvent("blur");
 				}
-			}).post({message: t.value});
+			}).post(obj);
 			return false;
 		});
 	},

@@ -62,6 +62,12 @@ POST_SHOW_MORE
 	Publications plus anciennes...
 POST_LINK_PHOTOS
 	Voir les {nb} photos
+POST_PHOTO_PREV
+	« Précédente
+POST_PHOTO_NEXT
+	Suivante »
+POST_PHOTOS_ALBUM
+	Voir l'album
 POST_SURVEY_ENDING_DATE
 	Date de fin :
 POST_SURVEY_NB_VOTES

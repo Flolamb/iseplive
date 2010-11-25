@@ -17,15 +17,18 @@ class PostComment_Controller extends Controller {
 		if($message == '')
 			throw Exception('You must write a message');
 		
+		$attachment_id = isset($_POST['attachment']) && ctype_digit($_POST['attachment']) ? (int) $_POST['attachment'] : null;
+		
 		try {
-			$id = $this->model->add($params['post_id'], (int) User_Model::$auth_data['id'], $message);
+			$id = $this->model->add($params['post_id'], (int) User_Model::$auth_data['id'], $message, $attachment_id);
 			$this->set(array(
 				'id'			=> $id,
 				'username'		=> User_Model::$auth_data['username'],
 				'firstname'		=> User_Model::$auth_data['firstname'],
 				'lastname'		=> User_Model::$auth_data['lastname'],
 				'avatar_url'	=> User_Model::getAvatarURL(User_Model::$auth_data['student_number'], true),
-				'message'		=> $message
+				'message'		=> $message,
+				'attachment_id'	=> $attachment_id
 			));
 		}catch(Exception $e){
 			echo $e->getMessage();

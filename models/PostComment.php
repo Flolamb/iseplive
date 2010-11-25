@@ -10,13 +10,22 @@ class PostComment_Model extends Model {
 	 * @param string $message	Content of the comment
 	 * @return int	Id of the new comment
 	 */
-	public function add($post_id, $user_id, $message){
+	public function add($post_id, $user_id, $message, $attachment_id=null){
+		if(isset($attachment_id)){
+			$attachment = DB::createQuery('attachments')->select($attachment_id);
+			if(!isset($attachment[0]))
+				throw new Exception('Attachment not found!');
+		}else{
+			$attachment_id = null;
+		}
+		
 		$id = $this->createQuery()
 			->set(array(
 				'post_id'	=> $post_id,
 				'user_id'	=> $user_id,
 				'message'	=> $message,
-				'time'		=> time()
+				'time'		=> time(),
+				'attachment_id'	=> $attachment_id
 			))
 			->insert();
 		

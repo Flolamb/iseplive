@@ -56,13 +56,14 @@ class Post_Model extends Model {
 			// Comments
 			$comments = DB::select('
 				SELECT
-					pc.post_id, pc.id, pc.message, pc.time,
+					pc.post_id, pc.id, pc.message, pc.time, pc.attachment_id,
 					u.username,
 					s.student_number, s.firstname, s.lastname
 				FROM post_comments pc
 				INNER JOIN users u ON u.id = pc.user_id
 				INNER JOIN students s ON s.username = u.username
 				WHERE pc.post_id IN ('.implode(',', $post_ids).')
+				'.($nolimits ? '' : 'AND pc.attachment_id IS NULL').'
 				ORDER BY pc.time ASC
 			');
 			$comments_by_post_id = array();
@@ -92,7 +93,8 @@ class Post_Model extends Model {
 				if(in_array($attachment['ext'], array('jpg', 'png', 'gif'))){
 					if(!isset($nb_photos_by_post_id[$post_id]))
 						$nb_photos_by_post_id[$post_id] = 0;
-					if(!$nolimits && ++$nb_photos_by_post_id[$post_id] > Config::PHOTOS_PER_POST)
+					$nb_photos_by_post_id[$post_id]++;
+					if(!$nolimits && $nb_photos_by_post_id[$post_id] > Config::PHOTOS_PER_POST)
 						continue;
 				}
 				

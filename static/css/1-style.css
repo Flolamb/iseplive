@@ -230,7 +230,7 @@ h1 {
 #posts-alone {
 	margin: 0 auto;
 	overflow: hidden;
-	width: 40%;
+	width: 880px;
 }
 #posts-official {
 	float: left;
@@ -383,6 +383,7 @@ h1 {
 /* Comments */
 .post-comments {
 	margin-top: 4px;
+	max-width: 400px;
 	font-size: 12px;
 }
 .post-comment, .post-comment-write {
@@ -428,6 +429,27 @@ h1 {
     width: 50px;
     height: 50px;
 	float: left;
+}
+
+
+
+/* Photos */
+
+#attachment-photo {
+	text-align: center;
+	margin: 20px 0;
+}
+#attachment-photo-prev {
+	float: left;
+	text-align: left;
+}
+#attachment-photo-next {
+	float: right;
+	text-align: right;
+}
+#attachment-photo-img {
+	margin-top: 5px;
+	cursor: pointer;
 }
 
 
