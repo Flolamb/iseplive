@@ -208,22 +208,8 @@ class Date {
 	 * @return string
 	 */
 	public static function getDayByNum($day){
-		switch($day){
-			case 0:
-				return __('DAY_SUNDAY');
-			case 1:
-				return __('DAY_MONDAY');
-			case 2:
-				return __('DAY_THUESDAY');
-			case 3:
-				return __('DAY_WEDNESDAY');
-			case 4:
-				return __('DAY_THURSDAY');
-			case 5:
-				return __('DAY_FRIDAY');
-			case 6:
-				return __('DAY_SATERDAY');
-		}
+		$days = __('DAYS');
+		return $days[$day];
 	}
 	
 	/**
@@ -243,32 +229,8 @@ class Date {
 	 * @return string
 	 */
 	public static function getMonthByNum($month){
-		switch($month){
-			case 1:
-				return __('MONTH_JANUARY');
-			case 2:
-				return __('MONTH_FEBRUARY');
-			case 3:
-				return __('MONTH_MARCH');
-			case 4:
-				return __('MONTH_APRIL');
-			case 5:
-				return __('MONTH_MAY');
-			case 6:
-				return __('MONTH_JUNE');
-			case 7:
-				return __('MONTH_JULY');
-			case 8:
-				return __('MONTH_AUGUST');
-			case 9:
-				return __('MONTH_SEPTEMBER');
-			case 10:
-				return __('MONTH_OCTOBER');
-			case 11:
-				return __('MONTH_NOVEMBER');
-			case 12:
-				return __('MONTH_DECEMBER');
-		}
+		$months = __('MONTHS');
+		return $months[$month-1];
 	}
 	
 }
