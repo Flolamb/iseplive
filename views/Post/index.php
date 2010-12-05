@@ -25,11 +25,9 @@ if(isset($current_category)){
 
 
 <div id="posts-nonofficial" class="timeline">
+	<h1><?php echo __('POST_TITLE_NONOFFICIAL'); ?></h1>
 <?php
 if($is_logged){
-?>
-	<h1><?php echo __('POST_TITLE_NONOFFICIAL'); ?></h1>
-<?php 
 	foreach($posts as $post){
 		require dirname(__FILE__).'/../_includes/view_post.php';
 	}

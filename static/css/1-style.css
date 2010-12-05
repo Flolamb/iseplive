@@ -116,7 +116,7 @@ footer {
 	overflow: hidden;
 }
 
-h1, h1 a {
+h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 	font-size: 16px;
 	font-weight: bold;
 	margin-bottom: 15px;
@@ -506,6 +506,9 @@ h1, h1 a {
 }
 .associations-column.center {
 	margin: 0 auto;
+}
+.association-profile {
+	text-align: justify;
 }
 #posts-official.association {
 	margin-left: 7%;

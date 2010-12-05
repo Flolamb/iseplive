@@ -79,7 +79,7 @@ class Association_Model extends Model {
 	 */
 	public static function getAuth(){
 		if(!isset(User_Model::$auth_data))
-			throw new Exception('No user authenticated');
+			return array();
 		$cache_entry = 'associations_auth_'.User_Model::$auth_data['id'];
 		if($categories = Cache::read($cache_entry))
 			return $categories;

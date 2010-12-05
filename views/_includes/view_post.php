@@ -241,7 +241,7 @@ if($post['private'] == '1'){
 		
 		<div class="post-comments">
 <?php
-if(!isset($post['comments']))
+if(!isset($post['comments']) || !$is_logged)
 	$post['comments'] = array();
 $nb_comments = count($post['comments']);
 $n = 0;

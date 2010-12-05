@@ -2,7 +2,7 @@
 /**
  * Fill the directory with the info of the LDAP
  *
- * @example /usr/bin/php -f directory_fill.php
+ * @example /usr/bin/php -f avatars.php
  */
 
 define('CRON_MODE', true);

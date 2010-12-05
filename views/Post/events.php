@@ -19,11 +19,9 @@ foreach($posts as $post){
 </div>
 
 <div id="posts-nonofficial" class="timeline">
-<?php
-if($is_logged){
-?>
 	<h1><?php echo __('EVENTS_TITLE_NONOFFICIAL'); ?></h1>
 <?php
+if($is_logged){
 	foreach($posts as $post){
 		if($post['official'] == '0')
 			require dirname(__FILE__).'/../_includes/view_post.php';
