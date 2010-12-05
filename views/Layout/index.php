@@ -78,7 +78,7 @@ foreach($cssFiles as $cssFile){
 			</div>
 			
 			<footer>
-				Association ISEPLive + BDE Aerodynamic :: Site développé par <a href="http://www.skreo.net">Godefroy</a> et <a href="#">libéré sur Github</a>
+				Association ISEPLive + BDE Aerodynamic :: Site développé par <a href="http://www.skreo.net">Godefroy</a> et <a href="http://github.com/Godefroy/iseplive">libéré sur Github</a>
 			</footer>
 		</div>
 

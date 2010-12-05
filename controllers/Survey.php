@@ -11,7 +11,7 @@ class Survey_Controller extends Controller {
 		if(!isset(User_Model::$auth_data))
 			throw new Exception('You must be logged in');
 		if(!isset(User_Model::$auth_data['student_number']))
-			throw Exception('You must be a student to post a comment');
+			throw Exception('You must be a student to vote');
 		
 		$votes = array();
 		foreach($_POST as $key => $value){
@@ -21,12 +21,12 @@ class Survey_Controller extends Controller {
 		try {
 			$post_id = $this->model->vote($params['id'], $votes, User_Model::$auth_data['username']);
 			$post_model = new Post_Model();
-			$posts = $post_model->getPost($post_id, null, true);
+			$post = $post_model->getPost($post_id);
 			$this->set(array(
 				'is_logged'		=> true,
 				'is_student'	=> true,
 				'username'	=> User_Model::$auth_data['username'],
-				'post'		=> $posts[0]
+				'post'		=> $post
 			));
 		}catch(Exception $e){}
 	}

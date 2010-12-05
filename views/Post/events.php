@@ -1,5 +1,7 @@
 
 <h1><?php
+if(isset($association))
+	echo $association['name'].' - ';
 if(isset($day_time))
 	echo Date::dateMonth($day_time);
 else
@@ -8,7 +10,7 @@ else
 
 <div id="posts-official" class="timeline">
 	<h1><?php echo __('EVENTS_TITLE_OFFICIAL'); ?></h1>
-<?php 
+<?php
 foreach($posts as $post){
 	if($post['official'] == '1')
 		require dirname(__FILE__).'/../_includes/view_post.php';
@@ -21,7 +23,7 @@ foreach($posts as $post){
 if($is_logged){
 ?>
 	<h1><?php echo __('EVENTS_TITLE_NONOFFICIAL'); ?></h1>
-<?php 
+<?php
 	foreach($posts as $post){
 		if($post['official'] == '0')
 			require dirname(__FILE__).'/../_includes/view_post.php';
@@ -37,6 +39,8 @@ if($is_logged){
 	<div id="posts-sidebar-content">
 		<div id="calendar">
 			<?php
+			if(isset($association))
+				$calendar_association = $association['url_name'];
 			require dirname(__FILE__).'/../_includes/calendar.php';
 			?>
 		</div>

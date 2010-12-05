@@ -84,7 +84,7 @@ CALENDAR_PREV_MONTH
 CALENDAR_NEXT_MONTH
 	»
 CALENDAR_ICAL_OFFICIAL
-	iCal associations
+	iCal officiel
 CALENDAR_ICAL_NON_OFFICIAL
 	iCal élèves
 
@@ -179,6 +179,18 @@ SIGNIN_SUBMIT
 SIGNIN_BAD_USERNAME_OR_PASSWORD
 	Nom d'utilisateur ou mot de passe incorrect
 
+
+### Controller: Student
+
+# View: view
+ASSOCIATION_CREATION
+	Date de création :
+ASSOCIATION_CONTACT
+	Email :
+ASSOCIATION_MEMBERS
+	Membres :
+ASSOCIATION_POSTS
+	Publications
 
 ### Common views
 

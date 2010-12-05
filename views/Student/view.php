@@ -1,9 +1,9 @@
 
 <div class="profile-block">
-	<a href="<?php echo $avatar_big_url; ?>" rel="lightbox"><img src="<?php echo $avatar_url; ?>" alt="" class="avatar profile-avatar" /></a>
+	<a href="<?php echo $avatar_big_url; ?>" rel="lightbox" class="avatar profile-avatar"><img src="<?php echo $avatar_url; ?>" alt="" /></a>
 
 	<div class="profile-info">
-		<h1><?php echo $firstname.' '.$lastname; ?></h1>
+		<h1><?php echo htmlspecialchars($firstname.' '.$lastname); ?></h1>
 		
 		<strong><?php echo __('PROFILE_PROMO'); ?></strong> <?php echo $promo; ?><br />
 		<strong><?php echo __('PROFILE_STUDENT_NUMBER'); ?></strong> <?php echo $student_number; ?><br />

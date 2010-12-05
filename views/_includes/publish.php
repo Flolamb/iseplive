@@ -6,7 +6,7 @@
 		<?php
 		if($is_student){
 		?>
-		<img src="<?php echo $avatar_url; ?>" alt="<?php echo $firstname.' '.$lastname; ?>" class="avatar" />
+		<span class="avatar"><img src="<?php echo $avatar_url; ?>" alt="<?php echo $firstname.' '.$lastname; ?>" /></span>
 		<?php
 		}else{
 			echo __('PUBLISH_TITLE');

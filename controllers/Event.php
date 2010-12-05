@@ -9,12 +9,13 @@ class Event_Controller extends Controller {
 		$this->setView('ical.php');
 		
 		$official = isset($params['official']);
+		$association_name = isset($params['association']) ? $params['association'] : null;
 		
 		$event_model = new Event_Model();
-		$events = $event_model->getUpcoming($official, false);
+		$events = $event_model->getUpcoming($association_name, $official, false);
 		
 		// Creation of the iCal content
-		$cache_entry = 'ical-'.($official ? 'official' : 'non-official');
+		$cache_entry = 'ical-'.(isset($association_name) ? $association_name : '').'-'.($official ? 'official' : 'non-official');
 		$content = Cache::read($cache_entry);
 		
 		if(!$content){

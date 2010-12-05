@@ -43,12 +43,6 @@ class User_Model extends Model {
 				
 				// If the user doesn't exist in the DB, we create it
 				}catch(Exception $e){
-					/*
-					$search = ldap_search($ldap_conn, Config::$LDAP['basedn'], 'uid='.$username);
-					$users = ldap_get_entries($ldap_conn, $search);
-					if($users['count'] == 0)
-						throw new Exception('User not found');
-					*/
 					$this->createQuery()
 						->set(array(
 							'username'	=> $username

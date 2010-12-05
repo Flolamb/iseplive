@@ -5,30 +5,47 @@ class Post_Model extends Model {
 	/**
 	 * Returns the information of the N last posts, with attachments, surveys, events...
 	 * 
-	 * @param boolean $official		Only official posts if true, only non-official posts otherwise, all posts if null
-	 * @param boolean $private		Private posts include if true
-	 * @param string $category		Category of the posts (optional)
-	 * @param int $limit			Number of posts to be returned
-	 * @param int $offset			Number of posts to skip
-	 * @param array $ids			List of IDs of post to get (optional)
-	 * @param boolean $nolimits		If true, doesn't limit the number of photos displayed
+	 * @param array $params	Associative array of paramaters. Possibles keys :
+	 *							* official: Only official posts if true, only non-official posts if false, all posts if null
+	 *							* show_private: Private posts include if true
+	 *							* category_id: Category's id
+	 *							* category_name: Category's name
+	 *							* association_id: Association's id
+	 *							* association_name: Association's name
+	 *							* id: ID of a post to get
+	 *							* ids: List of IDs of post to get
+	 *							* restricted: If true, limits the number of photos displayed
+	 * @param int $limit	Number of posts to be returned
+	 * @param int $offset	Number of posts to skip
 	 * @return array
 	 */
-	public function getPosts($official, $private, $category=null, $limit, $offset=0, $ids=null, $nolimits=false){
-		$cache_entry = 'posts-'.(isset($official) ? $official : '').'-'.$private.'-'.(isset($category) ? $category : '').'-'.$offset.'-'.(isset($ids) ? implode(',', $ids) : '').'-'.$nolimits;
+	public function getPosts($params, $limit, $offset=0){
+		$cache_entry = 'posts';
+		foreach($params as $key => $value){
+			if(isset($value))
+				$cache_entry .= '-'.$key.':'.(is_array($value) ? implode(',', $value) : $value);
+		}
 		$posts = Cache::read($cache_entry);
 		if($posts !== false)
 			return $posts;
 		
 		$where = array();
-		if(isset($official))
-			$where[] = 'p.official = '.($official ? 1 : 0);
-		if(!$private)
+		if(isset($params['association_id']))
+			$where[] = 'p.association_id = '.$params['association_id'];
+		if(isset($params['association_name']))
+			$where[] = 'a.url_name = '.DB::quote($params['association_name']);
+		if(isset($params['official']))
+			$where[] = 'p.official = '.($params['official'] ? 1 : 0);
+		if(!isset($params['show_private']) || !$params['show_private'])
 			$where[] = 'p.private = 0';
-		if(isset($category))
-			$where[] = 'c.url_name = "'.$category.'"';
-		if(isset($ids))
-			$where[] = 'p.id IN ('.implode(',', $ids).')';
+		if(isset($params['category_id']))
+			$where[] = 'c.id = "'.$params['category_id'].'"';
+		if(isset($params['category_name']))
+			$where[] = 'c.url_name = '.DB::quote($params['category_name']);
+		if(isset($params['ids']) && is_array($params['ids']))
+			$where[] = 'p.id IN ('.implode(',', $params['ids']).')';
+		if(isset($params['id']) && (is_int($params['id']) || ctype_digit($params['id'])))
+			$where[] = 'p.id = '.$params['id'];
 		
 		$posts = DB::select('
 			SELECT
@@ -39,9 +56,9 @@ class Post_Model extends Model {
 			FROM posts p
 			INNER JOIN categories c ON c.id = p.category_id
 			INNER JOIN users u ON u.id = p.user_id
-			LEFT JOIN associations a ON a.id = p.association_id
+			'.(isset($params['association_id']) || isset($params['association_name']) ? 'INNER' : 'LEFT').' JOIN associations a ON a.id = p.association_id
 			LEFT JOIN students s ON s.username = u.username
-			WHERE '.implode(' AND ', $where).'
+			'.(count($where) != 0 ? 'WHERE '.implode(' AND ', $where) : '').'
 			ORDER BY p.time DESC
 			LIMIT '.$offset.', '.$limit.'
 		');
@@ -63,7 +80,7 @@ class Post_Model extends Model {
 				INNER JOIN users u ON u.id = pc.user_id
 				INNER JOIN students s ON s.username = u.username
 				WHERE pc.post_id IN ('.implode(',', $post_ids).')
-				'.($nolimits ? '' : 'AND pc.attachment_id IS NULL').'
+				'.(isset($params['restricted']) && $params['restricted'] ? 'AND pc.attachment_id IS NULL' : '').'
 				ORDER BY pc.time ASC
 			');
 			$comments_by_post_id = array();
@@ -94,7 +111,7 @@ class Post_Model extends Model {
 					if(!isset($nb_photos_by_post_id[$post_id]))
 						$nb_photos_by_post_id[$post_id] = 0;
 					$nb_photos_by_post_id[$post_id]++;
-					if(!$nolimits && $nb_photos_by_post_id[$post_id] > Config::PHOTOS_PER_POST)
+					if(isset($params['restricted']) && $params['restricted'] && $nb_photos_by_post_id[$post_id] > Config::PHOTOS_PER_POST)
 						continue;
 				}
 				
@@ -198,12 +215,16 @@ class Post_Model extends Model {
 	 * Returns the information of a post, with attachments, surveys, events...
 	 * 
 	 * @param int $id				Id of the post
-	 * @param boolean $official		Only official post if true, only non-official post otherwise, irrelevant if null
-	 * @param boolean $private		Private post accepted if true
 	 * @return array
 	 */
-	public function getPost($id, $official, $private){
-		return $this->getPosts($official, $private, null, 1, 0, array($id), true);
+	public function getPost($id){
+		$posts = $this->getPosts(array(
+			'id'			=> $id,
+			'show_private'	=> true
+		), 1, 0);
+		if(!isset($posts[0]))
+			throw new Exception('Post not found');
+		return $posts[0];
 	}
 	
 	/**

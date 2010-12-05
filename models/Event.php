@@ -7,12 +7,18 @@ class Event_Model extends Model {
 	 *
 	 * @param int $year		Year
 	 * @param int $month	Month number
-	 * @param boolean $official		Only official posts if true, only non-official posts otherwise, all posts if null
-	 * @param boolean $private		Private posts include if true
+	 * @param array $params	Associative array of paramaters. Possibles keys :
+	 *							* official: Only official posts if true, only non-official posts if false, all posts if null
+	 *							* show_private: Private posts include if true
+	 *							* association_id: Association's id
 	 * @return array
 	 */
-	public function getByMonth($year, $month, $official, $private){
-		$cache_entry = 'events-'.$year.'-'.$month.'-'.(isset($official) ? $official : '').'-'.$private;
+	public function getByMonth($year, $month, $params){
+		$cache_entry = 'events-'.$year.'-'.$month;
+		foreach($params as $key => $value){
+			if(isset($value))
+				$cache_entry .= '-'.$key.':'.$value;
+		}
 		$events = Cache::read($cache_entry);
 		if($events !== false)
 			return $events;
@@ -26,10 +32,13 @@ class Event_Model extends Model {
 				OR
 			 e.date_end BETWEEN "'.$date_start_for_end.'" AND "'.$date_end.'")
 		');
-		if(isset($official))
-			$where[] = 'p.official = '.($official ? 1 : 0);
-		if(!$private)
+		
+		if(isset($params['official']))
+			$where[] = 'p.official = '.($params['official'] ? 1 : 0);
+		if(!isset($params['show_private']) || !$params['show_private'])
 			$where[] = 'p.private = 0';
+		if(isset($params['association_id']))
+			$where[] = 'p.association_id = '.$params['association_id'];
 		
 		$events = DB::select('
 			SELECT e.title, e.date_start, e.date_end, e.post_id
@@ -60,28 +69,27 @@ class Event_Model extends Model {
 	/**
 	 * Returns the upcoming events
 	 *
-	 * @param boolean $official		Only official posts if true, only non-official posts otherwise, all posts if null
-	 * @param boolean $private		Private posts include if true
+	 * @param boolean $association_name		Association's name (optional)
+	 * @param boolean $official		Only official posts if true, only non-official posts otherwise, all posts if null (optional)
+	 * @param boolean $private		Private posts include if true (optional)
 	 * @return array
 	 */
-	public function getUpcoming($official, $private){
-		$cache_entry = 'events-upcoming-'.(isset($official) ? $official : '').'-'.$private;
-		$events = Cache::read($cache_entry);
-		if($events !== false)
-			return $events;
-		
+	public function getUpcoming($association_name=null, $official=null, $show_private=null){
 		$date_start = date('Y-m-d H:i:s');
 		
 		$where = array('e.date_start > "'.$date_start.'"');
+		if(isset($association_name))
+			$where[] = 'a.url_name = '.DB::quote($association_name);
 		if(isset($official))
 			$where[] = 'p.official = '.($official ? 1 : 0);
-		if(!$private)
+		if(!$show_private)
 			$where[] = 'p.private = 0';
 		
 		$events = DB::select('
 			SELECT e.title, e.date_start, e.date_end, p.message
 			FROM `events` e
 			INNER JOIN `posts` p ON p.id = e.post_id
+			'.(isset($association_name) ? 'INNER JOIN `associations` a ON a.id = p.association_id' : '').'
 			WHERE '.implode(' AND ', $where).'
 			ORDER BY e.date_start ASC
 		');
@@ -90,9 +98,6 @@ class Event_Model extends Model {
 			$event['date_start'] = strtotime($event['date_start']);
 			$event['date_end'] = strtotime($event['date_end']);
 		}
-		
-		// Write the cache
-		Cache::write($cache_entry, $events, 2*3600);
 		
 		return $events;
 	}

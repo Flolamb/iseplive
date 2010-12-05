@@ -35,6 +35,10 @@ header {
 	padding: 20px 0;
 	text-decoration: none;
 	text-align: left;
+	overflow: hidden;
+}
+#header-title #logo-iseplive {
+	float: left;
 }
 #header-title #logo-bde {
 	float: right;
@@ -67,6 +71,8 @@ nav a:hover, nav a:focus, nav a:active {
 #search-box {
     display: -moz-inline-box;
     display: inline-block;
+	*display: inline;
+    zoom: 1;
 	border-width: 6px 6px 0 6px;
 	border-style: solid;
 	border-color: #242153;
@@ -110,7 +116,7 @@ footer {
 	overflow: hidden;
 }
 
-h1 {
+h1, h1 a {
 	font-size: 16px;
 	font-weight: bold;
 	margin-bottom: 15px;
@@ -426,9 +432,11 @@ h1 {
 	cursor: text;
 }
 .post-comments .avatar {
+	float: left;
+}
+.post-comments .avatar img {
     width: 50px;
     height: 50px;
-	float: left;
 }
 
 
@@ -454,7 +462,7 @@ h1 {
 
 
 /* Avatar */
-.avatar {
+.avatar img {
     width: 70px;
     height: 70px;
 }
@@ -468,9 +476,39 @@ h1 {
 	float: left;
 }
 .profile-info {
+	margin-left: 80px;
+}
+
+
+/* Associations list */
+
+#associations-list {
+	margin-left: -5%;
+	overflow: hidden;
+}
+#associations-list .association-profile {
 	float: left;
-	width: 420px;
-	margin-left: 10px;
+	width: 30%;
+	margin-left: 5%;
+	margin-bottom: 20px;
+}
+
+/* Association's profile */
+
+.associations-column {
+	width: 35%;
+}
+.associations-column.left {
+	float: left;
+}
+.associations-column.right {
+	float: right;
+}
+.associations-column.center {
+	margin: 0 auto;
+}
+#posts-official.association {
+	margin-left: 7%;
 }
 
 

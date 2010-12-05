@@ -50,6 +50,7 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'ajax/category/{category}/{official}/{page}'
 		),
 		
+		
 		// Post
 		'post'	=> array(
 			'regexp'	=> '^post/([0-9]+)(?=\?|$)',
@@ -91,27 +92,61 @@ final class Routes extends RoutesAbstract {
 			'vars'		=> 'controller=Post&action=events&year=$1&month=$2',
 			'url'		=> 'events/{year}/{month}',
 			'extend'	=> array(
-				'day'	=> 'events_day'
+				'day&association'	=> 'association_events_day',
+				'day'	=> 'events_day',
+				'association'	=> 'association_events'
+			)
+		),
+		'association_events'	=> array(
+			'regexp'	=> '^association/([a-z0-9-]+)/events/([0-9]{4})/([0-9]{2})(?=\?|$)',
+			'vars'		=> 'controller=Post&action=events&association=$1&year=$2&month=$3',
+			'url'		=> 'association/{association}/events/{year}/{month}',
+			'extend'	=> array(
+				'day'	=> 'events_association_day'
 			)
 		),
 		// Events' posts in a day
 		'events_day'	=> array(
 			'regexp'	=> '^events/([0-9]{4})/([0-9]{2})/([0-9]{2})(?=\?|$)',
 			'vars'		=> 'controller=Post&action=events&year=$1&month=$2&day=$3',
-			'url'		=> 'events/{year}/{month}/{day}'
+			'url'		=> 'events/{year}/{month}/{day}',
+			'extend'	=> array(
+				'association'	=> 'association_events_day'
+			)
+		),
+		'association_events_day'	=> array(
+			'regexp'	=> '^association/([a-z0-9-]+)/events/([0-9]{4})/([0-9]{2})/([0-9]{2})(?=\?|$)',
+			'vars'		=> 'controller=Post&action=events&association=$1&year=$2&month=$3&day=$4',
+			'url'		=> 'association/{association}/events/{year}/{month}/{day}'
 		),
 		
 		// iCal : Official events
 		'ical_official'	=> array(
-			'regexp'	=> '^events/official.ics(?=\?|$)',
+			'regexp'	=> '^events/calendar-official.ics(?=\?|$)',
 			'vars'		=> 'controller=Event&action=ical&official&mode=raw',
-			'url'		=> 'events/official.ics'
+			'url'		=> 'events/calendar-official.ics',
+			'extend'	=> array(
+				'association'	=> 'association_ical_official'
+			)
+		),
+		'association_ical_official'	=> array(
+			'regexp'	=> '^association/([a-z0-9-]+)/events/calendar-official.ics(?=\?|$)',
+			'vars'		=> 'controller=Event&action=ical&official&association=$1&mode=raw',
+			'url'		=> 'association/{association}/events/calendar-official.ics'
 		),
 		// iCal : Non official events
 		'ical_non_official'	=> array(
-			'regexp'	=> '^events/non-official.ics(?=\?|$)',
+			'regexp'	=> '^events/calendar-students.ics(?=\?|$)',
 			'vars'		=> 'controller=Event&action=ical&mode=raw',
-			'url'		=> 'events/non-official.ics'
+			'url'		=> 'events/calendar-students.ics',
+			'extend'	=> array(
+				'association'	=> 'association_ical_non_official'
+			)
+		),
+		'association_ical_non_official'	=> array(
+			'regexp'	=> '^association/([a-z0-9-]+)/events/calendar-students.ics(?=\?|$)',
+			'vars'		=> 'controller=Event&action=ical&association=$1&mode=raw',
+			'url'		=> 'association/{association}/events/calendar-students.ics'
 		),
 		
 		// Vote for a survey
@@ -126,6 +161,35 @@ final class Routes extends RoutesAbstract {
 			'regexp'	=> '^student/([a-z0-9-]+)(?=\?|$)',
 			'vars'		=> 'controller=Student&action=view&username=$1',
 			'url'		=> 'student/{username}'
+		),
+		
+		// Association's page
+		'association'	=> array(
+			'regexp'	=> '^association/([a-z0-9-]+)(?=\?|$)',
+			'vars'		=> 'controller=Association&action=view&association=$1',
+			'url'		=> 'association/{association}'
+		),
+		'association_posts_ajax_page'	=> array(
+			'regexp'	=> '^ajax/association/([a-z0-9-]+)/posts/([1-9][0-9]*)(?=\?|$)',
+			'vars'		=> 'controller=Post&action=index_ajax&association=$1&page=$2&mode=raw',
+			'url'		=> 'ajax/association/{association}/posts/{page}'
+		),
+		'association_posts_category'	=> array(
+			'regexp'	=> '^association/([a-z0-9-]+)/category/([a-zA-Z0-9_-]+)(?=\?|$)',
+			'vars'		=> 'controller=Association&action=index&association=$1&category=$2',
+			'url'		=> 'association/{association}/category/{category}'
+		),
+		'association_posts_category_ajax_page'	=> array(
+			'regexp'	=> '^ajax/association/([a-z0-9-]+)/category/([a-zA-Z0-9_-]+)/([1-9][0-9]*)(?=\?|$)',
+			'vars'		=> 'controller=Post&action=index_ajax&association=$1&category=$2&page=$3&mode=raw',
+			'url'		=> 'ajax/association/{association}/category/{category}/{page}'
+		),
+		
+		// Associations' list
+		'associations'	=> array(
+			'regexp'	=> '^associations(?=\?|$)',
+			'vars'		=> 'controller=Association&action=index',
+			'url'		=> 'associations'
 		),
 		
 		// Sign-in

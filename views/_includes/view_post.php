@@ -3,7 +3,7 @@
 
 <?php
 if(isset($post['association_id']) && $post['official']=='1'){
-	$post_user_url = Config::URL_ROOT.Routes::getPage('association', array('name' => $post['association_url']));
+	$post_user_url = Config::URL_ROOT.Routes::getPage('association', array('association' => $post['association_url']));
 	$post_user_name = $post['association_name'];
 }else{
 	$post_user_url = Config::URL_ROOT.Routes::getPage('student', array('username' => $post['username']));
@@ -12,7 +12,7 @@ if(isset($post['association_id']) && $post['official']=='1'){
 
 if(isset($post['avatar_url'])){
 ?>
-	<a href="<?php echo $post_user_url; ?>"><img src="<?php echo $post['avatar_url']; ?>" alt="" class="avatar" /></a>
+	<a href="<?php echo $post_user_url; ?>" class="avatar"><img src="<?php echo $post['avatar_url']; ?>" alt="" /></a>
 <?php
 }
 
@@ -29,7 +29,7 @@ if(($is_logged && $username == $post['username'])
 ?>
 
 	<div class="post-message">
-		<a href="<?php echo $post_user_url; ?>" class="post-username"><?php echo $post_user_name; ?></a>
+		<a href="<?php echo $post_user_url; ?>" class="post-username"><?php echo htmlspecialchars($post_user_name); ?></a>
 		<?php echo Text::inHTML($post['message']); ?>
 
 <?php
@@ -272,7 +272,7 @@ foreach($post['comments'] as $comment){
 				<?php
 $comment_user_url = Config::URL_ROOT.Routes::getPage('student', array('username' => $comment['username']));
 ?>
-				<a href="<?php echo $comment_user_url; ?>"><img src="<?php echo $comment['avatar_url']; ?>" alt="" class="avatar" /></a>
+				<a href="<?php echo $comment_user_url; ?>" class="avatar"><img src="<?php echo $comment['avatar_url']; ?>" alt="" /></a>
 <?php
 // Post delete button
 if(($is_logged && $username == $comment['username'])
@@ -285,7 +285,7 @@ if(($is_logged && $username == $comment['username'])
 }
 ?>
 				<div class="post-comment-message">
-					<a href="<?php echo $comment_user_url; ?>" class="post-comment-username"><?php echo $comment['firstname'].' '.$comment['lastname']; ?></a>
+					<a href="<?php echo $comment_user_url; ?>" class="post-comment-username"><?php echo htmlspecialchars($comment['firstname'].' '.$comment['lastname']); ?></a>
 					<?php echo Text::inHTML($comment['message']); ?>
 					<div class="post-comment-info">
 						<?php echo Date::easy((int) $comment['time']); ?>
@@ -297,7 +297,7 @@ if(($is_logged && $username == $comment['username'])
 if($is_student){
 ?>
 			<form action="<?php echo Config::URL_ROOT.Routes::getPage('post_comment', array('id' => $post['id'])); ?>" method="post" class="post-comment-write">
-				<img src="<?php echo $avatar_url; ?>" alt="<?php echo $firstname.' '.$lastname; ?>" class="avatar hidden" />
+				<span class="avatar hidden"><img src="<?php echo $avatar_url; ?>" alt="<?php echo $firstname.' '.$lastname; ?>" /></span>
 				<div class="post-comment-write-message hidden">
 					<textarea name="comment" rows="1" cols="50"></textarea>
 					<input type="submit" value="<?php echo __('POST_COMMENT_SUBMIT'); ?>" />

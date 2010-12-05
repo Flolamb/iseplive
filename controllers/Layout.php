@@ -2,7 +2,7 @@
 
 class Layout_Controller extends Controller {
 	
-	public function __construct(){
+	public function __beforeAction(){
 		
 		// User authentication
 		$user_model = new User_Model();
@@ -70,7 +70,6 @@ class Layout_Controller extends Controller {
 			
 		}
 		
-		parent::__construct();
 	}
 	
 	
