@@ -481,13 +481,14 @@ class Post_Controller extends Controller {
 					throw new Exception(__('POST_ADD_ERROR_EVENT_NO_TITLE'));
 				
 				// Dates
-				if(!ctype_digit($_POST['event_start']) || !ctype_digit($_POST['event_start']))
+				if(!($event_start = strptime($_POST['event_start'], __('PUBLISH_EVENT_DATE_FORMAT'))))
+					throw new Exception(__('POST_ADD_ERROR_EVENT_DATE'));
+				if(!($event_end = strptime($_POST['event_end'], __('PUBLISH_EVENT_DATE_FORMAT'))))
 					throw new Exception(__('POST_ADD_ERROR_EVENT_DATE'));
 				
-				$event_start = (int) $_POST['event_start'];
-				$event_start -= (int) date('s', $event_start);
-				$event_end = (int) $_POST['event_end'];
-				$event_end -= (int) date('s', $event_end);
+				$event_start = mktime($event_start['tm_hour'], $event_start['tm_min'], 0, $event_start['tm_mon']+1, $event_start['tm_mday'], $event_start['tm_year']+1900);
+				$event_end = mktime($event_end['tm_hour'], $event_end['tm_min'], 0, $event_end['tm_mon']+1, $event_end['tm_mday'], $event_end['tm_year']+1900);
+				
 				if($event_start > $event_end)
 					throw new Exception(__('POST_ADD_ERROR_EVENT_DATE_ORDER'));
 				
@@ -505,10 +506,10 @@ class Post_Controller extends Controller {
 					throw new Exception(__('POST_ADD_ERROR_SURVEY_NO_QUESTION'));
 				
 				// Date
-				if(!ctype_digit($_POST['survey_end']))
+				if(!($survey_end = strptime($_POST['survey_end'], __('PUBLISH_EVENT_DATE_FORMAT'))))
 					throw new Exception(__('POST_ADD_ERROR_SURVEY_DATE'));
-				$survey_end = (int) $_POST['survey_end'];
-				$survey_end -= (int) date('s', $survey_end);
+				
+				$survey_end = mktime($survey_end['tm_hour'], $survey_end['tm_min'], 0, $survey_end['tm_mon']+1, $survey_end['tm_mday'], $survey_end['tm_year']+1900);
 				
 				// Multiple answers
 				$survey_multiple = isset($_POST['survey_multiple']);

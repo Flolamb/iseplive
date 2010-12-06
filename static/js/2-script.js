@@ -21,6 +21,8 @@ function __(name, params){
 	}
 }
 
+Locale.use('fr-FR');
+
 
 Element.implement({
 	// Textarea auto-resizing
@@ -194,9 +196,9 @@ var Post = {
 	},
 	
 	initDelete : function(el){
-		if(!$defined(el))
+		if(el == null)
 			el = $$(".post");
-		if($type(el) == "array"){
+		if(typeOf(el) == "elements"){
 			el.each(function(e){
 				Post.initDelete(e);
 			});
@@ -216,12 +218,13 @@ var Post = {
 				url: this.retrieve("ajax_url"),
 				onSuccess: function(data){
 					if(data.success && el){
-						el.get('tween', {
+						el.set('tween', {
 							property : "opacity",
 							onComplete : function(){
 								el.destroy();
 							}
 						})
+						.get('tween')
 						.start(0);
 					}
 				}
@@ -269,19 +272,21 @@ var Post = {
 			.clone()
 			.setStyle("opacity", 0)
 			.inject("publish-attachments");
-		e	.get('tween', {
+			e.set('tween', {
 				duration: 300,
 				property : "opacity"
 			})
+			.get('tween')
 			.start(1);
 		e.getElements(".publish-attachment-delete")[0].addEvent("click", function(){
-			e.get('tween', {
+			e.set('tween', {
 				duration: 300,
 				property : "opacity",
 				onComplete : function(){
 					e.destroy();
 				}
 			})
+			.get('tween')
 			.start(0);
 		});
 		return e;
@@ -292,7 +297,7 @@ var Post = {
 		if($$("#publish-form input[name=event_title]").length != 0)
 			return;
 		this.attach("event");
-		new DatePicker(["#publish-form input[name=event_start]", "#publish-form input[name=event_end]"], {
+		new Picker.Date($$("#publish-form input[name=event_start], #publish-form input[name=event_end]"), {
 			pickerClass: "datepicker_jqui",
 			format: __("PUBLISH_EVENT_DATE_FORMAT"),
 			timePicker : true
@@ -304,7 +309,7 @@ var Post = {
 		if($$("#publish-form input[name=survey_question]").length != 0)
 			return;
 		this.attach("survey");
-		new DatePicker("#publish-form input[name=survey_end]", {
+		new Picker.Date($$("#publish-form input[name=survey_end]"), {
 			pickerClass: "datepicker_jqui",
 			format: __("PUBLISH_SURVEY_DATE_FORMAT"),
 			timePicker : true
@@ -351,12 +356,14 @@ var Post = {
 		$$("#publish-form input, #publish-form textarea, #publish-form select").set("disabled", true);
 		new Element("div", {
 			id : "publish-disabled",
-			styles : $merge({
+			styles : {
 				"position" : "absolute",
 				"background-color" : "black",
 				"opacity" : 0.2
-			}, $("publish-form").getCoordinates())
-		}).inject($("publish-form"), "after");
+			}
+		})
+		.setStyles($("publish-form").getCoordinates())
+		.inject($("publish-form"), "after");
 	},
 	
 	enableForm : function(){
@@ -376,10 +383,10 @@ var Post = {
 
 var Comment = {
 	init : function(e){
-		if(!$defined(e))
+		if(e == null)
 			e = $$(".post-comments");
 		this.initDelete(e);
-		if($type(e) == "array"){
+		if(typeOf(e) == "elements"){
 			e.each(function(e){
 				Comment.init(e);
 			});
@@ -419,9 +426,9 @@ var Comment = {
 	},
 	
 	initDelete : function(el){
-		if(!$defined(el))
+		if(el == null)
 			el = $$(".post-comment");
-		if($type(el) == "array"){
+		if(typeOf(el) == "elements"){
 			el.each(function(e){
 				Comment.initDelete(e);
 			});
@@ -442,12 +449,13 @@ var Comment = {
 					url: this.retrieve("ajax_url"),
 					onSuccess: function(data){
 						if(data.success && el){
-							el.get('tween', {
+							el.set('tween', {
 								property : "opacity",
 								onComplete : function(){
 									el.destroy();
 								}
 							})
+							.get('tween')
 							.start(0);
 						}
 					}
@@ -489,9 +497,9 @@ var Comment = {
 
 var Survey = {
 	init : function(e){
-		if(!$defined(e))
+		if(e == null)
 			e = $$(".survey");
-		if($type(e) == "array"){
+		if(typeOf(e) == "elements"){
 			e.each(function(e){
 				Survey.init(e);
 			});
