@@ -411,7 +411,7 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 .post-comment-write-message {
 	margin: 0 8px 0 55px;
 }
-.post-comment-write-message textarea {
+.post-comment-write-message textarea, .post-comment-write-message textarea:focus {
 	padding: 3px;
 	background-color: white;
 	border: 1px solid #ccc;
@@ -512,6 +512,63 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 }
 #posts-official.association {
 	margin-left: 7%;
+}
+
+#association-profile label {
+	display: block;
+	float: left;
+	width: 120px;
+	font-weight: bold;
+}
+#association-profile input[type=text] {
+	width: 180px;
+}
+#association-profile textarea {
+	width: 300px;
+	height: 100px;
+}
+#association-edit-members label {
+	display: inline;
+	float: none;
+	width: auto;
+	font-weight: normal;
+}
+#association-edit-members ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 5px 0;
+}
+#association-edit-members li {
+	padding: 3px;
+	margin: 0;
+	border: 1px solid #E9E9E9;
+	background: white;
+	overflow: hidden;
+}
+
+.association-member-delete  {
+	width: 12px;
+	height: 12px;
+	overflow: hidden;
+	text-indent: -100px;
+	background: no-repeat url("../images/icons/close2.png");
+	display: none;
+	float: right;
+}
+#association-edit-members li:hover .association-member-delete {
+	display: block;
+}
+.association-member-delete:hover {
+	background-position: 0 -12px;
+	text-decoration: none;
+}
+.association-member-handle {
+	float: left;
+	margin-right: 3px;
+	width: 12px;
+	height: 60px;
+	background: #E9E9E9;
+	cursor: move;
 }
 
 
@@ -643,10 +700,17 @@ a:hover {
 	display: none;
 }
 
-input[type=text] {
-	border: 1px solid #ccc;
+input[type=text], textarea {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #ddd #bbb #bbb #ddd;
 	background-color: white;
 }
+input[type=text]:focus, textarea:focus {
+	border-color: #9CB9C7 #166a95 #166a95 #9CB9C7;
+	outline: none;
+}
+
 
 .form-error {
 	margin: 10px 0;

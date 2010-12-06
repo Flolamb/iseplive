@@ -31,6 +31,7 @@ class Association_Model extends Model {
 		// Members
 		$association['members'] = DB::select('
 			SELECT
+				u.id AS user_id,
 				s.username, s.firstname, s.lastname,
 				a_s.title, a_s.admin
 			FROM associations_users a_s
@@ -69,6 +70,166 @@ class Association_Model extends Model {
 		Cache::write('associations', $associations, 12*3600);
 		
 		return $associations;
+	}
+	
+	
+	/**
+	 * Save the data of an association
+	 *
+	 * @param int $id		Association's id
+	 * @param array $data	Association's data
+	 * @return string	URL name
+	 */
+	public function save($id, $data){
+		$association_data = array();
+		
+		$old_data = DB::createQuery('associations')
+			->fields('name', 'url_name')
+			->select($id);
+		if(!$old_data[0])
+			throw new Exception('Association not found');
+		$old_data = $old_data[0];
+		
+		// Name
+		$change_name = false;
+		if(isset($data['name']) && trim($data['name']) != $old_data['name']){
+			$name = trim($data['name']);
+			$change_name = true;
+			if($name == '')
+				throw new FormException('invalid_name');
+			$association_data['name'] = $name;
+			
+			// URL name
+			$url_name = Text::forURL($name);
+			$i = '';
+			while($url_name != $old_data['url_name'] && self::urlExists($url_name.$i))
+				$i = $i=='' ? 1 : $i+1;
+			$association_data['url_name'] = $url_name.$i;
+		}else{
+			$url_name = $old_data['url_name'];
+		}
+		
+		// Creation date
+		if(isset($data['creation_date'])){
+			if(!($creation_date = strptime($data['creation_date'], __('ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE'))))
+					throw new FormException('invalid_creation_date');
+				
+			$association_data['creation_date'] = ($creation_date['tm_year']+1900).'-'.($creation_date['tm_mon']+1).'-'.$creation_date['tm_mday'];
+		}
+		
+		// Email
+		if(isset($data['mail'])){
+			if($data['mail'] != '' && !Validation::isEmail($data['mail']))
+					throw new FormException('invalid_mail');
+				
+			$association_data['mail'] = $data['mail'];
+		}
+		
+		// Description
+		if(isset($data['description']))
+			$association_data['description'] = $data['description'];
+		
+		
+		// Avatar
+		if(isset($data['avatar_path']) && File::exists($data['avatar_path'])){
+			$avatar_path = self::getAvatarPath($id, true);
+			$avatar_dir = File::getPath($avatar_path);
+			if(!is_dir($avatar_dir))
+				File::makeDir($avatar_dir, 0777, true);
+			File::rename($data['avatar_path'], $avatar_path);
+		}
+		if(isset($data['avatar_big_path']) && File::exists($data['avatar_big_path'])){
+			$avatar_path = self::getAvatarPath($id, false);
+			$avatar_dir = File::getPath($avatar_path);
+			if(!is_dir($avatar_dir))
+				File::makeDir($avatar_dir, 0777, true);
+			File::rename($data['avatar_big_path'], $avatar_path);
+		}
+		
+		
+		// Members
+		if(isset($data['members']) && is_array($data['members'])){
+			$associations_users = DB::createQuery('associations_users')
+				->fields('user_id')
+				->where(array('association_id' => $id))
+				->select();
+			$associations_users_ids = array();
+			foreach($associations_users as $associations_user)
+				$associations_users_ids[] = (int) $associations_user['user_id'];
+			unset($associations_users);
+			
+			$i = 0;
+			foreach($data['members'] as &$member)
+				$member['order'] = $i++;
+			
+			if(count($data['members']) != 0){
+				$users = DB::createQuery('users')
+					->fields('id')
+					->where('id IN ('.implode(',', array_keys($data['members'])).')')
+					->select();
+				foreach($users as $user){
+					if(($pos = array_search((int) $user['id'], $associations_users_ids)) !== false){
+						array_splice($associations_users_ids, $pos, 1);
+						DB::createQuery('associations_users')
+							->set(array(
+								'title'				=> $data['members'][(int) $user['id']]['title'],
+								'admin'				=> $data['members'][(int) $user['id']]['admin'] ? '1' : '0',
+								'order'				=> $data['members'][(int) $user['id']]['order']
+							))
+							->where(array(
+								'association_id' => $id,
+								'user_id' => (int) $user['id']
+							))
+							->update();
+					}else{
+						DB::createQuery('associations_users')
+							->set(array(
+								'association_id'	=> $id,
+								'user_id'			=> $user['id'],
+								'title'				=> $data['members'][(int) $user['id']]['title'],
+								'admin'				=> $data['members'][(int) $user['id']]['admin'] ? '1' : '0',
+								'order'				=> $data['members'][(int) $user['id']]['order']
+							))
+							->insert();
+					}
+				}
+			}
+			
+			if(count($associations_users_ids) != 0){
+				$users = DB::createQuery('associations_users')
+					->where(array(
+						'association_id' => $id,
+						'user_id IN ('.implode(',', $associations_users_ids).')'
+					))
+					->delete();
+			}
+		}
+		
+		
+		$this->createQuery()
+			->set($association_data)
+			->update($id);
+		
+		Cache::delete('associations');
+		Cache::delete('association-'.$old_data['url_name']);
+		if($change_name)
+			Post_Model::clearCache();
+		
+		return $url_name;
+	}
+	
+	
+	/**
+	 * Returns true if an association already exists with this url_name, false otherwise
+	 *
+	 * @return boolean
+	 */
+	public static function urlExists($url_name){
+		$result = DB::createQuery('associations')
+			->fields('1')
+			->where(array('url_name' => $url_name))
+			->select();
+		return isset($result[0]);
 	}
 	
 	

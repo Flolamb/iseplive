@@ -176,7 +176,7 @@ final class Routes extends RoutesAbstract {
 		),
 		'association_posts_category'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)/category/([a-zA-Z0-9_-]+)(?=\?|$)',
-			'vars'		=> 'controller=Association&action=index&association=$1&category=$2',
+			'vars'		=> 'controller=Association&action=view&association=$1&category=$2',
 			'url'		=> 'association/{association}/category/{category}'
 		),
 		'association_posts_category_ajax_page'	=> array(
@@ -184,6 +184,22 @@ final class Routes extends RoutesAbstract {
 			'vars'		=> 'controller=Post&action=index_ajax&association=$1&category=$2&page=$3&mode=raw',
 			'url'		=> 'ajax/association/{association}/category/{category}/{page}'
 		),
+		'association_edit'	=> array(
+			'regexp'	=> '^association/([a-z0-9-]+)/edit(?=\?|$)',
+			'vars'		=> 'controller=Association&action=edit&association=$1',
+			'url'		=> 'association/{association}/edit'
+		),
+		'association_delete'	=> array(
+			'regexp'	=> '^association/([a-z0-9-]+)/delete(?=\?|$)',
+			'vars'		=> 'controller=Association&action=delete&association=$1',
+			'url'		=> 'association/{association}/delete'
+		),
+		'association_add'	=> array(
+			'regexp'	=> '^association/add(?=\?|$)',
+			'vars'		=> 'controller=Association&action=add',
+			'url'		=> 'association/add'
+		),
+		
 		
 		// Associations' list
 		'associations'	=> array(
@@ -221,6 +237,13 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'logout{redirect}'
 		),
 		
+		
+		// Auto completion
+		'autocompletion_student_name'	=> array(
+			'regexp'	=> '^ajax/autocomplete/student/name(?=\?|$)',
+			'vars'		=> 'controller=Student&action=autocomplete&mode=json',
+			'url'		=> 'ajax/autocomplete/student/name'
+		),
 		
 	);
 

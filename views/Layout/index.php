@@ -113,7 +113,8 @@ foreach($cssFiles as $cssFile){
 					'PUBLISH_EVENT_DATE_FORMAT',
 					'PUBLISH_SURVEY_DATE_FORMAT',
 					'POST_DELETE_CONFIRM',
-					'POST_COMMENT_DELETE_CONFIRM'
+					'POST_COMMENT_DELETE_CONFIRM',
+					'ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE'
 				);
 				foreach($js_translations as $i => $js_translation){
 					if($i != 0)

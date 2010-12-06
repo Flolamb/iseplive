@@ -28,4 +28,24 @@ class Student_Controller extends Controller {
 		}
 	}
 	
+	
+	/**
+	 * Autocomplete the firstname / lastname of a student
+	 */
+	public function autocomplete($params){
+		$this->setView('autocomplete.php');
+		
+		// If the user isn't logged in
+		if(!isset(User_Model::$auth_data))
+			throw new Exception('You must be a student');
+		
+		if(!isset($_GET['q']))
+			throw new Exception('Query parameter "q" not set');
+		
+		$limit = isset($_GET['limit']) && ctype_digit($_GET['limit']) ? (int) $_GET['limit'] : 10;
+		
+		$this->set('students', $this->model->autocomplete($_GET['q'], $limit));
+		
+	}
+	
 }

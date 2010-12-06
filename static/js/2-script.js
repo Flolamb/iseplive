@@ -60,6 +60,15 @@ String.implement({
 	// Deletes spaces before and after the string
 	trim : function() {
 		return this.replace(/(^\s+|\s+$)/g, "");
+	},
+	
+	// Convert special characters to HTML entities
+	htmlspecialchars : function(){
+		return this
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
 	}
 });
 
@@ -571,6 +580,96 @@ var Calendar = {
 		new Tips(e);
 	}
 };
+
+
+
+var Association = {
+	initEdit : function(){
+		if(!$("association_edit_name"))
+			return;
+		
+		$("association_edit_description").resizable();
+		this.initDeleteMember();
+		
+		// Creation date
+		new Picker.Date($("association_edit_creation_date"), {
+			pickerClass: "datepicker_jqui",
+			format: __("ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE")
+		});
+		
+		// Sortable list of members
+		this.sortableMembers = new Sortables('#association-edit-members ul', {
+			constrain: true,
+			clone: true,
+			revert: true,
+			handle: '.association-member-handle'
+		});
+		
+		// User name auto-completion
+		new Meio.Autocomplete('association_edit_add_member', $('association_edit_add_member_url').value, {
+			delay: 200,
+			minChars: 1,
+			cacheLength: 100,
+			maxVisibleItems: 10,
+			valueField: $('value-field'),
+			
+			onSelect: function(elements, data){
+				$('association_edit_add_member').set('value', '');
+				
+				var e = new Element('li', {
+					html: $("association-edit-member-stock").innerHTML
+				});
+				e.getElements('.association-member-name')[0]
+					.set('html', data.value.htmlspecialchars())
+					.set('href', data.url)
+					.removeClass('association-member-name');
+				e.getElements('input[name=members_ids[]]')[0]
+					.set('value', data.user_id);
+				e.getElements('input[name=member_title]')[0]
+					.set('name', 'member_title_'+data.user_id);
+				e.getElements('input[name=member_admin]')[0]
+					.set('name', 'member_admin_'+data.user_id);
+				Association.initDeleteMember(e);
+				e.inject($$('#association-edit-members ul')[0]);
+				
+				Association.sortableMembers.addItems(e);
+			},
+			
+			urlOptions: { 
+				queryVarName: 'q',
+				max: 10
+			},
+			filter: {
+				filter: function(text, data){
+					return true;
+				},
+				formatMatch: function(text, data, i){
+					return data.value;
+				},
+				formatItem: function(text, data){
+					return data.value;
+				}
+			}
+		});
+
+	},
+	
+	initDeleteMember : function(el){
+		if(el == null)
+			el = $$("#association-edit-members li");
+		if(typeOf(el) == "elements"){
+			el.each(function(e){
+				Association.initDeleteMember(e);
+			});
+			return;
+		}
+		el.getElements(".association-member-delete")[0].addEvent("click", function(){
+			Association.sortableMembers.removeItems(el);
+			el.destroy();
+		});
+	},
+};
+
 
 
 // Set the width of videos in the timelines to 100%

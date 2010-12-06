@@ -6,11 +6,21 @@
 		<div class="profile-info">
 			<h1><?php echo htmlspecialchars($association['name']); ?></h1>
 			
-			<?php echo nl2br(htmlspecialchars($association['description'])); ?><br />
-			<br />
-			<strong><?php echo __('ASSOCIATION_CREATION'); ?></strong> <?php echo Date::dateHour(strtotime($association['creation_date'])); ?><br />
+			<?php
+			if($is_admin || (isset($associations_auth[(int) $association['id']]) && $associations_auth[(int) $association['id']]['admin'])){
+			?>
+			<a href="<?php echo Config::URL_ROOT.Routes::getPage('association_edit', array('association' => $association['url_name'])); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/edit.png" alt="" class="icon" /> <?php echo __('ASSOCIATION_EDIT'); ?></a>
+			<a href="<?php echo Config::URL_ROOT.Routes::getPage('association_delete', array('association' => $association['url_name'])); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/delete.png" alt="" class="icon" /> <?php echo __('ASSOCIATION_DELETE'); ?></a>
+			<br /><br />
+			<?php
+			}
+			?>
 			
-			<?php if($association['mail'] != ''){ ?>
+			<?php echo Text::inHTML($association['description']); ?><br />
+			<br />
+			<strong><?php echo __('ASSOCIATION_CREATION'); ?></strong> <?php echo Date::dateMonth(strtotime($association['creation_date'])); ?><br />
+			
+			<?php if($association['mail'] != '' && $is_logged){ ?>
 			<strong><?php echo __('ASSOCIATION_CONTACT'); ?></strong> <?php echo htmlspecialchars($association['mail']); ?><br />
 			<?php } ?>
 			
@@ -21,8 +31,8 @@
 foreach($association['members'] as $member){
 ?>
 				<li>
-					<a href="<?php echo Config::URL_ROOT.Routes::getPage('student', array('username' => $member['username'])); ?>"><?php echo $member['firstname'].' '.$member['lastname']; ?></a>
-					(<?php echo $member['title']; ?>)
+					<a href="<?php echo Config::URL_ROOT.Routes::getPage('student', array('username' => $member['username'])); ?>"><?php echo htmlspecialchars($member['firstname'].' '.$member['lastname']); ?></a>
+					<?php if($member['title'] !='') echo '('.htmlspecialchars($member['title']).')'; ?>
 				</li>
 <?php
 }

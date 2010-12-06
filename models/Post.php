@@ -20,7 +20,7 @@ class Post_Model extends Model {
 	 * @return array
 	 */
 	public function getPosts($params, $limit, $offset=0){
-		$cache_entry = 'posts';
+		$cache_entry = 'posts-'.$limit.'-'.$offset;
 		foreach($params as $key => $value){
 			if(isset($value))
 				$cache_entry .= '-'.$key.':'.(is_array($value) ? implode(',', $value) : $value);

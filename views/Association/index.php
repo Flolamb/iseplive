@@ -11,11 +11,11 @@ foreach($associations as $association){
 		<div class="profile-info">
 			<h1><a href="<?php echo $url; ?>"><?php echo htmlspecialchars($association['name']); ?></a></h1>
 			
-			<?php echo nl2br(htmlspecialchars($association['description'])); ?><br />
+			<?php echo Text::inHTML($association['description']); ?><br />
 			<br />
-			<strong><?php echo __('ASSOCIATION_CREATION'); ?></strong> <?php echo Date::dateHour(strtotime($association['creation_date'])); ?><br />
+			<strong><?php echo __('ASSOCIATION_CREATION'); ?></strong> <?php echo Date::dateMonth(strtotime($association['creation_date'])); ?><br />
 			
-			<?php if($association['mail'] != ''){ ?>
+			<?php if($association['mail'] != '' && $is_logged){ ?>
 			<strong><?php echo __('ASSOCIATION_CONTACT'); ?></strong> <?php echo htmlspecialchars($association['mail']); ?><br />
 			<?php } ?>
 		</div>
