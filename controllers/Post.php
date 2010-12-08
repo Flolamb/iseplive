@@ -255,9 +255,11 @@ class Post_Controller extends Controller {
 			$this->set(array(
 				'username'		=> User_Model::$auth_data['username'],
 				'firstname'		=> User_Model::$auth_data['firstname'],
-				'lastname'		=> User_Model::$auth_data['lastname'],
-				'avatar_url'	=> User_Model::$auth_data['avatar_url']
+				'lastname'		=> User_Model::$auth_data['lastname']
 			));
+			
+			if($is_student)
+			$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
 		}
 		
 	}

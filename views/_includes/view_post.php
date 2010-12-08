@@ -224,10 +224,14 @@ if(isset($one_post) && $post['attachments_nb_photos'] != 0){
 		<div class="post-info">
 			<?php echo Date::easy((int) $post['time']); ?>
 <?php
+if(isset($post['association_id']) && $post['official']!='1'){
+?>
+			&#183; <a href="<?php echo Config::URL_ROOT.Routes::getPage('association', array('association' => $post['association_url'])); ?>"><?php echo htmlspecialchars($post['association_name']); ?></a>
+<?php
+}
 if($is_student){
 ?>
-			&#183;
-			<a href="javascript:;" onclick="Comment.write(<?php echo $post['id']; ?>);"><?php echo __('POST_COMMENT_LINK'); ?></a>
+			&#183; <a href="javascript:;" onclick="Comment.write(<?php echo $post['id']; ?>);"><?php echo __('POST_COMMENT_LINK'); ?></a>
 <?php
 }
 if($post['private'] == '1'){
