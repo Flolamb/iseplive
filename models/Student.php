@@ -17,9 +17,16 @@ class Student_Model extends Model {
 			WHERE s.username = ?
 		', array($username));
 		
-		if(isset($students[0]))
-			return $students[0];
-		throw new Exception('Student not found');
+		if(!isset($students[0]))
+			throw new Exception('Student not found');
+		
+		$student = $students[0];
+		
+		// Avatar
+		$student['avatar_url'] = User_Model::getAvatarURL($student['student_number'], true);
+		$student['avatar_big_url'] = User_Model::getAvatarURL($student['student_number'], false);
+		
+		return $student;
 	}
 	
 	

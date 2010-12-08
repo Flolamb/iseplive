@@ -149,6 +149,8 @@ PROFILE_PROMO
 	Promo :
 PROFILE_STUDENT_NUMBER
 	Numéro :
+PROFILE_MAIL_ISEP
+	Adresse ISEP :
 PROFILE_MAIL
 	Adresse email :
 PROFILE_MSN
@@ -163,6 +165,8 @@ PROFILE_BIRTHDAY
 	Date de naissance :
 PROFILE_BIRTHDAY_FORMAT
 	d/m/Y
+PROFILE_EDIT_PROFILE
+	Modifier mes informations personnelles
 
 
 ### Controller: User
@@ -178,6 +182,48 @@ SIGNIN_SUBMIT
 	Connexion
 SIGNIN_BAD_USERNAME_OR_PASSWORD
 	Nom d'utilisateur ou mot de passe incorrect
+
+# View: profile_edit
+USER_PROFILE_EDIT_TITLE
+	Modification des informations personnelles
+USER_PROFILE_EDIT_FORM_MAIL
+	Adresse email :
+USER_PROFILE_EDIT_ERROR_MAIL
+	Adresse email invalide
+USER_PROFILE_EDIT_FORM_MSN
+	Adresse MSN :
+USER_PROFILE_EDIT_ERROR_MSN
+	Adresse MSN invalide
+USER_PROFILE_EDIT_FORM_JABBER
+	Adresse Jabber :
+USER_PROFILE_EDIT_ERROR_JABBER
+	Adresse Jabber invalide
+USER_PROFILE_EDIT_FORM_ADDRESS
+	Adresse postale
+USER_PROFILE_EDIT_FORM_ZIPCODE
+	Code postal
+USER_PROFILE_EDIT_ERROR_ZIPCODE
+	Code postal invalide
+USER_PROFILE_EDIT_FORM_CITY
+	Ville
+USER_PROFILE_EDIT_FORM_CELLPHONE
+	Tél portable :
+USER_PROFILE_EDIT_ERROR_CELLPHONE
+	Numéro invalide. Veuillez entrez un numéro de la forme 06 01 23 45 67
+USER_PROFILE_EDIT_FORM_PHONE
+	Tél fixe :
+USER_PROFILE_EDIT_ERROR_PHONE
+	Numéro invalide. Veuillez entrez un numéro de la forme 01 23 45 67 89
+USER_PROFILE_EDIT_FORM_BIRTHDAY
+	Date de naissance :
+USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT
+	d/m/Y
+USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT_PARSE
+	%d/%m/%Y
+USER_PROFILE_EDIT_ERROR_BIRTHDAY
+	Date de naissance invalide
+USER_PROFILE_EDIT_FORM_SUBMIT
+	Enregistrer
 
 
 ### Controller: Student

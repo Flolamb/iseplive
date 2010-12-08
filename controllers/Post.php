@@ -41,7 +41,7 @@ class Post_Controller extends Controller {
 			));
 			
 			if($is_student){
-				$this->set('avatar_url', User_Model::getAvatarURL(User_Model::$auth_data['student_number'], true));
+				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
 			}
 		
 		}
@@ -106,9 +106,8 @@ class Post_Controller extends Controller {
 				), Config::POST_DISPLAYED, $offset));
 			
 			
-			if($is_student){
-				$this->set('avatar_url', User_Model::getAvatarURL(User_Model::$auth_data['student_number'], true));
-			}
+			if($is_student)
+				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
 		
 		}
 		
@@ -169,7 +168,7 @@ class Post_Controller extends Controller {
 				'username'		=> User_Model::$auth_data['username'],
 				'firstname'		=> User_Model::$auth_data['firstname'],
 				'lastname'		=> User_Model::$auth_data['lastname'],
-				'avatar_url'	=> User_Model::getAvatarURL(User_Model::$auth_data['student_number'], true)
+				'avatar_url'	=> User_Model::$auth_data['avatar_url']
 			));
 		}
 		
@@ -257,7 +256,7 @@ class Post_Controller extends Controller {
 				'username'		=> User_Model::$auth_data['username'],
 				'firstname'		=> User_Model::$auth_data['firstname'],
 				'lastname'		=> User_Model::$auth_data['lastname'],
-				'avatar_url'	=> User_Model::getAvatarURL(User_Model::$auth_data['student_number'], true)
+				'avatar_url'	=> User_Model::$auth_data['avatar_url']
 			));
 		}
 		

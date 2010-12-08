@@ -79,9 +79,8 @@ class Association_Controller extends Controller {
 				'associations_auth'	=> Association_Model::getAuth()
 			));
 			
-			if($is_student){
-				$this->set('avatar_url', User_Model::getAvatarURL(User_Model::$auth_data['student_number'], true));
-			}
+			if($is_student)
+				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
 		
 		}
 		

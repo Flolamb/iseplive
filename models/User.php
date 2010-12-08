@@ -75,6 +75,89 @@ class User_Model extends Model {
 			User_Model::$auth_data = $users[0];
 		else
 			throw new Exception('User not found');
+		
+		// If the user is a student
+		if(isset(User_Model::$auth_data['student_number'])){
+			// Avatar
+			User_Model::$auth_data['avatar_url'] = User_Model::getAvatarURL(User_Model::$auth_data['student_number'], true);
+			User_Model::$auth_data['avatar_big_url'] = User_Model::getAvatarURL(User_Model::$auth_data['student_number'], false);
+		}
+	}
+	
+	
+	/**
+	 * Save the data of the authenticated user
+	 *
+	 * @param array $data	user's data
+	 */
+	public function saveProfile($data){
+		if(!isset(self::$auth_data))
+			throw new Exception('User not logged');
+		
+		$user_data = array();
+		
+		// Email
+		if(isset($data['mail'])){
+			if($data['mail'] != '' && !Validation::isEmail($data['mail']))
+					throw new FormException('mail');
+			$user_data['mail'] = $data['mail'];
+		}
+		
+		// MSN
+		if(isset($data['msn'])){
+			if($data['msn'] != '' && !Validation::isEmail($data['msn']))
+					throw new FormException('msn');
+			$user_data['msn'] = $data['msn'];
+		}
+		
+		// Jabber
+		if(isset($data['jabber'])){
+			if($data['jabber'] != '' && !Validation::isEmail($data['jabber']))
+					throw new FormException('jabber');
+			$user_data['jabber'] = $data['jabber'];
+		}
+		
+		// Address
+		if(isset($data['address']))
+			$user_data['address'] = $data['address'];
+		
+		// Zipcode
+		if(isset($data['zipcode'])){
+			if($data['zipcode'] != '' && !ctype_digit(trim($data['zipcode'])))
+				throw new FormException('zipcode');
+			$user_data['zipcode'] = $data['zipcode'] == '' ? null : (int) trim($data['zipcode']);
+		}
+		
+		// City
+		if(isset($data['city']))
+			$user_data['city'] = $data['city'];
+		
+		// Cellphone
+		if(isset($data['cellphone'])){
+			if($data['cellphone'] != '' && !preg_match('#^0[67]([ \.-]?)[0-9]{2}(?:\1[0-9]{2}){3}$#', $data['cellphone']))
+				throw new FormException('cellphone');
+			$user_data['cellphone'] = $data['cellphone'];
+		}
+		
+		// Phone
+		if(isset($data['phone'])){
+			if($data['phone'] != '' && !preg_match('#^0[1-59]([ \.-]?)[0-9]{2}(?:\1[0-9]{2}){3}$#', $data['phone']))
+				throw new FormException('phone');
+			$user_data['phone'] = $data['phone'];
+		}
+		
+		// Birthday
+		if(isset($data['birthday'])){
+			if(!($birthday = strptime($data['birthday'], __('USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT_PARSE'))))
+					throw new FormException('birthday');
+			$user_data['birthday'] = ($birthday['tm_year']+1900).'-'.($birthday['tm_mon']+1).'-'.$birthday['tm_mday'];
+		}
+		
+		// Update the DB
+		$this->createQuery()
+			->set($user_data)
+			->update((int) User_Model::$auth_data['id']);
+		
 	}
 	
 	

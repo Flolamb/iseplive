@@ -19,8 +19,9 @@ class Student_Controller extends Controller {
 			
 			// Avatar
 			$this->set(array(
-				'avatar_url'		=> User_Model::getAvatarURL($student['student_number'], true),
-				'avatar_big_url'	=> User_Model::getAvatarURL($student['student_number'])
+				'avatar_url'		=> $student['avatar_url'],
+				'avatar_big_url'	=> $student['avatar_big_url'],
+				'is_owner'			=> User_Model::$auth_data['username'] == $student['username']
 			));
 			
 		}catch(Exception $e){

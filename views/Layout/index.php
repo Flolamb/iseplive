@@ -58,7 +58,7 @@ foreach($cssFiles as $cssFile){
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('links'); ?>"><?php echo __('NAV_LINKS'); ?></a>
 					<?php if($is_logged){ ?>
 						<?php if($is_student){ ?>
-					<a href="<?php echo Config::URL_ROOT.Routes::getPage('profile'); ?>"><?php echo __('NAV_PROFILE'); ?></a>
+					<a href="<?php echo Config::URL_ROOT.Routes::getPage('student', array('username' => $username)); ?>"><?php echo __('NAV_PROFILE'); ?></a>
 						<?php } ?>
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('logout', array('redirect', '/')); ?>"><?php echo __('NAV_LOGOUT'); ?></a>
 					<?php }else{ ?>
@@ -114,7 +114,8 @@ foreach($cssFiles as $cssFile){
 					'PUBLISH_SURVEY_DATE_FORMAT',
 					'POST_DELETE_CONFIRM',
 					'POST_COMMENT_DELETE_CONFIRM',
-					'ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE'
+					'ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE',
+					'USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT_PARSE'
 				);
 				foreach($js_translations as $i => $js_translation){
 					if($i != 0)

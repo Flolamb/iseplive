@@ -163,6 +163,13 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'student/{username}'
 		),
 		
+		// Edit personnal information
+		'profile_edit'	=> array(
+			'regexp'	=> '^profile/edit(?=\?|$)',
+			'vars'		=> 'controller=User&action=profile_edit',
+			'url'		=> 'profile/edit'
+		),
+		
 		// Association's page
 		'association'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)(?=\?|$)',

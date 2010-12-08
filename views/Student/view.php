@@ -9,6 +9,8 @@
 		<strong><?php echo __('PROFILE_STUDENT_NUMBER'); ?></strong> <?php echo $student_number; ?><br />
 		<br />
 		
+		<strong><?php echo __('PROFILE_MAIL_ISEP'); ?></strong> <?php echo htmlspecialchars($username.'@isep.fr'); ?><br />
+		
 		<?php if(isset($mail) && $mail != ''){ ?>
 		<strong><?php echo __('PROFILE_MAIL'); ?></strong> <?php echo htmlspecialchars($mail); ?><br />
 		<?php } ?>
@@ -42,6 +44,11 @@
 		
 		<?php if(isset($birthday) && $birthday != '0000-00-00'){ ?>
 		<strong><?php echo __('PROFILE_BIRTHDAY'); ?></strong> <?php echo date(__('PROFILE_BIRTHDAY_FORMAT'), strtotime($birthday)); ?><br />
+		<?php } ?>
+		
+		<?php if($is_owner){ ?>
+		<br />
+		<a href="<?php echo Config::URL_ROOT.Routes::getPage('profile_edit'); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/edit.png" alt="" class="icon" /> <?php echo __('PROFILE_EDIT_PROFILE'); ?></a>
 		<?php } ?>
 	</div>
 </div>

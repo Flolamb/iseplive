@@ -114,6 +114,8 @@ class Layout_Controller extends Controller {
 			'is_logged'			=> $is_logged,
 			'is_student'		=> $is_student
 		));
+		if($is_student)
+			$this->set('username', User_Model::$auth_data['username']);
 		
 	}
 	

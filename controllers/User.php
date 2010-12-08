@@ -29,4 +29,59 @@ class User_Controller extends Controller {
 		exit;
 	}
 	
+	
+	/**
+	 * Edit personnal information
+	 */
+	public function profile_edit($params){
+		$this->setView('profile_edit.php');
+		
+		$is_logged = isset(User_Model::$auth_data);
+		$is_student = $is_logged && isset(User_Model::$auth_data['student_number']);
+		
+		// Authorization
+		if(!$is_student)
+			throw new ActionException('Page', 'error404');
+		
+		$user = User_Model::$auth_data;
+		
+		// Birthday
+		$user['birthday'] = date(__('USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT'), strtotime($user['birthday']));
+		
+		// Saving data
+		if(isset($_POST['mail']) && isset($_POST['msn']) && isset($_POST['jabber']) && isset($_POST['address']) && isset($_POST['zipcode']) && isset($_POST['city']) && isset($_POST['cellphone']) && isset($_POST['phone']) && isset($_POST['birthday'])){
+			
+			$uploaded_files = array();
+			try {
+				
+				// Other info
+				$data = array(
+					'mail'		=> $_POST['mail'],
+					'msn'		=> $_POST['msn'],
+					'jabber'	=> $_POST['jabber'],
+					'address'	=> $_POST['address'],
+					'zipcode'	=> $_POST['zipcode'],
+					'city'		=> $_POST['city'],
+					'cellphone'	=> $_POST['cellphone'],
+					'phone'		=> $_POST['phone'],
+					'birthday'	=> $_POST['birthday']
+				);
+				
+				$this->model->saveProfile($data);
+				Routes::redirect('student', array('username' => User_Model::$auth_data['username']));
+				
+			}catch(FormException $e){
+				foreach($data as $key => $value)
+					$user[$key] = $value;
+				
+				$this->set('form_error', $e->getError());
+			}
+		}
+		
+		
+		$this->set('user', $user);
+		$this->addJSCode('User.initEdit();');
+		
+	}
+	
 }

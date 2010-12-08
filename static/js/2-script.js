@@ -674,6 +674,23 @@ var Association = {
 
 
 
+
+var User = {
+	initEdit : function(){
+		if(!$("user_profile_edit_mail"))
+			return;
+		
+		// Creation date
+		new Picker.Date($("user_profile_edit_birthday"), {
+			pickerClass: "datepicker_jqui",
+			format: __("USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT_PARSE")
+		});
+		
+	}
+};
+
+
+
 // Set the width of videos in the timelines to 100%
 function resizeVideos(){
 	$$(".timeline .video").each(function(e){

@@ -26,7 +26,7 @@ class PostComment_Controller extends Controller {
 				'username'		=> User_Model::$auth_data['username'],
 				'firstname'		=> User_Model::$auth_data['firstname'],
 				'lastname'		=> User_Model::$auth_data['lastname'],
-				'avatar_url'	=> User_Model::getAvatarURL(User_Model::$auth_data['student_number'], true),
+				'avatar_url'	=> User_Model::$auth_data['avatar_url'],
 				'message'		=> $message,
 				'attachment_id'	=> $attachment_id
 			));
