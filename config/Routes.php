@@ -195,9 +195,9 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'association/{association}/delete'
 		),
 		'association_add'	=> array(
-			'regexp'	=> '^association/add(?=\?|$)',
+			'regexp'	=> '^association-add(?=\?|$)',
 			'vars'		=> 'controller=Association&action=add',
-			'url'		=> 'association/add'
+			'url'		=> 'association-add'
 		),
 		
 		

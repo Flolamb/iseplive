@@ -104,7 +104,8 @@ class Association_Model extends Model {
 			$i = '';
 			while($url_name != $old_data['url_name'] && self::urlExists($url_name.$i))
 				$i = $i=='' ? 1 : $i+1;
-			$association_data['url_name'] = $url_name.$i;
+			$url_name .= $i;
+			$association_data['url_name'] = $url_name;
 		}else{
 			$url_name = $old_data['url_name'];
 		}
@@ -214,6 +215,102 @@ class Association_Model extends Model {
 		Cache::delete('association-'.$old_data['url_name']);
 		if($change_name)
 			Post_Model::clearCache();
+		
+		return $url_name;
+	}
+	
+	
+	/**
+	 * Create an association
+	 *
+	 * @param array $data	Association's data
+	 * @return string	URL name
+	 */
+	public function create($data){
+		$association_data = array();
+		
+		// Name
+		$change_name = false;
+		if(!isset($data['name']) || trim($data['name']) == '')
+			throw new FormException('invalid_name');
+		$name = trim($data['name']);
+		$association_data['name'] = $name;
+		
+		// URL name
+		$url_name = Text::forURL($name);
+		$i = '';
+		while(self::urlExists($url_name.$i))
+			$i = $i=='' ? 1 : $i+1;
+		$url_name .= $i;
+		$association_data['url_name'] = $url_name;
+		
+		// Creation date
+		if(!isset($data['creation_date']) || !($creation_date = strptime($data['creation_date'], __('ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE'))))
+			throw new FormException('invalid_creation_date');
+		$association_data['creation_date'] = ($creation_date['tm_year']+1900).'-'.($creation_date['tm_mon']+1).'-'.$creation_date['tm_mday'];
+		
+		// Email
+		if(isset($data['mail'])){
+			if($data['mail'] != '' && !Validation::isEmail($data['mail']))
+					throw new FormException('invalid_mail');
+			
+			$association_data['mail'] = $data['mail'];
+		}
+		
+		// Description
+		if(isset($data['description']))
+			$association_data['description'] = $data['description'];
+		
+		// Avatar
+		if(!isset($data['avatar_path']) || !File::exists($data['avatar_path']) || !isset($data['avatar_big_path']) && !File::exists($data['avatar_big_path']))
+			throw new FormException('avatar');
+		
+		// Insertion in the DB
+		$id = $this->createQuery()
+			->set($association_data)
+			->insert();
+		
+		
+		// Avatar
+		$avatar_path = self::getAvatarPath($id, true);
+		$avatar_dir = File::getPath($avatar_path);
+		if(!is_dir($avatar_dir))
+			File::makeDir($avatar_dir, 0777, true);
+		File::rename($data['avatar_path'], $avatar_path);
+		
+		$avatar_path = self::getAvatarPath($id, false);
+		$avatar_dir = File::getPath($avatar_path);
+		if(!is_dir($avatar_dir))
+			File::makeDir($avatar_dir, 0777, true);
+		File::rename($data['avatar_big_path'], $avatar_path);
+		
+		
+		// Members
+		if(isset($data['members']) && is_array($data['members'])){
+			$i = 0;
+			foreach($data['members'] as &$member)
+				$member['order'] = $i++;
+			
+			if(count($data['members']) != 0){
+				$users = DB::createQuery('users')
+					->fields('id')
+					->where('id IN ('.implode(',', array_keys($data['members'])).')')
+					->select();
+				foreach($users as $user){
+					DB::createQuery('associations_users')
+						->set(array(
+							'association_id'	=> $id,
+							'user_id'			=> $user['id'],
+							'title'				=> $data['members'][(int) $user['id']]['title'],
+							'admin'				=> $data['members'][(int) $user['id']]['admin'] ? '1' : '0',
+							'order'				=> $data['members'][(int) $user['id']]['order']
+						))
+						->insert();
+				}
+			}
+		}
+		
+		Cache::delete('associations');
 		
 		return $url_name;
 	}

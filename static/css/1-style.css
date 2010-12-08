@@ -478,19 +478,20 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 .profile-info {
 	margin-left: 80px;
 }
+.profile-info.no-avatar {
+	margin-left: 0;
+}
 
 
 /* Associations list */
 
 #associations-list {
-	margin-left: -5%;
 	overflow: hidden;
 }
 #associations-list .association-profile {
 	float: left;
-	width: 30%;
-	margin-left: 5%;
-	margin-bottom: 20px;
+	width: 30.3%;
+	margin: 0 1.5% 20px 1.5%;
 }
 
 /* Association's profile */

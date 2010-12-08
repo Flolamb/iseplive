@@ -182,6 +182,10 @@ SIGNIN_BAD_USERNAME_OR_PASSWORD
 
 ### Controller: Student
 
+# View: index
+ASSOCIATION_ADD
+	Ajouter une association
+
 # View: view
 ASSOCIATION_CREATION
 	Date de création :
@@ -229,6 +233,10 @@ ASSOCIATION_EDIT_ERROR_INVALID_MAIL
 	Adresse email invalide
 ASSOCIATION_EDIT_ERROR_AVATAR
 	La photo ne doit pas excéder {size} et doit être au format jpg, png, ou gif
+
+# View: add
+ASSOCIATION_ADD_TITLE
+	Ajout d'une association
 
 
 ### Common views

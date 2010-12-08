@@ -614,7 +614,9 @@ var Association = {
 			valueField: $('value-field'),
 			
 			onSelect: function(elements, data){
-				$('association_edit_add_member').set('value', '');
+				var i = $('association_edit_add_member').set('value', '');
+				i.blur();
+				setTimeout(function(){i.focus();}, 0);
 				
 				var e = new Element('li', {
 					html: $("association-edit-member-stock").innerHTML

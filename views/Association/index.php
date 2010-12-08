@@ -25,3 +25,13 @@ foreach($associations as $association){
 }
 ?>
 </div>
+
+<?php
+if($is_admin){
+?>
+<p>
+	<a href="<?php echo Config::URL_ROOT.Routes::getPage('association_add'); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/add.png" alt="" class="icon" /> <?php echo __('ASSOCIATION_ADD'); ?></a>
+</p>
+<?php
+}
+?>
