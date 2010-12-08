@@ -713,6 +713,12 @@ input[type=text]:focus, textarea:focus {
 }
 
 
+.form-ok {
+	margin: 10px 0;
+	text-align: center;
+	color: green;
+	font-weight: bold;
+}
 .form-error {
 	margin: 10px 0;
 	text-align: center;

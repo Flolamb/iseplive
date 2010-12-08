@@ -197,6 +197,9 @@ ASSOCIATION_EDIT
 	Éditer
 ASSOCIATION_DELETE
 	Supprimer
+ASSOCIATION_DELETE_CONFIRM
+	Êtes-vous sûr de vouloir supprimer cette association ?
+	Les messages associés ne seront pas supprimés.
 ASSOCIATION_POSTS
 	Publications
 
@@ -237,6 +240,10 @@ ASSOCIATION_EDIT_ERROR_AVATAR
 # View: add
 ASSOCIATION_ADD_TITLE
 	Ajout d'une association
+
+# View: delete
+ASSOCIATION_DELETE_OK
+	Association "{association}" supprimée avec succès !
 
 
 ### Common views

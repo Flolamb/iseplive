@@ -95,12 +95,12 @@ class Association_Model extends Model {
 		if(isset($data['name']) && trim($data['name']) != $old_data['name']){
 			$name = trim($data['name']);
 			$change_name = true;
-			if($name == '')
-				throw new FormException('invalid_name');
 			$association_data['name'] = $name;
 			
 			// URL name
 			$url_name = Text::forURL($name);
+			if($url_name == '')
+				throw new FormException('invalid_name');
 			$i = '';
 			while($url_name != $old_data['url_name'] && self::urlExists($url_name.$i))
 				$i = $i=='' ? 1 : $i+1;
@@ -211,7 +211,7 @@ class Association_Model extends Model {
 			->set($association_data)
 			->update($id);
 		
-		Cache::delete('associations');
+		self::clearCache();
 		Cache::delete('association-'.$old_data['url_name']);
 		if($change_name)
 			Post_Model::clearCache();
@@ -231,13 +231,15 @@ class Association_Model extends Model {
 		
 		// Name
 		$change_name = false;
-		if(!isset($data['name']) || trim($data['name']) == '')
+		if(!isset($data['name']))
 			throw new FormException('invalid_name');
 		$name = trim($data['name']);
 		$association_data['name'] = $name;
 		
 		// URL name
 		$url_name = Text::forURL($name);
+		if($url_name == '')
+			throw new FormException('invalid_name');
 		$i = '';
 		while(self::urlExists($url_name.$i))
 			$i = $i=='' ? 1 : $i+1;
@@ -310,9 +312,21 @@ class Association_Model extends Model {
 			}
 		}
 		
-		Cache::delete('associations');
+		self::clearCache();
 		
 		return $url_name;
+	}
+	
+	
+	/**
+	 * Delete an association
+	 *
+	 * @param int $id	Id of the association
+	 */
+	public function delete($id){
+		$this->createQuery()->delete($id);
+		self::clearCache();
+		Post_Model::clearCache();
 	}
 	
 	
@@ -338,7 +352,7 @@ class Association_Model extends Model {
 	public static function getAuth(){
 		if(!isset(User_Model::$auth_data))
 			return array();
-		$cache_entry = 'associations_auth_'.User_Model::$auth_data['id'];
+		$cache_entry = 'associations-auth-'.User_Model::$auth_data['id'];
 		if($categories = Cache::read($cache_entry))
 			return $categories;
 		
@@ -357,7 +371,27 @@ class Association_Model extends Model {
 		}
 		
 		Cache::write($cache_entry, $associations_auth, 60*10);
+		$cache_list = Cache::read('associations-auth-cachelist');
+		if(!$cache_list)
+			$cache_list = array();
+		if(!in_array($cache_entry, $cache_list))
+			$cache_list[] = $cache_entry;
+		Cache::write('associations-auth-cachelist', $cache_list, 60*10);
+		
 		return $associations_auth;
+	}
+	
+	
+	/**
+	 * Delete all the cache entries related to the associations
+	 */
+	public static function clearCache(){
+		Cache::delete('associations');
+		if($cache_list = Cache::read('associations-auth-cachelist')){
+			foreach($cache_list as $cache_entry)
+				Cache::delete($cache_entry);
+			Cache::delete('associations-auth-cachelist');
+		}
 	}
 	
 	

@@ -325,4 +325,31 @@ class Association_Controller extends Controller {
 		
 	}
 	
+	
+	/**
+	 * Delete an association
+	 */
+	public function delete($params){
+		$this->setView('delete.php');
+		
+		try {
+			$association = $this->model->getInfoByName($params['association']);
+		}catch(Exception $e){
+			throw new ActionException('Page', 'error404');
+		}
+		
+		$associations_auth = Association_Model::getAuth();
+		
+		$is_logged = isset(User_Model::$auth_data);
+		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
+		
+		// Authorization
+		if(!$is_admin && !(isset($associations_auth[(int) $association['id']]) && $associations_auth[(int) $association['id']]['admin']))
+			throw new ActionException('Page', 'error404');
+		
+		$this->set('association_name', $association['name']);
+		$this->model->delete((int) $association['id']);
+		
+	}
+	
 }

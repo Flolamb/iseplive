@@ -10,7 +10,7 @@
 			if($is_admin || (isset($associations_auth[(int) $association['id']]) && $associations_auth[(int) $association['id']]['admin'])){
 			?>
 			<a href="<?php echo Config::URL_ROOT.Routes::getPage('association_edit', array('association' => $association['url_name'])); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/edit.png" alt="" class="icon" /> <?php echo __('ASSOCIATION_EDIT'); ?></a>
-			<a href="<?php echo Config::URL_ROOT.Routes::getPage('association_delete', array('association' => $association['url_name'])); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/delete.png" alt="" class="icon" /> <?php echo __('ASSOCIATION_DELETE'); ?></a>
+			<a href="<?php echo Config::URL_ROOT.Routes::getPage('association_delete', array('association' => $association['url_name'])); ?>" onclick="if(!confirm(<?php echo htmlspecialchars(json_encode(__('ASSOCIATION_DELETE_CONFIRM'))); ?>)) return false;"><img src="<?php echo Config::URL_STATIC; ?>images/icons/delete.png" alt="" class="icon" /> <?php echo __('ASSOCIATION_DELETE'); ?></a>
 			<br /><br />
 			<?php
 			}
