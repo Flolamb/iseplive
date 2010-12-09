@@ -19,6 +19,10 @@ NAV_SIGNIN
 
 ### Controller: Page
 
+# View: links
+PAGE_LINKS_TITLE
+	Liens utiles
+
 # View: error404
 PAGE_ERROR404_TITLE
 	Erreur 404

@@ -78,7 +78,8 @@ foreach($cssFiles as $cssFile){
 			</div>
 			
 			<footer>
-				Association ISEPLive + BDE Aerodynamic :: Site développé par <a href="http://www.skreo.net">Godefroy</a> et <a href="http://github.com/Godefroy/iseplive">libéré sur Github</a>
+				<a href="<?php echo Config::URL_ROOT.Routes::getPage('group', array('group' => 'iseplive')); ?>">Association ISEPLive</a> + <a href="<?php echo Config::URL_ROOT.Routes::getPage('group', array('group' => 'bde-aerodynamic')); ?>">BDE Aerodynamic</a> ::
+				Site développé par <a href="http://godefroy.me">Godefroy</a> et <a href="http://github.com/Godefroy/iseplive">libéré sur Github</a>
 			</footer>
 		</div>
 

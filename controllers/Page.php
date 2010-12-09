@@ -3,19 +3,11 @@
 class Page_Controller extends Controller {
 	
 	/**
-	 * Contact page
+	 * Links page
 	 */
-	public function contact(){
-		$this->setView('contact.php');
-		$this->setTitle(__('PAGE_CONTACT_TITLE'));
-	}
-	
-	/**
-	 * Contact page
-	 */
-	public function legal(){
-		$this->setView('legal.php');
-		$this->setTitle(__('PAGE_LEGAL_TITLE'));
+	public function links(){
+		$this->setView('links.php');
+		$this->setTitle(__('PAGE_LINKS_TITLE'));
 	}
 	
 	/**
