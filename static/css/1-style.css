@@ -212,7 +212,7 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 #publish-categories {
 	margin-top: 3px;
 }
-#publish-association {
+#publish-group {
 	margin-top: 3px;
 }
 #publish-private {
@@ -483,35 +483,35 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 }
 
 
-/* Associations list */
+/* Groups list */
 
-#associations-list {
+#groups-list {
 	overflow: hidden;
 }
-#associations-list .association-profile {
+#groups-list .group-profile {
 	float: left;
 	width: 30.3%;
 	margin: 0 1.5% 20px 1.5%;
 }
 
-/* Associations' and users' profiles */
+/* Groups' and users' profiles */
 
-.associations-column {
+.groups-column {
 	width: 35%;
 }
-.associations-column.left {
+.groups-column.left {
 	float: left;
 }
-.associations-column.right {
+.groups-column.right {
 	float: right;
 }
-.associations-column.center {
+.groups-column.center {
 	margin: 0 auto;
 }
-.association-profile {
+.group-profile {
 	text-align: justify;
 }
-#posts-official.association {
+#posts-official.group {
 	margin-left: 7%;
 }
 
@@ -528,18 +528,18 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 	width: 300px;
 	height: 100px;
 }
-#association-edit-members label, #form-profile #student_edit_cesure_label {
+#group-edit-members label, #form-profile #student_edit_cesure_label {
 	display: inline;
 	float: none;
 	width: auto;
 	font-weight: normal;
 }
-#association-edit-members ul {
+#group-edit-members ul {
 	list-style-type: none;
 	padding: 0;
 	margin: 5px 0;
 }
-#association-edit-members li {
+#group-edit-members li {
 	padding: 3px;
 	margin: 0;
 	border: 1px solid #E9E9E9;
@@ -547,7 +547,7 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 	overflow: hidden;
 }
 
-.association-member-delete  {
+.group-member-delete  {
 	width: 12px;
 	height: 12px;
 	overflow: hidden;
@@ -556,14 +556,14 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 	display: none;
 	float: right;
 }
-#association-edit-members li:hover .association-member-delete {
+#group-edit-members li:hover .group-member-delete {
 	display: block;
 }
-.association-member-delete:hover {
+.group-member-delete:hover {
 	background-position: 0 -12px;
 	text-decoration: none;
 }
-.association-member-handle {
+.group-member-handle {
 	float: left;
 	margin-right: 3px;
 	width: 12px;

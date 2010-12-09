@@ -1,8 +1,8 @@
 
-<a href="<?php echo Config::URL_ROOT.Routes::getPage('events', array('association' => isset($calendar_association) ? $calendar_association : null, 'year' => $calendar_month==1 ? $calendar_year-1 : $calendar_year, 'month' => str_pad($calendar_month==1 ? 12 : $calendar_month-1, 2, '0', STR_PAD_LEFT))); ?>" id="calendar-prev-month"><?php echo __('CALENDAR_PREV_MONTH'); ?></a>
-<a href="<?php echo Config::URL_ROOT.Routes::getPage('events', array('association' => isset($calendar_association) ? $calendar_association : null, 'year' => $calendar_month==12 ? $calendar_year+1 : $calendar_year, 'month' => str_pad($calendar_month==12 ? 1 : $calendar_month+1, 2, '0', STR_PAD_LEFT))); ?>" id="calendar-next-month"><?php echo __('CALENDAR_NEXT_MONTH'); ?></a>
+<a href="<?php echo Config::URL_ROOT.Routes::getPage('events', array('group' => isset($calendar_group) ? $calendar_group : null, 'year' => $calendar_month==1 ? $calendar_year-1 : $calendar_year, 'month' => str_pad($calendar_month==1 ? 12 : $calendar_month-1, 2, '0', STR_PAD_LEFT))); ?>" id="calendar-prev-month"><?php echo __('CALENDAR_PREV_MONTH'); ?></a>
+<a href="<?php echo Config::URL_ROOT.Routes::getPage('events', array('group' => isset($calendar_group) ? $calendar_group : null, 'year' => $calendar_month==12 ? $calendar_year+1 : $calendar_year, 'month' => str_pad($calendar_month==12 ? 1 : $calendar_month+1, 2, '0', STR_PAD_LEFT))); ?>" id="calendar-next-month"><?php echo __('CALENDAR_NEXT_MONTH'); ?></a>
 <div id="calendar-current-month">
-	<a href="<?php echo Config::URL_ROOT.Routes::getPage('events', array('association' => isset($calendar_association) ? $calendar_association : null, 'year' => $calendar_year, 'month' => str_pad($calendar_month, 2, '0', STR_PAD_LEFT))); ?>"><?php echo Date::getMonthByNum($calendar_month).' '.$calendar_year; ?></a>
+	<a href="<?php echo Config::URL_ROOT.Routes::getPage('events', array('group' => isset($calendar_group) ? $calendar_group : null, 'year' => $calendar_year, 'month' => str_pad($calendar_month, 2, '0', STR_PAD_LEFT))); ?>"><?php echo Date::getMonthByNum($calendar_month).' '.$calendar_year; ?></a>
 </div>
 
 <table>
@@ -64,7 +64,7 @@ for($i=1; $i <= $number_of_days; $i++){
 	}else{
 ?>
 		<td<?php if($current_day == $calendar_year.'-'.$calendar_month.'-'.$i) echo ' class="current-day";'; ?>>
-			<a href="<?php echo Config::URL_ROOT.Routes::getPage('events', array('association' => isset($calendar_association) ? $calendar_association : null, 'year' => $calendar_year, 'month' => str_pad($calendar_month, 2, '0', STR_PAD_LEFT), 'day' => str_pad($i, 2, '0', STR_PAD_LEFT))); ?>" title="<?php echo Date::dateMonth($day_time); foreach($titles as $title) echo ' :: '.htmlspecialchars($title); ?>">
+			<a href="<?php echo Config::URL_ROOT.Routes::getPage('events', array('group' => isset($calendar_group) ? $calendar_group : null, 'year' => $calendar_year, 'month' => str_pad($calendar_month, 2, '0', STR_PAD_LEFT), 'day' => str_pad($i, 2, '0', STR_PAD_LEFT))); ?>" title="<?php echo Date::dateMonth($day_time); foreach($titles as $title) echo ' :: '.htmlspecialchars($title); ?>">
 				<?php echo $i; ?>
 			</a>
 		</td>
@@ -95,7 +95,7 @@ if($day_in_the_week != (6+$first_day)%7){
 </table>
 
 <br />
-<a href="<?php echo Config::URL_ROOT.Routes::getPage('ical_official', isset($calendar_association) ? array('association' => $calendar_association) : null); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/event.png" alt="" class="icon" /> <?php echo __('CALENDAR_ICAL_OFFICIAL'); ?></a><br />
+<a href="<?php echo Config::URL_ROOT.Routes::getPage('ical_official', isset($calendar_group) ? array('group' => $calendar_group) : null); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/event.png" alt="" class="icon" /> <?php echo __('CALENDAR_ICAL_OFFICIAL'); ?></a><br />
 <?php if($is_student){ ?>
-<a href="<?php echo Config::URL_ROOT.Routes::getPage('ical_non_official', isset($calendar_association) ? array('association' => $calendar_association) : null); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/event.png" alt="" class="icon" /> <?php echo __('CALENDAR_ICAL_NON_OFFICIAL'); ?></a>
+<a href="<?php echo Config::URL_ROOT.Routes::getPage('ical_non_official', isset($calendar_group) ? array('group' => $calendar_group) : null); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/event.png" alt="" class="icon" /> <?php echo __('CALENDAR_ICAL_NON_OFFICIAL'); ?></a>
 <?php } ?>

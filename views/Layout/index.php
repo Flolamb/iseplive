@@ -51,7 +51,7 @@ foreach($cssFiles as $cssFile){
 				
 				<nav>
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('home'); ?>"><?php echo __('NAV_PUBLICATIONS'); ?></a>
-					<a href="<?php echo Config::URL_ROOT.Routes::getPage('associations'); ?>"><?php echo __('NAV_ASSOCIATIONS'); ?></a>
+					<a href="<?php echo Config::URL_ROOT.Routes::getPage('groups'); ?>"><?php echo __('NAV_GROUPS'); ?></a>
 					<?php if($is_logged){ ?>
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('directory'); ?>"><?php echo __('NAV_DIRECTORY'); ?></a>
 					<?php } ?>
@@ -114,7 +114,7 @@ foreach($cssFiles as $cssFile){
 					'PUBLISH_SURVEY_DATE_FORMAT',
 					'POST_DELETE_CONFIRM',
 					'POST_COMMENT_DELETE_CONFIRM',
-					'ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE',
+					'GROUP_EDIT_FORM_CREATION_DATE_FORMAT_PARSE',
 					'USER_EDIT_FORM_BIRTHDAY_FORMAT_PARSE'
 				);
 				foreach($js_translations as $i => $js_translation){

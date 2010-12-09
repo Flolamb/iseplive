@@ -1,9 +1,9 @@
 <?php
 
-class Association_Controller extends Controller {
+class Group_Controller extends Controller {
 	
 	/**
-	 * Show the profile of an association
+	 * Show the profile of a group
 	 */
 	public function index($params){
 		$this->setView('index.php');
@@ -11,9 +11,9 @@ class Association_Controller extends Controller {
 		$is_logged = isset(User_Model::$auth_data);
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		
-		$associations = $this->model->getAll();
+		$groups = $this->model->getAll();
 		$this->set(array(
-			'associations'	=> $associations,
+			'groups'	=> $groups,
 			'is_logged'		=> $is_logged,
 			'is_admin'		=> $is_admin
 		));
@@ -21,14 +21,14 @@ class Association_Controller extends Controller {
 	
 	
 	/**
-	 * Show the profile of an association
+	 * Show the profile of a group
 	 */
 	public function view($params){
 		$this->setView('view.php');
 		
 		try {
-			$association = $this->model->getInfoByName($params['association']);
-			$this->set('association', $association);
+			$group = $this->model->getInfoByName($params['group']);
+			$this->set('group', $group);
 			
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');
@@ -50,7 +50,7 @@ class Association_Controller extends Controller {
 			'current_category'	=> $category,
 			'posts'				=> $post_model->getPosts(array(
 				'restricted'	=> true,
-				'association_id'	=> (int) $association['id'],
+				'group_id'	=> (int) $group['id'],
 				'category_name'		=> $category,
 				'official'			=> $is_logged ? null : true,
 				'show_private'		=> $is_student
@@ -61,7 +61,7 @@ class Association_Controller extends Controller {
 		$event_model = new Event_Model();
 		$this->set(array(
 			'events' 			=> $event_model->getByMonth((int) date('Y'), (int) date('n'), array(
-				'association_id'	=> (int) $association['id'],
+				'group_id'	=> (int) $group['id'],
 				'official'			=> $is_logged ? null : true,
 				'show_private'		=> $is_student
 			)),
@@ -76,7 +76,7 @@ class Association_Controller extends Controller {
 				'username'			=> User_Model::$auth_data['username'],
 				'firstname'			=> User_Model::$auth_data['firstname'],
 				'lastname'			=> User_Model::$auth_data['lastname'],
-				'associations_auth'	=> Association_Model::getAuth()
+				'groups_auth'	=> Group_Model::getAuth()
 			));
 			
 			if($is_student)
@@ -88,29 +88,29 @@ class Association_Controller extends Controller {
 	
 	
 	/**
-	 * Edit an association
+	 * Edit a group
 	 */
 	public function edit($params){
 		$this->setView('edit.php');
 		
 		try {
-			$association = $this->model->getInfoByName($params['association']);
+			$group = $this->model->getInfoByName($params['group']);
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');
 		}
 		
-		$associations_auth = Association_Model::getAuth();
+		$groups_auth = Group_Model::getAuth();
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		
 		// Authorization
-		if(!$is_admin && !(isset($associations_auth[(int) $association['id']]) && $associations_auth[(int) $association['id']]['admin']))
+		if(!$is_admin && !(isset($groups_auth[(int) $group['id']]) && $groups_auth[(int) $group['id']]['admin']))
 			throw new ActionException('Page', 'error404');
 		
-		$this->set('association_name', $association['name']);
+		$this->set('group_name', $group['name']);
 		
-		$association['creation_date'] = date(__('ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT'), strtotime($association['creation_date']));
+		$group['creation_date'] = date(__('GROUP_EDIT_FORM_CREATION_DATE_FORMAT'), strtotime($group['creation_date']));
 		
 		// Saving data
 		if(isset($_POST['name']) && isset($_POST['creation_date']) && isset($_POST['mail']) && isset($_POST['description'])){
@@ -183,17 +183,17 @@ class Association_Controller extends Controller {
 					}
 				}
 				
-				$url_name = $this->model->save((int) $association['id'], $data);
-				Routes::redirect('association', array('association' => $url_name));
+				$url_name = $this->model->save((int) $group['id'], $data);
+				Routes::redirect('group', array('group' => $url_name));
 				
 			}catch(FormException $e){
 				foreach($uploaded_files as $uploaded_file)
 					File::delete($uploaded_file);
 				foreach($data as $key => $value)
-					$association[$key] = $value;
+					$group[$key] = $value;
 				
-				$association['members'] = Student_Model::getInfoByUsersIds(array_keys($members));
-				foreach($association['members'] as &$member){
+				$group['members'] = Student_Model::getInfoByUsersIds(array_keys($members));
+				foreach($group['members'] as &$member){
 					if(isset($members[(int) $member['user_id']])){
 						$member['title'] = $members[(int) $member['user_id']]['title'];
 						$member['admin'] = $members[(int) $member['user_id']]['admin'] ? '1' : '0';
@@ -205,14 +205,14 @@ class Association_Controller extends Controller {
 		}
 		
 		
-		$this->set('association', $association);
-		$this->addJSCode('Association.initEdit();');
+		$this->set('group', $group);
+		$this->addJSCode('Group.initEdit();');
 		
 	}
 	
 	
 	/**
-	 * Add an association
+	 * Add a group
 	 */
 	public function add($params){
 		$this->setView('add.php');
@@ -224,7 +224,7 @@ class Association_Controller extends Controller {
 		if(!$is_admin)
 			throw new ActionException('Page', 'error404');
 		
-		$association = array();
+		$group = array();
 		
 		// Saving data
 		if(isset($_POST['name']) && isset($_POST['creation_date']) && isset($_POST['mail']) && isset($_POST['description'])){
@@ -298,16 +298,16 @@ class Association_Controller extends Controller {
 				}
 				
 				$url_name = $this->model->create($data);
-				Routes::redirect('association', array('association' => $url_name));
+				Routes::redirect('group', array('group' => $url_name));
 				
 			}catch(FormException $e){
 				foreach($uploaded_files as $uploaded_file)
 					File::delete($uploaded_file);
 				foreach($data as $key => $value)
-					$association[$key] = $value;
+					$group[$key] = $value;
 				
-				$association['members'] = Student_Model::getInfoByUsersIds(array_keys($members));
-				foreach($association['members'] as &$member){
+				$group['members'] = Student_Model::getInfoByUsersIds(array_keys($members));
+				foreach($group['members'] as &$member){
 					if(isset($members[(int) $member['user_id']])){
 						$member['title'] = $members[(int) $member['user_id']]['title'];
 						$member['admin'] = $members[(int) $member['user_id']]['admin'] ? '1' : '0';
@@ -319,35 +319,35 @@ class Association_Controller extends Controller {
 		}
 		
 		
-		$this->set('association', $association);
-		$this->addJSCode('Association.initEdit();');
+		$this->set('group', $group);
+		$this->addJSCode('Group.initEdit();');
 		
 	}
 	
 	
 	/**
-	 * Delete an association
+	 * Delete a group
 	 */
 	public function delete($params){
 		$this->setView('delete.php');
 		
 		try {
-			$association = $this->model->getInfoByName($params['association']);
+			$group = $this->model->getInfoByName($params['group']);
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');
 		}
 		
-		$associations_auth = Association_Model::getAuth();
+		$groups_auth = Group_Model::getAuth();
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		
 		// Authorization
-		if(!$is_admin && !(isset($associations_auth[(int) $association['id']]) && $associations_auth[(int) $association['id']]['admin']))
+		if(!$is_admin && !(isset($groups_auth[(int) $group['id']]) && $groups_auth[(int) $group['id']]['admin']))
 			throw new ActionException('Page', 'error404');
 		
-		$this->set('association_name', $association['name']);
-		$this->model->delete((int) $association['id']);
+		$this->set('group_name', $group['name']);
+		$this->model->delete((int) $group['id']);
 		
 	}
 	

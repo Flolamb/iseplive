@@ -2,9 +2,9 @@
 <div id="post-<?php echo $post['id']; ?>" class="post">
 
 <?php
-if(isset($post['association_id']) && $post['official']=='1'){
-	$post_user_url = Config::URL_ROOT.Routes::getPage('association', array('association' => $post['association_url']));
-	$post_user_name = $post['association_name'];
+if(isset($post['group_id']) && $post['official']=='1'){
+	$post_user_url = Config::URL_ROOT.Routes::getPage('group', array('group' => $post['group_url']));
+	$post_user_name = $post['group_name'];
 }else{
 	$post_user_url = Config::URL_ROOT.Routes::getPage('student', array('username' => $post['username']));
 	$post_user_name = isset($post['firstname']) ? $post['firstname'].' '.$post['lastname'] : $post['username'];
@@ -20,8 +20,8 @@ if(isset($post['avatar_url'])){
 // Post delete button
 if(($is_logged && $username == $post['username'])
 	|| $is_admin
-	|| (isset($post['association_id']) && isset($associations_auth)
-		&& isset($associations_auth[(int) $post['association_id']])) && $associations_auth[(int) $post['association_id']]['admin']){
+	|| (isset($post['group_id']) && isset($groups_auth)
+		&& isset($groups_auth[(int) $post['group_id']])) && $groups_auth[(int) $post['group_id']]['admin']){
 ?>
 	<a href="<?php echo Config::URL_ROOT.Routes::getPage('post_delete', array('id' => $post['id'])); ?>" class="post-delete">x</a>
 <?php
@@ -224,9 +224,9 @@ if(isset($one_post) && $post['attachments_nb_photos'] != 0){
 		<div class="post-info">
 			<?php echo Date::easy((int) $post['time']); ?>
 <?php
-if(isset($post['association_id']) && $post['official']!='1'){
+if(isset($post['group_id']) && $post['official']!='1'){
 ?>
-			&#183; <a href="<?php echo Config::URL_ROOT.Routes::getPage('association', array('association' => $post['association_url'])); ?>"><?php echo htmlspecialchars($post['association_name']); ?></a>
+			&#183; <a href="<?php echo Config::URL_ROOT.Routes::getPage('group', array('group' => $post['group_url'])); ?>"><?php echo htmlspecialchars($post['group_name']); ?></a>
 <?php
 }
 if($is_student){
@@ -281,8 +281,8 @@ $comment_user_url = Config::URL_ROOT.Routes::getPage('student', array('username'
 // Post delete button
 if(($is_logged && $username == $comment['username'])
 	|| $is_admin
-	|| (isset($post['association_id']) && isset($associations_auth)
-		&& isset($associations_auth[(int) $post['association_id']])) && $associations_auth[(int) $post['association_id']]['admin']){
+	|| (isset($post['group_id']) && isset($groups_auth)
+		&& isset($groups_auth[(int) $post['group_id']])) && $groups_auth[(int) $post['group_id']]['admin']){
 ?>
 				<a href="<?php echo Config::URL_ROOT.Routes::getPage('post_comment_delete', array('id' => $comment['id'])); ?>" class="post-comment-delete">x</a>
 <?php

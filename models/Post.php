@@ -10,8 +10,8 @@ class Post_Model extends Model {
 	 *							* show_private: Private posts include if true
 	 *							* category_id: Category's id
 	 *							* category_name: Category's name
-	 *							* association_id: Association's id
-	 *							* association_name: Association's name
+	 *							* group_id: Group's id
+	 *							* group_name: Group's name
 	 *							* id: ID of a post to get
 	 *							* ids: List of IDs of post to get
 	 *							* restricted: If true, limits the number of photos displayed
@@ -30,10 +30,10 @@ class Post_Model extends Model {
 			return $posts;
 		
 		$where = array();
-		if(isset($params['association_id']))
-			$where[] = 'p.association_id = '.$params['association_id'];
-		if(isset($params['association_name']))
-			$where[] = 'a.url_name = '.DB::quote($params['association_name']);
+		if(isset($params['group_id']))
+			$where[] = 'p.group_id = '.$params['group_id'];
+		if(isset($params['group_name']))
+			$where[] = 'a.url_name = '.DB::quote($params['group_name']);
 		if(isset($params['official']))
 			$where[] = 'p.official = '.($params['official'] ? 1 : 0);
 		if(!isset($params['show_private']) || !$params['show_private'])
@@ -50,13 +50,13 @@ class Post_Model extends Model {
 		$posts = DB::select('
 			SELECT
 				p.id, p.message, p.time, p.private, p.official,
-				a.id AS association_id, a.name AS association_name, a.url_name AS association_url,
+				a.id AS group_id, a.name AS group_name, a.url_name AS group_url,
 				u.username,
 				s.student_number, s.firstname, s.lastname
 			FROM posts p
 			INNER JOIN categories c ON c.id = p.category_id
 			INNER JOIN users u ON u.id = p.user_id
-			'.(isset($params['association_id']) || isset($params['association_name']) ? 'INNER' : 'LEFT').' JOIN associations a ON a.id = p.association_id
+			'.(isset($params['group_id']) || isset($params['group_name']) ? 'INNER' : 'LEFT').' JOIN groups a ON a.id = p.group_id
 			LEFT JOIN students s ON s.username = u.username
 			'.(count($where) != 0 ? 'WHERE '.implode(' AND ', $where) : '').'
 			ORDER BY p.time DESC
@@ -189,8 +189,8 @@ class Post_Model extends Model {
 				$post['attachments_nb_photos'] = isset($nb_photos_by_post_id[$post_id]) ? $nb_photos_by_post_id[$post_id] : 0;
 				
 				// Avatar
-				if(isset($post['association_id']) && $post['official']=='1')
-					$post['avatar_url'] = Association_Model::getAvatarURL((int) $post['association_id'], true);
+				if(isset($post['group_id']) && $post['official']=='1')
+					$post['avatar_url'] = Group_Model::getAvatarURL((int) $post['group_id'], true);
 				else if(isset($post['student_number']))
 					$post['avatar_url'] = Student_Model::getAvatarURL((int) $post['student_number'], true);
 			}
@@ -246,19 +246,19 @@ class Post_Model extends Model {
 	 * @param int $user_id			User's id (relative to the users table)
 	 * @param string $message		Message
 	 * @param int $category_id		Category's id (relative to the categories table)
-	 * @param int $association_id	Association's id (relative to the associations table)
-	 * @param boolean $official		If true, the message is official in an association
+	 * @param int $group_id	Group's id (relative to the groups table)
+	 * @param boolean $official		If true, the message is official in a group
 	 * @param boolean $private		If true, the message will be visible only to the students
 	 * @return int	Id of the new post
 	 */
-	public function addPost($user_id, $message, $category_id, $association_id, $official, $private){
+	public function addPost($user_id, $message, $category_id, $group_id, $official, $private){
 		$id = $this->createQuery()
 			->set(array(
 				'user_id'			=> $user_id,
 				'message'			=> $message,
 				'time'				=> time(),
 				'category_id'		=> $category_id,
-				'association_id'	=> $association_id,
+				'group_id'	=> $group_id,
 				'official'			=> $official ? 1 : 0,
 				'private'			=> $private ? 1 : 0
 			))

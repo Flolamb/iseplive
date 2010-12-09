@@ -47,11 +47,11 @@ class PostComment_Controller extends Controller {
 			
 			$is_logged = isset(User_Model::$auth_data);
 			$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
-			$associations_auth = Association_Model::getAuth();
+			$groups_auth = Group_Model::getAuth();
 			
 			if(($is_logged && User_Model::$auth_data['id'] == $comment['user_id'])
 			|| $is_admin
-			|| (isset($post['association_id']) && isset($associations_auth[(int) $post['association_id']])) && $associations_auth[(int) $post['association_id']]['admin']){
+			|| (isset($post['group_id']) && isset($groups_auth[(int) $post['group_id']])) && $groups_auth[(int) $post['group_id']]['admin']){
 				
 				$this->model->delete((int) $params['id']);
 				$this->set('success', true);

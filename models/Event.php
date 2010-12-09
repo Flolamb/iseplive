@@ -10,7 +10,7 @@ class Event_Model extends Model {
 	 * @param array $params	Associative array of paramaters. Possibles keys :
 	 *							* official: Only official posts if true, only non-official posts if false, all posts if null
 	 *							* show_private: Private posts include if true
-	 *							* association_id: Association's id
+	 *							* group_id: Group's id
 	 * @return array
 	 */
 	public function getByMonth($year, $month, $params){
@@ -37,8 +37,8 @@ class Event_Model extends Model {
 			$where[] = 'p.official = '.($params['official'] ? 1 : 0);
 		if(!isset($params['show_private']) || !$params['show_private'])
 			$where[] = 'p.private = 0';
-		if(isset($params['association_id']))
-			$where[] = 'p.association_id = '.$params['association_id'];
+		if(isset($params['group_id']))
+			$where[] = 'p.group_id = '.$params['group_id'];
 		
 		$events = DB::select('
 			SELECT e.title, e.date_start, e.date_end, e.post_id
@@ -69,17 +69,17 @@ class Event_Model extends Model {
 	/**
 	 * Returns the upcoming events
 	 *
-	 * @param boolean $association_name		Association's name (optional)
+	 * @param boolean $group_name		Group's name (optional)
 	 * @param boolean $official		Only official posts if true, only non-official posts otherwise, all posts if null (optional)
 	 * @param boolean $private		Private posts include if true (optional)
 	 * @return array
 	 */
-	public function getUpcoming($association_name=null, $official=null, $show_private=null){
+	public function getUpcoming($group_name=null, $official=null, $show_private=null){
 		$date_start = date('Y-m-d H:i:s');
 		
 		$where = array('e.date_start > "'.$date_start.'"');
-		if(isset($association_name))
-			$where[] = 'a.url_name = '.DB::quote($association_name);
+		if(isset($group_name))
+			$where[] = 'a.url_name = '.DB::quote($group_name);
 		if(isset($official))
 			$where[] = 'p.official = '.($official ? 1 : 0);
 		if(!$show_private)
@@ -89,7 +89,7 @@ class Event_Model extends Model {
 			SELECT e.title, e.date_start, e.date_end, p.message
 			FROM `events` e
 			INNER JOIN `posts` p ON p.id = e.post_id
-			'.(isset($association_name) ? 'INNER JOIN `associations` a ON a.id = p.association_id' : '').'
+			'.(isset($group_name) ? 'INNER JOIN `groups` a ON a.id = p.group_id' : '').'
 			WHERE '.implode(' AND ', $where).'
 			ORDER BY e.date_start ASC
 		');

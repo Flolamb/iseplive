@@ -40,18 +40,18 @@
 			</select>
 		</div>
 		
-		<?php if(count($associations_auth) != 0){ ?>
-		<div id="publish-association">
-			<?php echo __('PUBLISH_ASSOCIATION'); ?>
-			<select name="association" id="publish-association-select">
-				<option value="0"><?php echo __('PUBLISH_ASSOCIATION_NONE'); ?></option>
-				<?php foreach($associations_auth as $association_id => $association_data){ ?>
-				<option value="<?php echo $association_id; ?>"<?php if($association_data['admin']) echo ' class="publish-association-admin"'; ?>><?php echo $association_data['name']; ?></option>
+		<?php if(count($groups_auth) != 0){ ?>
+		<div id="publish-group">
+			<?php echo __('PUBLISH_GROUP'); ?>
+			<select name="group" id="publish-group-select">
+				<option value="0"><?php echo __('PUBLISH_GROUP_NONE'); ?></option>
+				<?php foreach($groups_auth as $group_id => $group_data){ ?>
+				<option value="<?php echo $group_id; ?>"<?php if($group_data['admin']) echo ' class="publish-group-admin"'; ?>><?php echo $group_data['name']; ?></option>
 				<?php } ?>
 			</select>
-			<span id="publish-association-official">
-				<input type="checkbox" name="official" id="publish-association-official-checkbox" value="1" />
-				<label for="publish-association-official-checkbox"><?php echo __('PUBLISH_ASSOCIATION_OFFICIAL'); ?></label>
+			<span id="publish-group-official">
+				<input type="checkbox" name="official" id="publish-group-official-checkbox" value="1" />
+				<label for="publish-group-official-checkbox"><?php echo __('PUBLISH_GROUP_OFFICIAL'); ?></label>
 			</span>
 		</div>
 		<?php } ?>

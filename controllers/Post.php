@@ -30,7 +30,7 @@ class Post_Controller extends Controller {
 				'username'			=> User_Model::$auth_data['username'],
 				'firstname'			=> User_Model::$auth_data['firstname'],
 				'lastname'			=> User_Model::$auth_data['lastname'],
-				'associations_auth'	=> Association_Model::getAuth(),
+				'groups_auth'	=> Group_Model::getAuth(),
 				// Non-official posts
 				'posts'				=> $this->model->getPosts(array(
 					'restricted'	=> true,
@@ -92,7 +92,7 @@ class Post_Controller extends Controller {
 				'username'			=> User_Model::$auth_data['username'],
 				'firstname'			=> User_Model::$auth_data['firstname'],
 				'lastname'			=> User_Model::$auth_data['lastname'],
-				'associations_auth'	=> Association_Model::getAuth()
+				'groups_auth'	=> Group_Model::getAuth()
 			));
 			
 			// Non-official posts
@@ -111,10 +111,10 @@ class Post_Controller extends Controller {
 		}
 		
 		// Official posts
-		if(!isset($params['official']) && isset($params['association'])){
+		if(!isset($params['official']) && isset($params['group'])){
 			$this->set('posts', $this->model->getPosts(array(
 				'restricted'	=> true,
-				'association_name'	=> $params['association'],
+				'group_name'	=> $params['group'],
 				'category_name'		=> $category,
 				'show_private'		=> $is_student
 			), Config::POST_DISPLAYED, $offset));
@@ -157,7 +157,7 @@ class Post_Controller extends Controller {
 			'is_logged'		=> $is_logged,
 			'is_student'	=> $is_student,
 			'is_admin'		=> $is_admin,
-			'associations_auth'	=> Association_Model::getAuth(),
+			'groups_auth'	=> Group_Model::getAuth(),
 			'post'			=> $post,
 			'one_post'		=> true
 		));
@@ -198,12 +198,12 @@ class Post_Controller extends Controller {
 		$is_student = $is_logged && isset(User_Model::$auth_data['student_number']);
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		
-		// Association
-		if(isset($params['association'])){
+		// Group
+		if(isset($params['group'])){
 			try {
-				$association_model = new Association_Model();
-				$association = $association_model->getInfoByName($params['association']);
-				$this->set('association', $association);
+				$group_model = new Group_Model();
+				$group = $group_model->getInfoByName($params['group']);
+				$this->set('group', $group);
 				
 			}catch(Exception $e){
 				throw new ActionException('Page', 'error404');
@@ -216,7 +216,7 @@ class Post_Controller extends Controller {
 		
 		$event_model = new Event_Model();
 		$events = $event_model->getByMonth($year, $month, array(
-			'association_id'	=> isset($association) ? $association['id'] : null,
+			'group_id'	=> isset($group) ? $group['id'] : null,
 			'official'			=> $is_logged ? null : true,
 			'show_private'		=> $is_student
 		));
@@ -240,7 +240,7 @@ class Post_Controller extends Controller {
 			'is_logged'		=> $is_logged,
 			'is_student'	=> $is_student,
 			'is_admin'		=> $is_admin,
-			'associations_auth'	=> Association_Model::getAuth(),
+			'groups_auth'	=> Group_Model::getAuth(),
 			'posts'			=> count($post_ids)==0 ? array() : $this->model->getPosts(array(
 				'restricted'		=> true,
 				'show_private'		=> $is_student,
@@ -290,21 +290,21 @@ class Post_Controller extends Controller {
 				throw new Exception(__('POST_ADD_ERROR_NO_CATEGORY'));
 			$category = (int) $_POST['category'];
 			
-			// Official post (in an association)
+			// Official post (in a group)
 			$official = isset($_POST['official']);
 			
-			// Association
-			$association = isset($_POST['association']) && ctype_digit($_POST['association']) ? (int) $_POST['association'] : 0;
-			if($association == 0){
-				$association = null;
+			// Group
+			$group = isset($_POST['group']) && ctype_digit($_POST['group']) ? (int) $_POST['group'] : 0;
+			if($group == 0){
+				$group = null;
 				$official = false;
 			}else{
-				$associations_auth = Association_Model::getAuth();
-				if(isset($associations_auth[$association])){
-					if($official && !$associations_auth[$association]['admin'])
+				$groups_auth = Group_Model::getAuth();
+				if(isset($groups_auth[$group])){
+					if($official && !$groups_auth[$group]['admin'])
 						throw new Exception(__('POST_ADD_ERROR_OFFICIAL'));
 				}else{
-					throw new Exception(__('POST_ADD_ERROR_ASSOCIATION_NOT_FOUND'));
+					throw new Exception(__('POST_ADD_ERROR_GROUP_NOT_FOUND'));
 				}
 			}
 			
@@ -533,7 +533,7 @@ class Post_Controller extends Controller {
 			
 			
 			// Creation of the post
-			$id = $this->model->addPost((int) User_Model::$auth_data['id'], $message, $category, $association, $official, $private);
+			$id = $this->model->addPost((int) User_Model::$auth_data['id'], $message, $category, $group, $official, $private);
 			
 			
 			// Attach files
@@ -579,11 +579,11 @@ class Post_Controller extends Controller {
 			
 			$is_logged = isset(User_Model::$auth_data);
 			$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
-			$associations_auth = Association_Model::getAuth();
+			$groups_auth = Group_Model::getAuth();
 			
 			if(($is_logged && User_Model::$auth_data['id'] == $post['user_id'])
 			|| $is_admin
-			|| (isset($post['association_id']) && isset($associations_auth[(int) $post['association_id']])) && $associations_auth[(int) $post['association_id']]['admin']){
+			|| (isset($post['group_id']) && isset($groups_auth[(int) $post['group_id']])) && $groups_auth[(int) $post['group_id']]['admin']){
 				
 				$this->model->delete((int) $params['id']);
 				$this->set('success', true);

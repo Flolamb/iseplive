@@ -4,7 +4,7 @@
 # View: index.php
 NAV_PUBLICATIONS
 	Publications
-NAV_ASSOCIATIONS
+NAV_GROUPS
 	Associations
 NAV_DIRECTORY
 	Annuaire
@@ -104,7 +104,7 @@ POST_ADD_ERROR_NO_CATEGORY
 	Vous devez choisir une catégorie !
 POST_ADD_ERROR_OFFICIAL
 	Vous ne pouvez pas poster une message officiel dans cette association !
-POST_ADD_ERROR_ASSOCIATION_NOT_FOUND
+POST_ADD_ERROR_GROUP_NOT_FOUND
 	Association introuvable !
 POST_ADD_ERROR_PRIVATE
 	Vous n'avez pas l'autorisation de poster un message privé !
@@ -171,8 +171,6 @@ PROFILE_EDIT_PROFILE
 	Modifier mes informations personnelles
 PROFILE_EDIT
 	Éditer
-PROFILE_DELETE
-	Supprimer
 PROFILE_DELETE_CONFIRM
 	Êtes-vous sûr de vouloir supprimer cet utilisateur ?
 	Tous ses messages seront supprimés.
@@ -266,69 +264,69 @@ USER_EDIT_FORM_SUBMIT
 	Enregistrer
 
 
-### Controller: Association
+### Controller: Group
 
 # View: index
-ASSOCIATION_ADD
+GROUP_ADD
 	Ajouter une association
 
 # View: view
-ASSOCIATION_CREATION
+GROUP_CREATION
 	Date de création :
-ASSOCIATION_CONTACT
+GROUP_CONTACT
 	Email :
-ASSOCIATION_MEMBERS
+GROUP_MEMBERS
 	Membres :
-ASSOCIATION_EDIT
+GROUP_EDIT
 	Éditer
-ASSOCIATION_DELETE
+GROUP_DELETE
 	Supprimer
-ASSOCIATION_DELETE_CONFIRM
+GROUP_DELETE_CONFIRM
 	Êtes-vous sûr de vouloir supprimer cette association ?
 	Les messages associés ne seront pas supprimés.
-ASSOCIATION_POSTS
+GROUP_POSTS
 	Publications
 
 # View: edit
-ASSOCIATION_EDIT_TITLE
-	Édition de l'association "{association}"
-ASSOCIATION_EDIT_FORM_NAME
+GROUP_EDIT_TITLE
+	Édition de l'association "{group}"
+GROUP_EDIT_FORM_NAME
 	Nom :
-ASSOCIATION_EDIT_FORM_CREATION_DATE
+GROUP_EDIT_FORM_CREATION_DATE
 	Date de création :
-ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT
+GROUP_EDIT_FORM_CREATION_DATE_FORMAT
 	d/m/Y
-ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE
+GROUP_EDIT_FORM_CREATION_DATE_FORMAT_PARSE
 	%d/%m/%Y
-ASSOCIATION_EDIT_FORM_CONTACT
+GROUP_EDIT_FORM_CONTACT
 	Email :
-ASSOCIATION_EDIT_FORM_DESCRIPTION
+GROUP_EDIT_FORM_DESCRIPTION
 	Description :
-ASSOCIATION_EDIT_FORM_AVATAR
+GROUP_EDIT_FORM_AVATAR
 	Photo :
-ASSOCIATION_EDIT_FORM_MEMBER_TITLE
+GROUP_EDIT_FORM_MEMBER_TITLE
 	Fonction :
-ASSOCIATION_EDIT_FORM_MEMBER_ADMIN
+GROUP_EDIT_FORM_MEMBER_ADMIN
 	Administrateur
-ASSOCIATION_EDIT_FORM_ADD_MEMBER
+GROUP_EDIT_FORM_ADD_MEMBER
 	Ajouter un membre :
-ASSOCIATION_EDIT_FORM_SUBMIT
+GROUP_EDIT_FORM_SUBMIT
 	Enregistrer
-ASSOCIATION_EDIT_ERROR_INVALID_NAME
+GROUP_EDIT_ERROR_INVALID_NAME
 	Nom de l'association invalide
-ASSOCIATION_EDIT_ERROR_INVALID_CREATION_DATE
+GROUP_EDIT_ERROR_INVALID_CREATION_DATE
 	Date de création invalide
-ASSOCIATION_EDIT_ERROR_INVALID_MAIL
+GROUP_EDIT_ERROR_INVALID_MAIL
 	Adresse email invalide
-ASSOCIATION_EDIT_ERROR_AVATAR
+GROUP_EDIT_ERROR_AVATAR
 	La photo ne doit pas excéder {size} et doit être au format jpg, png, ou gif
 
 # View: add
-ASSOCIATION_ADD_TITLE
+GROUP_ADD_TITLE
 	Ajout d'une association
 
 # View: delete
-ASSOCIATION_DELETE_OK
+GROUP_DELETE_OK
 	Association "{association}" supprimée avec succès !
 
 
@@ -343,11 +341,11 @@ PUBLISH_ATTACHMENTS
 	Joindre :
 PUBLISH_CATEGORY
 	Catégorie :
-PUBLISH_ASSOCIATION
+PUBLISH_GROUP
 	Association :
-PUBLISH_ASSOCIATION_NONE
+PUBLISH_GROUP_NONE
 	-- Aucune --
-PUBLISH_ASSOCIATION_OFFICIAL
+PUBLISH_GROUP_OFFICIAL
 	Officiel
 PUBLISH_PRIVATE
 	Visible uniquement par les élèves

@@ -1,93 +1,93 @@
 <?php
 
-class Association_Model extends Model {
+class Group_Model extends Model {
 	
 	
 	/**
-	 * Returns an associative array of the information of an association,
+	 * Returns an associative array of the information of a group,
 	 * including members info
 	 *
-	 * @param string $url_name	Association's name
+	 * @param string $url_name	Group's name
 	 * @return array
 	 */
 	public function getInfoByName($url_name){
-		$association = Cache::read('association-'.$url_name);
-		if($association !== false)
-			return $association;
+		$group = Cache::read('group-'.$url_name);
+		if($group !== false)
+			return $group;
 		
-		$associations = $this->createQuery()
+		$groups = $this->createQuery()
 			->where(array('url_name' => $url_name))
 			->select();
 		
-		if(!isset($associations[0]))
-			throw new Exception('Association not found');
+		if(!isset($groups[0]))
+			throw new Exception('Group not found');
 		
-		$association = $associations[0];
+		$group = $groups[0];
 		
 		// Avatar
-		$association['avatar_url'] = self::getAvatarURL((int) $association['id'], true);
-		$association['avatar_big_url'] = self::getAvatarURL((int) $association['id']);
+		$group['avatar_url'] = self::getAvatarURL((int) $group['id'], true);
+		$group['avatar_big_url'] = self::getAvatarURL((int) $group['id']);
 		
 		// Members
-		$association['members'] = DB::select('
+		$group['members'] = DB::select('
 			SELECT
 				u.id AS user_id,
 				s.username, s.firstname, s.lastname,
 				a_s.title, a_s.admin
-			FROM associations_users a_s
+			FROM groups_users a_s
 			INNER JOIN users u ON u.id = a_s.user_id
 			INNER JOIN students s ON s.username = u.username
-			WHERE a_s.association_id = ?
+			WHERE a_s.group_id = ?
 			ORDER BY a_s.order ASC
-		', array((int) $association['id']));
+		', array((int) $group['id']));
 		
-		Cache::write('association-'.$url_name, $association, 12*3600);
+		Cache::write('group-'.$url_name, $group, 12*3600);
 		
-		return $association;
+		return $group;
 	}
 	
 	
 	/**
-	 * Returns an associative array of all associations
+	 * Returns an associative array of all groups
 	 *
 	 * @return array
 	 */
 	public function getAll(){
-		$associations = Cache::read('associations');
-		if($associations !== false)
-			return $associations;
+		$groups = Cache::read('groups');
+		if($groups !== false)
+			return $groups;
 		
-		$associations = $this->createQuery()
+		$groups = $this->createQuery()
 			->order(array('name', 'ASC'))
 			->select();
 		
 		// Avatar
-		foreach($associations as &$association){
-			$association['avatar_url'] = self::getAvatarURL((int) $association['id'], true);
-			$association['avatar_big_url'] = self::getAvatarURL((int) $association['id']);
+		foreach($groups as &$group){
+			$group['avatar_url'] = self::getAvatarURL((int) $group['id'], true);
+			$group['avatar_big_url'] = self::getAvatarURL((int) $group['id']);
 		}
 		
-		Cache::write('associations', $associations, 12*3600);
+		Cache::write('groups', $groups, 12*3600);
 		
-		return $associations;
+		return $groups;
 	}
 	
 	
 	/**
-	 * Save the data of an association
+	 * Save the data of a group
 	 *
-	 * @param int $id		Association's id
-	 * @param array $data	Association's data
+	 * @param int $id		Group's id
+	 * @param array $data	Group's data
 	 * @return string	URL name
 	 */
 	public function save($id, $data){
-		$association_data = array();
+		$group_data = array();
 		
-		$old_data = DB::createQuery('associations')
+		$old_data = DB::createQuery('groups')
 			->fields('name', 'url_name')
 			->select($id);
 		if(!$old_data[0])
-			throw new Exception('Association not found');
+			throw new Exception('Group not found');
 		$old_data = $old_data[0];
 		
 		// Name
@@ -95,7 +95,7 @@ class Association_Model extends Model {
 		if(isset($data['name']) && trim($data['name']) != $old_data['name']){
 			$name = trim($data['name']);
 			$change_name = true;
-			$association_data['name'] = $name;
+			$group_data['name'] = $name;
 			
 			// URL name
 			$url_name = Text::forURL($name);
@@ -105,17 +105,17 @@ class Association_Model extends Model {
 			while($url_name != $old_data['url_name'] && self::urlExists($url_name.$i))
 				$i = $i=='' ? 1 : $i+1;
 			$url_name .= $i;
-			$association_data['url_name'] = $url_name;
+			$group_data['url_name'] = $url_name;
 		}else{
 			$url_name = $old_data['url_name'];
 		}
 		
 		// Creation date
 		if(isset($data['creation_date'])){
-			if(!($creation_date = strptime($data['creation_date'], __('ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE'))))
+			if(!($creation_date = strptime($data['creation_date'], __('GROUP_EDIT_FORM_CREATION_DATE_FORMAT_PARSE'))))
 					throw new FormException('invalid_creation_date');
 				
-			$association_data['creation_date'] = ($creation_date['tm_year']+1900).'-'.($creation_date['tm_mon']+1).'-'.$creation_date['tm_mday'];
+			$group_data['creation_date'] = ($creation_date['tm_year']+1900).'-'.($creation_date['tm_mon']+1).'-'.$creation_date['tm_mday'];
 		}
 		
 		// Email
@@ -123,12 +123,12 @@ class Association_Model extends Model {
 			if($data['mail'] != '' && !Validation::isEmail($data['mail']))
 					throw new FormException('invalid_mail');
 				
-			$association_data['mail'] = $data['mail'];
+			$group_data['mail'] = $data['mail'];
 		}
 		
 		// Description
 		if(isset($data['description']))
-			$association_data['description'] = $data['description'];
+			$group_data['description'] = $data['description'];
 		
 		
 		// Avatar
@@ -150,14 +150,14 @@ class Association_Model extends Model {
 		
 		// Members
 		if(isset($data['members']) && is_array($data['members'])){
-			$associations_users = DB::createQuery('associations_users')
+			$groups_users = DB::createQuery('groups_users')
 				->fields('user_id')
-				->where(array('association_id' => $id))
+				->where(array('group_id' => $id))
 				->select();
-			$associations_users_ids = array();
-			foreach($associations_users as $associations_user)
-				$associations_users_ids[] = (int) $associations_user['user_id'];
-			unset($associations_users);
+			$groups_users_ids = array();
+			foreach($groups_users as $groups_user)
+				$groups_users_ids[] = (int) $groups_user['user_id'];
+			unset($groups_users);
 			
 			$i = 0;
 			foreach($data['members'] as &$member)
@@ -169,23 +169,23 @@ class Association_Model extends Model {
 					->where('id IN ('.implode(',', array_keys($data['members'])).')')
 					->select();
 				foreach($users as $user){
-					if(($pos = array_search((int) $user['id'], $associations_users_ids)) !== false){
-						array_splice($associations_users_ids, $pos, 1);
-						DB::createQuery('associations_users')
+					if(($pos = array_search((int) $user['id'], $groups_users_ids)) !== false){
+						array_splice($groups_users_ids, $pos, 1);
+						DB::createQuery('groups_users')
 							->set(array(
 								'title'				=> $data['members'][(int) $user['id']]['title'],
 								'admin'				=> $data['members'][(int) $user['id']]['admin'] ? '1' : '0',
 								'order'				=> $data['members'][(int) $user['id']]['order']
 							))
 							->where(array(
-								'association_id' => $id,
+								'group_id' => $id,
 								'user_id' => (int) $user['id']
 							))
 							->update();
 					}else{
-						DB::createQuery('associations_users')
+						DB::createQuery('groups_users')
 							->set(array(
-								'association_id'	=> $id,
+								'group_id'	=> $id,
 								'user_id'			=> $user['id'],
 								'title'				=> $data['members'][(int) $user['id']]['title'],
 								'admin'				=> $data['members'][(int) $user['id']]['admin'] ? '1' : '0',
@@ -196,11 +196,11 @@ class Association_Model extends Model {
 				}
 			}
 			
-			if(count($associations_users_ids) != 0){
-				$users = DB::createQuery('associations_users')
+			if(count($groups_users_ids) != 0){
+				$users = DB::createQuery('groups_users')
 					->where(array(
-						'association_id' => $id,
-						'user_id IN ('.implode(',', $associations_users_ids).')'
+						'group_id' => $id,
+						'user_id IN ('.implode(',', $groups_users_ids).')'
 					))
 					->delete();
 			}
@@ -208,11 +208,11 @@ class Association_Model extends Model {
 		
 		
 		$this->createQuery()
-			->set($association_data)
+			->set($group_data)
 			->update($id);
 		
 		self::clearCache();
-		Cache::delete('association-'.$old_data['url_name']);
+		Cache::delete('group-'.$old_data['url_name']);
 		if($change_name)
 			Post_Model::clearCache();
 		
@@ -221,20 +221,20 @@ class Association_Model extends Model {
 	
 	
 	/**
-	 * Create an association
+	 * Create a group
 	 *
-	 * @param array $data	Association's data
+	 * @param array $data	Group's data
 	 * @return string	URL name
 	 */
 	public function create($data){
-		$association_data = array();
+		$group_data = array();
 		
 		// Name
 		$change_name = false;
 		if(!isset($data['name']))
 			throw new FormException('invalid_name');
 		$name = trim($data['name']);
-		$association_data['name'] = $name;
+		$group_data['name'] = $name;
 		
 		// URL name
 		$url_name = Text::forURL($name);
@@ -244,24 +244,24 @@ class Association_Model extends Model {
 		while(self::urlExists($url_name.$i))
 			$i = $i=='' ? 1 : $i+1;
 		$url_name .= $i;
-		$association_data['url_name'] = $url_name;
+		$group_data['url_name'] = $url_name;
 		
 		// Creation date
-		if(!isset($data['creation_date']) || !($creation_date = strptime($data['creation_date'], __('ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE'))))
+		if(!isset($data['creation_date']) || !($creation_date = strptime($data['creation_date'], __('GROUP_EDIT_FORM_CREATION_DATE_FORMAT_PARSE'))))
 			throw new FormException('invalid_creation_date');
-		$association_data['creation_date'] = ($creation_date['tm_year']+1900).'-'.($creation_date['tm_mon']+1).'-'.$creation_date['tm_mday'];
+		$group_data['creation_date'] = ($creation_date['tm_year']+1900).'-'.($creation_date['tm_mon']+1).'-'.$creation_date['tm_mday'];
 		
 		// Email
 		if(isset($data['mail'])){
 			if($data['mail'] != '' && !Validation::isEmail($data['mail']))
 					throw new FormException('invalid_mail');
 			
-			$association_data['mail'] = $data['mail'];
+			$group_data['mail'] = $data['mail'];
 		}
 		
 		// Description
 		if(isset($data['description']))
-			$association_data['description'] = $data['description'];
+			$group_data['description'] = $data['description'];
 		
 		// Avatar
 		if(!isset($data['avatar_path']) || !File::exists($data['avatar_path']) || !isset($data['avatar_big_path']) && !File::exists($data['avatar_big_path']))
@@ -269,7 +269,7 @@ class Association_Model extends Model {
 		
 		// Insertion in the DB
 		$id = $this->createQuery()
-			->set($association_data)
+			->set($group_data)
 			->insert();
 		
 		
@@ -299,9 +299,9 @@ class Association_Model extends Model {
 					->where('id IN ('.implode(',', array_keys($data['members'])).')')
 					->select();
 				foreach($users as $user){
-					DB::createQuery('associations_users')
+					DB::createQuery('groups_users')
 						->set(array(
-							'association_id'	=> $id,
+							'group_id'	=> $id,
 							'user_id'			=> $user['id'],
 							'title'				=> $data['members'][(int) $user['id']]['title'],
 							'admin'				=> $data['members'][(int) $user['id']]['admin'] ? '1' : '0',
@@ -319,9 +319,9 @@ class Association_Model extends Model {
 	
 	
 	/**
-	 * Delete an association
+	 * Delete a group
 	 *
-	 * @param int $id	Id of the association
+	 * @param int $id	Id of the group
 	 */
 	public function delete($id){
 		$this->createQuery()->delete($id);
@@ -331,12 +331,12 @@ class Association_Model extends Model {
 	
 	
 	/**
-	 * Returns true if an association already exists with this url_name, false otherwise
+	 * Returns true if a group already exists with this url_name, false otherwise
 	 *
 	 * @return boolean
 	 */
 	public static function urlExists($url_name){
-		$result = DB::createQuery('associations')
+		$result = DB::createQuery('groups')
 			->fields('1')
 			->where(array('url_name' => $url_name))
 			->select();
@@ -345,52 +345,52 @@ class Association_Model extends Model {
 	
 	
 	/**
-	 * Returns the list of the association for which the authenticated user is admin
+	 * Returns the list of the groups for which the authenticated user is admin
 	 *
 	 * @return array
 	 */
 	public static function getAuth(){
 		if(!isset(User_Model::$auth_data))
 			return array();
-		$cache_entry = 'associations-auth-'.User_Model::$auth_data['id'];
+		$cache_entry = 'groups-auth-'.User_Model::$auth_data['id'];
 		if($categories = Cache::read($cache_entry))
 			return $categories;
 		
-		$associations_data = DB::select('
+		$groups_data = DB::select('
 			SELECT a.id, a.name, au.admin
-			FROM associations_users au
-			INNER JOIN associations a ON a.id = au.association_id
+			FROM groups_users au
+			INNER JOIN groups a ON a.id = au.group_id
 			WHERE au.user_id = ?
 		', array((int) User_Model::$auth_data['id']));
-		$associations_auth = array();
-		foreach($associations_data as &$asso){
-			$associations_auth[(int) $asso['id']] = array(
+		$groups_auth = array();
+		foreach($groups_data as &$asso){
+			$groups_auth[(int) $asso['id']] = array(
 				'name'	=> $asso['name'],
 				'admin'	=> $asso['admin']=='1'
 			);
 		}
 		
-		Cache::write($cache_entry, $associations_auth, 60*10);
-		$cache_list = Cache::read('associations-auth-cachelist');
+		Cache::write($cache_entry, $groups_auth, 60*10);
+		$cache_list = Cache::read('groups-auth-cachelist');
 		if(!$cache_list)
 			$cache_list = array();
 		if(!in_array($cache_entry, $cache_list))
 			$cache_list[] = $cache_entry;
-		Cache::write('associations-auth-cachelist', $cache_list, 60*10);
+		Cache::write('groups-auth-cachelist', $cache_list, 60*10);
 		
-		return $associations_auth;
+		return $groups_auth;
 	}
 	
 	
 	/**
-	 * Delete all the cache entries related to the associations
+	 * Delete all the cache entries related to the groups
 	 */
 	public static function clearCache(){
-		Cache::delete('associations');
-		if($cache_list = Cache::read('associations-auth-cachelist')){
+		Cache::delete('groups');
+		if($cache_list = Cache::read('groups-auth-cachelist')){
 			foreach($cache_list as $cache_entry)
 				Cache::delete($cache_entry);
-			Cache::delete('associations-auth-cachelist');
+			Cache::delete('groups-auth-cachelist');
 		}
 	}
 	
@@ -398,25 +398,25 @@ class Association_Model extends Model {
 	/**
 	 * Returns  the path of an avatar
 	 *
-	 * @param int $id			Id of the association
+	 * @param int $id			Id of the group
 	 * @param boolean $thumb	Thumb's path if true, big photo otherwise
 	 * @return string
 	 */
 	public static function getAvatarPath($id, $thumb=false){
 		$id = (string) ((int) $id);
-		return DATA_DIR.Config::DIR_DATA_STORAGE.'associations/'.$id.($thumb ? '_thumb' : '').'.jpg';
+		return DATA_DIR.Config::DIR_DATA_STORAGE.'groups/'.$id.($thumb ? '_thumb' : '').'.jpg';
 	}
 	
 	/**
 	 * Returns  the absolute URL of an avatar
 	 *
-	 * @param int $id			Id of the association
+	 * @param int $id			Id of the group
 	 * @param boolean $thumb	Thumb's path if true, big photo otherwise
 	 * @return string
 	 */
 	public static function getAvatarURL($id, $thumb=false){
 		$student_number = (string) ((int) $id);
-		return Config::URL_STORAGE.'associations/'.$id.($thumb ? '_thumb' : '').'.jpg';
+		return Config::URL_STORAGE.'groups/'.$id.($thumb ? '_thumb' : '').'.jpg';
 	}
 	
 }

@@ -247,7 +247,7 @@ var Post = {
 	formEnable : true,
 	
 	initForm : function(){
-		var options = $$("#publish-categories, #publish-association, #publish-private").addClass("hidden");
+		var options = $$("#publish-categories, #publish-group, #publish-private").addClass("hidden");
 		$("publish-message")
 			.resizable()
 			.addEvent("focus", function(){
@@ -268,13 +268,13 @@ var Post = {
 				}
 			});
 		
-		if($("publish-association")){
-			var associationOfficial = $("publish-association-official").addClass("hidden");
-			$("publish-association-select").addEvent("change", function(){
-				if(this.options[this.options.selectedIndex].hasClass("publish-association-admin"))
-					associationOfficial.removeClass("hidden");
+		if($("publish-group")){
+			var groupOfficial = $("publish-group-official").addClass("hidden");
+			$("publish-group-select").addEvent("change", function(){
+				if(this.options[this.options.selectedIndex].hasClass("publish-group-admin"))
+					groupOfficial.removeClass("hidden");
 				else
-					associationOfficial.addClass("hidden");
+					groupOfficial.addClass("hidden");
 			});
 		}
 	},
@@ -586,30 +586,30 @@ var Calendar = {
 
 
 
-var Association = {
+var Group = {
 	initEdit : function(){
-		if(!$("association_edit_name"))
+		if(!$("group_edit_name"))
 			return;
 		
-		$("association_edit_description").resizable();
+		$("group_edit_description").resizable();
 		this.initDeleteMember();
 		
 		// Creation date
-		new Picker.Date($("association_edit_creation_date"), {
+		new Picker.Date($("group_edit_creation_date"), {
 			pickerClass: "datepicker_jqui",
-			format: __("ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE")
+			format: __("GROUP_EDIT_FORM_CREATION_DATE_FORMAT_PARSE")
 		});
 		
 		// Sortable list of members
-		this.sortableMembers = new Sortables('#association-edit-members ul', {
+		this.sortableMembers = new Sortables('#group-edit-members ul', {
 			constrain: true,
 			clone: true,
 			revert: true,
-			handle: '.association-member-handle'
+			handle: '.group-member-handle'
 		});
 		
 		// User name auto-completion
-		new Meio.Autocomplete('association_edit_add_member', $('association_edit_add_member_url').value, {
+		new Meio.Autocomplete('group_edit_add_member', $('group_edit_add_member_url').value, {
 			delay: 200,
 			minChars: 1,
 			cacheLength: 100,
@@ -617,27 +617,27 @@ var Association = {
 			valueField: $('value-field'),
 			
 			onSelect: function(elements, data){
-				var i = $('association_edit_add_member').set('value', '');
+				var i = $('group_edit_add_member').set('value', '');
 				i.blur();
 				setTimeout(function(){i.focus();}, 0);
 				
 				var e = new Element('li', {
-					html: $("association-edit-member-stock").innerHTML
+					html: $("group-edit-member-stock").innerHTML
 				});
-				e.getElements('.association-member-name')[0]
+				e.getElements('.group-member-name')[0]
 					.set('html', data.value.htmlspecialchars())
 					.set('href', data.url)
-					.removeClass('association-member-name');
+					.removeClass('group-member-name');
 				e.getElements('input[name=members_ids[]]')[0]
 					.set('value', data.user_id);
 				e.getElements('input[name=member_title]')[0]
 					.set('name', 'member_title_'+data.user_id);
 				e.getElements('input[name=member_admin]')[0]
 					.set('name', 'member_admin_'+data.user_id);
-				Association.initDeleteMember(e);
-				e.inject($$('#association-edit-members ul')[0]);
+				Group.initDeleteMember(e);
+				e.inject($$('#group-edit-members ul')[0]);
 				
-				Association.sortableMembers.addItems(e);
+				Group.sortableMembers.addItems(e);
 			},
 			
 			urlOptions: { 
@@ -661,15 +661,15 @@ var Association = {
 	
 	initDeleteMember : function(el){
 		if(el == null)
-			el = $$("#association-edit-members li");
+			el = $$("#group-edit-members li");
 		if(typeOf(el) == "elements"){
 			el.each(function(e){
-				Association.initDeleteMember(e);
+				Group.initDeleteMember(e);
 			});
 			return;
 		}
-		el.getElements(".association-member-delete")[0].addEvent("click", function(){
-			Association.sortableMembers.removeItems(el);
+		el.getElements(".group-member-delete")[0].addEvent("click", function(){
+			Group.sortableMembers.removeItems(el);
 			el.destroy();
 		});
 	},

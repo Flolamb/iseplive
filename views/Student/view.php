@@ -54,9 +54,7 @@
 		<?php
 		if($is_admin){
 		?>
-		<a href="<?php echo Config::URL_ROOT.Routes::getPage('student_edit', array('username' => $username)); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/edit.png" alt="" class="icon" /> <?php echo __('PROFILE_EDIT'); ?></a>
-		<a href="<?php echo Config::URL_ROOT.Routes::getPage('student_delete', array('username' => $username)); ?>" onclick="if(!confirm(<?php echo htmlspecialchars(json_encode(__('PROFILE_DELETE_CONFIRM'))); ?>)) return false;"><img src="<?php echo Config::URL_STATIC; ?>images/icons/delete.png" alt="" class="icon" /> <?php echo __('PROFILE_DELETE'); ?></a>
-		<br />
+		<a href="<?php echo Config::URL_ROOT.Routes::getPage('student_edit', array('username' => $username)); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/edit.png" alt="" class="icon" /> <?php echo __('PROFILE_EDIT'); ?></a><br />
 		<?php
 		}
 		?>

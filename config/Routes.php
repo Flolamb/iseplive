@@ -92,17 +92,17 @@ final class Routes extends RoutesAbstract {
 			'vars'		=> 'controller=Post&action=events&year=$1&month=$2',
 			'url'		=> 'events/{year}/{month}',
 			'extend'	=> array(
-				'day&association'	=> 'association_events_day',
+				'day&group'	=> 'group_events_day',
 				'day'	=> 'events_day',
-				'association'	=> 'association_events'
+				'group'	=> 'group_events'
 			)
 		),
-		'association_events'	=> array(
+		'group_events'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)/events/([0-9]{4})/([0-9]{2})(?=\?|$)',
-			'vars'		=> 'controller=Post&action=events&association=$1&year=$2&month=$3',
-			'url'		=> 'association/{association}/events/{year}/{month}',
+			'vars'		=> 'controller=Post&action=events&group=$1&year=$2&month=$3',
+			'url'		=> 'association/{group}/events/{year}/{month}',
 			'extend'	=> array(
-				'day'	=> 'events_association_day'
+				'day'	=> 'events_group_day'
 			)
 		),
 		// Events' posts in a day
@@ -111,13 +111,13 @@ final class Routes extends RoutesAbstract {
 			'vars'		=> 'controller=Post&action=events&year=$1&month=$2&day=$3',
 			'url'		=> 'events/{year}/{month}/{day}',
 			'extend'	=> array(
-				'association'	=> 'association_events_day'
+				'group'	=> 'group_events_day'
 			)
 		),
-		'association_events_day'	=> array(
+		'group_events_day'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)/events/([0-9]{4})/([0-9]{2})/([0-9]{2})(?=\?|$)',
-			'vars'		=> 'controller=Post&action=events&association=$1&year=$2&month=$3&day=$4',
-			'url'		=> 'association/{association}/events/{year}/{month}/{day}'
+			'vars'		=> 'controller=Post&action=events&group=$1&year=$2&month=$3&day=$4',
+			'url'		=> 'association/{group}/events/{year}/{month}/{day}'
 		),
 		
 		// iCal : Official events
@@ -126,13 +126,13 @@ final class Routes extends RoutesAbstract {
 			'vars'		=> 'controller=Event&action=ical&official&mode=raw',
 			'url'		=> 'events/calendar-official.ics',
 			'extend'	=> array(
-				'association'	=> 'association_ical_official'
+				'group'	=> 'group_ical_official'
 			)
 		),
-		'association_ical_official'	=> array(
+		'group_ical_official'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)/events/calendar-official.ics(?=\?|$)',
-			'vars'		=> 'controller=Event&action=ical&official&association=$1&mode=raw',
-			'url'		=> 'association/{association}/events/calendar-official.ics'
+			'vars'		=> 'controller=Event&action=ical&official&group=$1&mode=raw',
+			'url'		=> 'association/{group}/events/calendar-official.ics'
 		),
 		// iCal : Non official events
 		'ical_non_official'	=> array(
@@ -140,13 +140,13 @@ final class Routes extends RoutesAbstract {
 			'vars'		=> 'controller=Event&action=ical&mode=raw',
 			'url'		=> 'events/calendar-students.ics',
 			'extend'	=> array(
-				'association'	=> 'association_ical_non_official'
+				'group'	=> 'group_ical_non_official'
 			)
 		),
-		'association_ical_non_official'	=> array(
+		'group_ical_non_official'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)/events/calendar-students.ics(?=\?|$)',
-			'vars'		=> 'controller=Event&action=ical&association=$1&mode=raw',
-			'url'		=> 'association/{association}/events/calendar-students.ics'
+			'vars'		=> 'controller=Event&action=ical&group=$1&mode=raw',
+			'url'		=> 'association/{group}/events/calendar-students.ics'
 		),
 		
 		// Vote for a survey
@@ -169,12 +169,6 @@ final class Routes extends RoutesAbstract {
 			'vars'		=> 'controller=Student&action=edit&username=$1',
 			'url'		=> 'student/{username}/edit'
 		),
-		// Delete a user
-		'student_delete'	=> array(
-			'regexp'	=> '^student/([a-z0-9-]+)/delete(?=\?|$)',
-			'vars'		=> 'controller=Student&action=delete&username=$1',
-			'url'		=> 'student/{username}/delete'
-		),
 		
 		// Edit personnal information
 		'profile_edit'	=> array(
@@ -183,49 +177,49 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'profile/edit'
 		),
 		
-		// Association's page
-		'association'	=> array(
+		// Group's page
+		'group'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)(?=\?|$)',
-			'vars'		=> 'controller=Association&action=view&association=$1',
-			'url'		=> 'association/{association}'
+			'vars'		=> 'controller=Group&action=view&group=$1',
+			'url'		=> 'association/{group}'
 		),
-		'association_posts_ajax_page'	=> array(
+		'group_posts_ajax_page'	=> array(
 			'regexp'	=> '^ajax/association/([a-z0-9-]+)/posts/([1-9][0-9]*)(?=\?|$)',
-			'vars'		=> 'controller=Post&action=index_ajax&association=$1&page=$2&mode=raw',
-			'url'		=> 'ajax/association/{association}/posts/{page}'
+			'vars'		=> 'controller=Post&action=index_ajax&group=$1&page=$2&mode=raw',
+			'url'		=> 'ajax/association/{group}/posts/{page}'
 		),
-		'association_posts_category'	=> array(
+		'group_posts_category'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)/category/([a-zA-Z0-9_-]+)(?=\?|$)',
-			'vars'		=> 'controller=Association&action=view&association=$1&category=$2',
-			'url'		=> 'association/{association}/category/{category}'
+			'vars'		=> 'controller=Group&action=view&group=$1&category=$2',
+			'url'		=> 'association/{group}/category/{category}'
 		),
-		'association_posts_category_ajax_page'	=> array(
+		'group_posts_category_ajax_page'	=> array(
 			'regexp'	=> '^ajax/association/([a-z0-9-]+)/category/([a-zA-Z0-9_-]+)/([1-9][0-9]*)(?=\?|$)',
-			'vars'		=> 'controller=Post&action=index_ajax&association=$1&category=$2&page=$3&mode=raw',
-			'url'		=> 'ajax/association/{association}/category/{category}/{page}'
+			'vars'		=> 'controller=Post&action=index_ajax&group=$1&category=$2&page=$3&mode=raw',
+			'url'		=> 'ajax/association/{group}/category/{category}/{page}'
 		),
-		'association_edit'	=> array(
+		'group_edit'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)/edit(?=\?|$)',
-			'vars'		=> 'controller=Association&action=edit&association=$1',
-			'url'		=> 'association/{association}/edit'
+			'vars'		=> 'controller=Group&action=edit&group=$1',
+			'url'		=> 'association/{group}/edit'
 		),
-		'association_delete'	=> array(
+		'group_delete'	=> array(
 			'regexp'	=> '^association/([a-z0-9-]+)/delete(?=\?|$)',
-			'vars'		=> 'controller=Association&action=delete&association=$1',
-			'url'		=> 'association/{association}/delete'
+			'vars'		=> 'controller=Group&action=delete&group=$1',
+			'url'		=> 'association/{group}/delete'
 		),
-		'association_add'	=> array(
+		'group_add'	=> array(
 			'regexp'	=> '^association-add(?=\?|$)',
-			'vars'		=> 'controller=Association&action=add',
-			'url'		=> 'association-add'
+			'vars'		=> 'controller=Group&action=add',
+			'url'		=> 'group-add'
 		),
 		
 		
 		// Associations' list
-		'associations'	=> array(
+		'groups'	=> array(
 			'regexp'	=> '^associations(?=\?|$)',
-			'vars'		=> 'controller=Association&action=index',
-			'url'		=> 'associations'
+			'vars'		=> 'controller=Group&action=index',
+			'url'		=> 'groups'
 		),
 		
 		// Sign-in

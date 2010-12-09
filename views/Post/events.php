@@ -1,7 +1,7 @@
 
 <h1><?php
-if(isset($association))
-	echo $association['name'].' - ';
+if(isset($group))
+	echo $group['name'].' - ';
 if(isset($day_time))
 	echo Date::dateMonth($day_time);
 else
@@ -37,8 +37,8 @@ if($is_logged){
 	<div id="posts-sidebar-content">
 		<div id="calendar">
 			<?php
-			if(isset($association))
-				$calendar_association = $association['url_name'];
+			if(isset($group))
+				$calendar_group = $group['url_name'];
 			require dirname(__FILE__).'/../_includes/calendar.php';
 			?>
 		</div>
