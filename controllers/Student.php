@@ -9,6 +9,7 @@ class Student_Controller extends Controller {
 		$this->setView('view.php');
 		
 		$is_logged = isset(User_Model::$auth_data);
+		$is_student = $is_logged && isset(User_Model::$auth_data['student_number']);
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		
 		// If the user isn't logged in
@@ -18,14 +19,40 @@ class Student_Controller extends Controller {
 		try {
 			
 			$student = $this->model->getInfo($params['username']);
-			$this->set($student);
+			$post_model = new Post_Model();
 			
-			// Avatar
 			$this->set(array(
-				'groups'	=> isset($student['id']) ? Group_Model::getAuth((int) $student['id']) : array(),
-				'is_owner'	=> User_Model::$auth_data['username'] == $student['username'],
-				'is_admin'	=> $is_admin
+				'student'		=> $student,
+				'groups'		=> isset($student['id']) ? Group_Model::getAuth((int) $student['id']) : array(),
+				'is_owner'		=> User_Model::$auth_data['username'] == $student['username'],
+				'is_logged'		=> true,
+				'is_student'	=> $is_student,
+				'is_admin'		=> $is_admin,
+				'username'			=> User_Model::$auth_data['username'],
+				'firstname'			=> User_Model::$auth_data['firstname'],
+				'lastname'			=> User_Model::$auth_data['lastname']
 			));
+			
+			if($is_student)
+				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
+			
+			// If the student is a user, we show their posts
+			if(isset($student['id'])){
+				$category = isset($params['category']) ? $params['category'] : null;
+				$category_model = new Category_Model();
+				
+				$this->set(array(
+					'posts'				=> $post_model->getPosts(array(
+						'restricted'		=> true,
+						'user_id'			=> (int) $student['id'],
+						'category_name'	=> $category,
+						'official'			=> false,
+						'show_private'		=> $is_student
+					), Config::POST_DISPLAYED),
+					'categories'		=> $category_model->getAll(),
+					'current_category'	=> $category
+				));
+			}
 			
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');

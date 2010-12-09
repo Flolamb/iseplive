@@ -1,5 +1,5 @@
 
-<div class="groups-column left">
+<div class="profile-column left">
 	<div class="group-profile">
 		<a href="<?php echo $group['avatar_big_url']; ?>" rel="lightbox" class="avatar profile-avatar"><img src="<?php echo $group['avatar_url']; ?>" alt="" /></a>
 

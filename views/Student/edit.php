@@ -1,5 +1,5 @@
 
-<div class="profile-block">
+<div class="profile-column center">
 	<form action="?" method="post" enctype="multipart/form-data" id="form-profile">
 		<h1><?php echo __('STUDENT_EDIT_TITLE', array('username' => $student['username'])); ?></h1>
 		

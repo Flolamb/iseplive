@@ -468,8 +468,14 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 }
 
 /* Profile */
-.profile-block {
-	width: 500px;
+.profile-column {
+	width: 35%;
+}
+.profile-column.left {
+	float: left;
+	margin: 0;
+}
+.profile-column.center {
 	margin: 0 auto;
 }
 .profile-avatar {
@@ -496,22 +502,13 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 
 /* Groups' and users' profiles */
 
-.groups-column {
-	width: 35%;
-}
-.groups-column.left {
-	float: left;
-}
-.groups-column.right {
-	float: right;
-}
-.groups-column.center {
-	margin: 0 auto;
-}
 .group-profile {
 	text-align: justify;
 }
 #posts-official.group {
+	margin-left: 7%;
+}
+#posts-nonofficial.user {
 	margin-left: 7%;
 }
 

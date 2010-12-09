@@ -1,5 +1,5 @@
 
-<div class="profile-block">
+<div class="profile-column center">
 	<form action="?" method="post" enctype="multipart/form-data" id="form-profile">
 		<h1><?php echo __('USER_EDIT_TITLE'); ?></h1>
 		

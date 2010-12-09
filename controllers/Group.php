@@ -49,8 +49,8 @@ class Group_Controller extends Controller {
 			'categories'		=> $category_model->getAll(),
 			'current_category'	=> $category,
 			'posts'				=> $post_model->getPosts(array(
-				'restricted'	=> true,
-				'group_id'	=> (int) $group['id'],
+				'restricted'		=> true,
+				'group_id'			=> (int) $group['id'],
 				'category_name'		=> $category,
 				'official'			=> $is_logged ? null : true,
 				'show_private'		=> $is_student
@@ -73,9 +73,9 @@ class Group_Controller extends Controller {
 		if($is_logged){
 			
 			$this->set(array(
-				'username'			=> User_Model::$auth_data['username'],
-				'firstname'			=> User_Model::$auth_data['firstname'],
-				'lastname'			=> User_Model::$auth_data['lastname'],
+				'username'		=> User_Model::$auth_data['username'],
+				'firstname'		=> User_Model::$auth_data['firstname'],
+				'lastname'		=> User_Model::$auth_data['lastname'],
 				'groups_auth'	=> Group_Model::getAuth()
 			));
 			

@@ -1,5 +1,5 @@
 
-<div class="groups-column center">
+<div class="profile-column center">
 	<form action="?" method="post" enctype="multipart/form-data" id="group-profile">
 		<h1><?php echo __('GROUP_ADD_TITLE'); ?></h1>
 		

@@ -12,6 +12,7 @@ class Post_Model extends Model {
 	 *							* category_name: Category's name
 	 *							* group_id: Group's id
 	 *							* group_name: Group's name
+	 *							* user_id: User's id
 	 *							* id: ID of a post to get
 	 *							* ids: List of IDs of post to get
 	 *							* restricted: If true, limits the number of photos displayed
@@ -42,6 +43,8 @@ class Post_Model extends Model {
 			$where[] = 'c.id = "'.$params['category_id'].'"';
 		if(isset($params['category_name']))
 			$where[] = 'c.url_name = '.DB::quote($params['category_name']);
+		if(isset($params['user_id']))
+			$where[] = 'p.user_id = '.DB::quote($params['user_id']);
 		if(isset($params['ids']) && is_array($params['ids']))
 			$where[] = 'p.id IN ('.implode(',', $params['ids']).')';
 		if(isset($params['id']) && (is_int($params['id']) || ctype_digit($params['id'])))

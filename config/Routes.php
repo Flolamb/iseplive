@@ -162,6 +162,21 @@ final class Routes extends RoutesAbstract {
 			'vars'		=> 'controller=Student&action=view&username=$1',
 			'url'		=> 'student/{username}'
 		),
+		'user_posts_ajax_page'	=> array(
+			'regexp'	=> '^ajax/user/([0-9]+)/posts/([1-9][0-9]*)(?=\?|$)',
+			'vars'		=> 'controller=Post&action=index_ajax&user_id=$1&official=0&page=$2&mode=raw',
+			'url'		=> 'ajax/user/{user_id}/posts/{page}'
+		),
+		'user_posts_category'	=> array(
+			'regexp'	=> '^student/([a-z0-9-]+)/category/([a-zA-Z0-9_-]+)(?=\?|$)',
+			'vars'		=> 'controller=Student&action=view&username=$1&category=$2',
+			'url'		=> 'student/{username}/category/{category}'
+		),
+		'user_posts_category_ajax_page'	=> array(
+			'regexp'	=> '^ajax/user/([0-9]+)/category/([a-zA-Z0-9_-]+)/([1-9][0-9]*)(?=\?|$)',
+			'vars'		=> 'controller=Post&action=index_ajax&user_id=$1&official=0&category=$2&page=$3&mode=raw',
+			'url'		=> 'ajax/user/{user_id}/category/{category}/{page}'
+		),
 		
 		// Edit a user
 		'student_edit'	=> array(

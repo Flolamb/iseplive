@@ -77,6 +77,7 @@ class Post_Controller extends Controller {
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
 		
 		$category = isset($params['category']) ? $params['category'] : null;
+		$user_id = isset($params['user_id']) ? $params['user_id'] : null;
 		$offset = (((int) $params['page']) - 1) * Config::POST_DISPLAYED;
 		
 		$this->set(array(
@@ -101,6 +102,7 @@ class Post_Controller extends Controller {
 					'restricted'	=> true,
 					'official'		=> false,
 					'category_name'	=> $category,
+					'user_id'		=> $user_id,
 					'show_private'	=> $is_student
 				), Config::POST_DISPLAYED, $offset));
 			

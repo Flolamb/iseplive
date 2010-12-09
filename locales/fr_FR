@@ -173,6 +173,8 @@ PROFILE_EDIT_PROFILE
 	Modifier mes informations personnelles
 PROFILE_EDIT
 	Éditer
+PROFILE_POSTS
+	Publications
 
 
 # View: edit
