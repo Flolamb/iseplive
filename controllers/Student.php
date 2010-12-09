@@ -3,6 +3,30 @@
 class Student_Controller extends Controller {
 	
 	/**
+	 * List of the students
+	 */
+	public function index($params){
+		$this->setView('index.php');
+		$this->setTitle(__('STUDENTS_TITLE'));
+		
+		$is_logged = isset(User_Model::$auth_data);
+		if(!$is_logged)
+			throw new ActionException('User', 'signin', array('referrer' => $_SERVER['REQUEST_URI']));
+		
+		$last_promo = ((int) date('Y')) + 5;
+		if((int) date('m') < 9)
+			$last_promo -= 1;
+		
+		$students = $this->model->getAllByPromos($last_promo, $last_promo-1, $last_promo-2, $last_promo-3, $last_promo-4);
+		
+		$this->set(array(
+			'students'		=> $students,
+			'last_promo'	=> $last_promo
+		));
+	}
+	
+	
+	/**
 	 * Show the profile of a student
 	 */
 	public function view($params){
@@ -20,6 +44,8 @@ class Student_Controller extends Controller {
 			
 			$student = $this->model->getInfo($params['username']);
 			$post_model = new Post_Model();
+			
+			$this->setTitle(htmlspecialchars($student['firstname'].' '.$student['lastname']));
 			
 			$this->set(array(
 				'student'		=> $student,
@@ -98,6 +124,8 @@ class Student_Controller extends Controller {
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');
 		}
+		
+		$this->setTitle(__('STUDENT_EDIT_TITLE', array('username' => $student['username'])));
 		
 		// Birthday
 		$student['birthday'] = date(__('USER_EDIT_FORM_BIRTHDAY_FORMAT'), strtotime($student['birthday']));

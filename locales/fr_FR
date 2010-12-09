@@ -144,6 +144,21 @@ POST_ADD_ERROR_SURVEY_ANSWERS
 
 ### Controller: Student
 
+# View: index
+STUDENTS_TITLE
+	Annuaire des élèves
+STUDENTS_PROMO1
+	Promo {year} (Sup)
+STUDENTS_PROMO2
+	Promo {year} (Spe)
+STUDENTS_PROMO3
+	Promo {year} (A1)
+STUDENTS_PROMO4
+	Promo {year} (A2)
+STUDENTS_PROMO5
+	Promo {year} (A3)
+
+
 # View: view
 PROFILE_PROMO
 	Promo :
@@ -272,6 +287,8 @@ GROUP_ADD
 	Ajouter une association
 
 # View: view
+GROUP_TITLE
+	Association {group}
 GROUP_CREATION
 	Date de création :
 GROUP_CONTACT
@@ -327,8 +344,10 @@ GROUP_ADD_TITLE
 	Ajout d'une association
 
 # View: delete
+GROUP_DELETE_TITLE
+	Suppression d'une association
 GROUP_DELETE_OK
-	Association "{association}" supprimée avec succès !
+	Association "{group}" supprimée avec succès !
 
 
 ### Common views

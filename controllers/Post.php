@@ -238,6 +238,11 @@ class Post_Controller extends Controller {
 				$post_ids[] = (int) $event['post_id'];
 		}
 		
+		$this->setTitle(
+			(isset($group) ? $group['name'].' - ' : '').
+			(isset($day_time) ? Date::dateMonth($day_time) : Date::getMonthByNum($month).' '.$year)
+		);
+		
 		$this->set(array(
 			'is_logged'		=> $is_logged,
 			'is_student'	=> $is_student,

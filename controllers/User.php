@@ -35,6 +35,7 @@ class User_Controller extends Controller {
 	 */
 	public function profile_edit($params){
 		$this->setView('profile_edit.php');
+		$this->setTitle(__('USER_EDIT_TITLE'));
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_student = $is_logged && isset(User_Model::$auth_data['student_number']);

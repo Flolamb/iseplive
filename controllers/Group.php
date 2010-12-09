@@ -3,10 +3,11 @@
 class Group_Controller extends Controller {
 	
 	/**
-	 * Show the profile of a group
+	 * List of the groups
 	 */
 	public function index($params){
 		$this->setView('index.php');
+		$this->setTitle(__('STUDENTS_TITLE'));
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
@@ -33,6 +34,8 @@ class Group_Controller extends Controller {
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');
 		}
+		
+		$this->setTitle(__('GROUP_TITLE', array('group' => htmlspecialchars($group['name']))));
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_student = $is_logged && isset(User_Model::$auth_data['student_number']);
@@ -103,6 +106,8 @@ class Group_Controller extends Controller {
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');
 		}
+		
+		$this->setTitle(__('GROUP_EDIT_TITLE', array('group' => htmlspecialchars($group['name']))));
 		
 		// Authorization
 		$groups_auth = Group_Model::getAuth();
@@ -217,6 +222,7 @@ class Group_Controller extends Controller {
 	 */
 	public function add($params){
 		$this->setView('add.php');
+		$this->setTitle(__('GROUP_ADD_TITLE'));
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
@@ -342,6 +348,8 @@ class Group_Controller extends Controller {
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');
 		}
+		
+		$this->setTitle(__('GROUP_DELETE_TITLE'));
 		
 		// Authorization
 		$groups_auth = Group_Model::getAuth();

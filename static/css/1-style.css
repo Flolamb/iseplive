@@ -574,6 +574,17 @@ h1, h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
 }
 
 
+/* Students directory */
+
+.students-promo {
+	width: 20%;
+	float: left;
+}
+.students-promo  h2 {
+	margin-bottom: 5px;
+}
+
+
 /* Events calendar */
 
 #calendar {

@@ -53,7 +53,7 @@ foreach($cssFiles as $cssFile){
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('home'); ?>"><?php echo __('NAV_PUBLICATIONS'); ?></a>
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('groups'); ?>"><?php echo __('NAV_GROUPS'); ?></a>
 					<?php if($is_logged){ ?>
-					<a href="<?php echo Config::URL_ROOT.Routes::getPage('directory'); ?>"><?php echo __('NAV_DIRECTORY'); ?></a>
+					<a href="<?php echo Config::URL_ROOT.Routes::getPage('students'); ?>"><?php echo __('NAV_DIRECTORY'); ?></a>
 					<?php } ?>
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('links'); ?>"><?php echo __('NAV_LINKS'); ?></a>
 					<?php if($is_logged){ ?>

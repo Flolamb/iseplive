@@ -3,6 +3,42 @@
 class Student_Model extends Model {
 	
 	/**
+	 * Returns the names of all students, by promo
+	 *
+	 * @param int $promo	Promo numbers
+	 * @return array
+	 */
+	public function getAllByPromos(){
+		$promos = func_get_args();
+		if(count($promos) == 0)
+			throw new Exception('getAllByPromos method must have at least 1 parameter');
+		
+		$cache_entry = 'students-promos-'.implode('-', $promos);
+		$students = Cache::read($cache_entry);
+		if($students !== false)
+			return $students;
+		
+		$students = $this->createQuery()
+			->fields('username', 'firstname', 'lastname', 'promo')
+			->where('promo IN ('.implode(',', $promos).')')
+			->order('firstname', 'lastname')
+			->select();
+		
+		$students_by_promo = array();
+		
+		foreach($students as $student){
+			if(!isset($students_by_promo[(int) $student['promo']]))
+				$students_by_promo[(int) $student['promo']] = array();
+			$students_by_promo[(int) $student['promo']][] = $student;
+		}
+		
+		Cache::write($cache_entry, $students_by_promo, 2*3600);
+		
+		return $students_by_promo;
+	}
+	
+	
+	/**
 	 * Returns an associative array of the information of a student,
 	 * including user info (from the users table)
 	 *

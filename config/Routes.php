@@ -156,7 +156,7 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'ajax/survey/vote/{id}'
 		),
 		
-		// Students profiles
+		// Student profile
 		'student'	=> array(
 			'regexp'	=> '^student/([a-z0-9-]+)(?=\?|$)',
 			'vars'		=> 'controller=Student&action=view&username=$1',
@@ -190,6 +190,13 @@ final class Routes extends RoutesAbstract {
 			'regexp'	=> '^profile/edit(?=\?|$)',
 			'vars'		=> 'controller=User&action=profile_edit',
 			'url'		=> 'profile/edit'
+		),
+		
+		// Students' directory
+		'students'	=> array(
+			'regexp'	=> '^students(?=\?|$)',
+			'vars'		=> 'controller=Student&action=index',
+			'url'		=> 'students'
 		),
 		
 		// Group's page
