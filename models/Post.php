@@ -351,6 +351,17 @@ class Post_Model extends Model {
 	 * @param int $post_id		Post's id
 	 */
 	public function delete($post_id){
+		// Delete attachments
+		$attachments = DB::createQuery('attachments')
+			->fields('id', 'ext')
+			->where(array('post_id' => $post_id))
+			->select();
+		foreach($attachments as $attachment){
+			File::delete(self::getAttachedFilePath((int) $attachment['id'], $attachment['ext']));
+			File::delete(self::getAttachedFilePath((int) $attachment['id'], $attachment['ext'], 'thumb'));
+		}
+		
+		// Delete the post
 		$this->createQuery()->delete($post_id);
 		self::clearCache();
 	}
@@ -376,7 +387,7 @@ class Post_Model extends Model {
 	 * @param string $suffix		Optional suffx
 	 */
 	public static function getAttachedFilePath($file_id, $ext, $suffix=''){
-		$extended_file_id = str_pad($file_id, 6, '0', STR_PAD_LEFT);
+		$extended_file_id = str_pad((string) $file_id, 6, '0', STR_PAD_LEFT);
 		return DATA_DIR.Config::DIR_DATA_STORAGE.'files/'.substr($extended_file_id, 0, 2).'/'.substr($extended_file_id, 2, 2).'/'.$file_id.($suffix=='' ? '' : '_'.$suffix).'.'.$ext;
 	}
 	
@@ -388,7 +399,7 @@ class Post_Model extends Model {
 	 * @param string $suffix		Optional suffx
 	 */
 	public static function getAttachedFileURL($file_id, $ext, $suffix=''){
-		$extended_file_id = str_pad($file_id, 6, '0', STR_PAD_LEFT);
+		$extended_file_id = str_pad((string) $file_id, 6, '0', STR_PAD_LEFT);
 		return Config::URL_STORAGE.'files/'.substr($extended_file_id, 0, 2).'/'.substr($extended_file_id, 2, 2).'/'.$file_id.($suffix=='' ? '' : '_'.$suffix).'.'.$ext;
 	}
 	
