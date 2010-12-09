@@ -345,28 +345,34 @@ class Group_Model extends Model {
 	
 	
 	/**
-	 * Returns the list of the groups for which the authenticated user is admin
+	 * Returns the list of the groups related to a user
 	 *
+	 * @param int $id	Id of a user (if not set, the id of the authenticated user is used)
 	 * @return array
 	 */
-	public static function getAuth(){
-		if(!isset(User_Model::$auth_data))
-			return array();
-		$cache_entry = 'groups-auth-'.User_Model::$auth_data['id'];
+	public static function getAuth($id=null){
+		if(!isset($id) && !isset(User_Model::$auth_data))
+			throw new Exception('User id not found');
+		if(!isset($id))
+			$id = (int) User_Model::$auth_data['id'];
+		
+		$cache_entry = 'groups-auth-'.$id;
 		if($categories = Cache::read($cache_entry))
 			return $categories;
 		
 		$groups_data = DB::select('
-			SELECT a.id, a.name, au.admin
-			FROM groups_users au
-			INNER JOIN groups a ON a.id = au.group_id
-			WHERE au.user_id = ?
-		', array((int) User_Model::$auth_data['id']));
+			SELECT g.id, g.name, g.url_name, gu.title, gu.admin
+			FROM groups_users gu
+			INNER JOIN groups g ON g.id = gu.group_id
+			WHERE gu.user_id = ?
+		', array($id));
 		$groups_auth = array();
 		foreach($groups_data as &$asso){
 			$groups_auth[(int) $asso['id']] = array(
-				'name'	=> $asso['name'],
-				'admin'	=> $asso['admin']=='1'
+				'name'		=> $asso['name'],
+				'url_name'	=> $asso['url_name'],
+				'title'		=> $asso['title'],
+				'admin'		=> $asso['admin']=='1'
 			);
 		}
 		

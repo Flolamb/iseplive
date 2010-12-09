@@ -157,7 +157,7 @@ class Post_Controller extends Controller {
 			'is_logged'		=> $is_logged,
 			'is_student'	=> $is_student,
 			'is_admin'		=> $is_admin,
-			'groups_auth'	=> Group_Model::getAuth(),
+			'groups_auth'	=> $is_logged ? Group_Model::getAuth() : array(),
 			'post'			=> $post,
 			'one_post'		=> true
 		));
@@ -240,7 +240,7 @@ class Post_Controller extends Controller {
 			'is_logged'		=> $is_logged,
 			'is_student'	=> $is_student,
 			'is_admin'		=> $is_admin,
-			'groups_auth'	=> Group_Model::getAuth(),
+			'groups_auth'	=> $is_logged ? Group_Model::getAuth() : array(),
 			'posts'			=> count($post_ids)==0 ? array() : $this->model->getPosts(array(
 				'restricted'		=> true,
 				'show_private'		=> $is_student,
@@ -579,7 +579,7 @@ class Post_Controller extends Controller {
 			
 			$is_logged = isset(User_Model::$auth_data);
 			$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
-			$groups_auth = Group_Model::getAuth();
+			$groups_auth = $is_logged ? Group_Model::getAuth() : array();
 			
 			if(($is_logged && User_Model::$auth_data['id'] == $post['user_id'])
 			|| $is_admin

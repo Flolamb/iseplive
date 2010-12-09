@@ -211,7 +211,7 @@ final class Routes extends RoutesAbstract {
 		'group_add'	=> array(
 			'regexp'	=> '^association-add(?=\?|$)',
 			'vars'		=> 'controller=Group&action=add',
-			'url'		=> 'group-add'
+			'url'		=> 'association-add'
 		),
 		
 		
@@ -219,7 +219,7 @@ final class Routes extends RoutesAbstract {
 		'groups'	=> array(
 			'regexp'	=> '^associations(?=\?|$)',
 			'vars'		=> 'controller=Group&action=index',
-			'url'		=> 'groups'
+			'url'		=> 'associations'
 		),
 		
 		// Sign-in

@@ -93,18 +93,19 @@ class Group_Controller extends Controller {
 	public function edit($params){
 		$this->setView('edit.php');
 		
+		$is_logged = isset(User_Model::$auth_data);
+		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
+		
 		try {
+			if(!$is_logged)
+				throw new Exception();
 			$group = $this->model->getInfoByName($params['group']);
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');
 		}
 		
-		$groups_auth = Group_Model::getAuth();
-		
-		$is_logged = isset(User_Model::$auth_data);
-		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
-		
 		// Authorization
+		$groups_auth = Group_Model::getAuth();
 		if(!$is_admin && !(isset($groups_auth[(int) $group['id']]) && $groups_auth[(int) $group['id']]['admin']))
 			throw new ActionException('Page', 'error404');
 		
@@ -331,18 +332,19 @@ class Group_Controller extends Controller {
 	public function delete($params){
 		$this->setView('delete.php');
 		
+		$is_logged = isset(User_Model::$auth_data);
+		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
+		
 		try {
+			if(!$is_logged)
+				throw new Exception();
 			$group = $this->model->getInfoByName($params['group']);
 		}catch(Exception $e){
 			throw new ActionException('Page', 'error404');
 		}
 		
-		$groups_auth = Group_Model::getAuth();
-		
-		$is_logged = isset(User_Model::$auth_data);
-		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';
-		
 		// Authorization
+		$groups_auth = Group_Model::getAuth();
 		if(!$is_admin && !(isset($groups_auth[(int) $group['id']]) && $groups_auth[(int) $group['id']]['admin']))
 			throw new ActionException('Page', 'error404');
 		

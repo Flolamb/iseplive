@@ -22,10 +22,9 @@ class Student_Controller extends Controller {
 			
 			// Avatar
 			$this->set(array(
-				'avatar_url'		=> $student['avatar_url'],
-				'avatar_big_url'	=> $student['avatar_big_url'],
-				'is_owner'			=> User_Model::$auth_data['username'] == $student['username'],
-				'is_admin'			=> $is_admin
+				'groups'	=> isset($student['id']) ? Group_Model::getAuth((int) $student['id']) : array(),
+				'is_owner'	=> User_Model::$auth_data['username'] == $student['username'],
+				'is_admin'	=> $is_admin
 			));
 			
 		}catch(Exception $e){

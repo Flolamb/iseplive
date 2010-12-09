@@ -167,13 +167,12 @@ PROFILE_BIRTHDAY
 	Date de naissance :
 PROFILE_BIRTHDAY_FORMAT
 	d/m/Y
+PROFILE_GROUPS
+	Associations :
 PROFILE_EDIT_PROFILE
 	Modifier mes informations personnelles
 PROFILE_EDIT
 	Éditer
-PROFILE_DELETE_CONFIRM
-	Êtes-vous sûr de vouloir supprimer cet utilisateur ?
-	Tous ses messages seront supprimés.
 
 
 # View: edit
