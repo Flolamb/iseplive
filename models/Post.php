@@ -358,7 +358,7 @@ class Post_Model extends Model {
 			->select();
 		foreach($attachments as $attachment){
 			File::delete(self::getAttachedFilePath((int) $attachment['id'], $attachment['ext']));
-			File::delete(self::getAttachedFilePath((int) $attachment['id'], $attachment['ext'], 'thumb'));
+			File::delete(self::getAttachedFilePath((int) $attachment['id'], 'jpg', 'thumb'));
 		}
 		
 		// Delete the post
