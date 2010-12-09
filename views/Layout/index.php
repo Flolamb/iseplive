@@ -115,7 +115,7 @@ foreach($cssFiles as $cssFile){
 					'POST_DELETE_CONFIRM',
 					'POST_COMMENT_DELETE_CONFIRM',
 					'ASSOCIATION_EDIT_FORM_CREATION_DATE_FORMAT_PARSE',
-					'USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT_PARSE'
+					'USER_EDIT_FORM_BIRTHDAY_FORMAT_PARSE'
 				);
 				foreach($js_translations as $i => $js_translation){
 					if($i != 0)

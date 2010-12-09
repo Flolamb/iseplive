@@ -163,6 +163,19 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'student/{username}'
 		),
 		
+		// Edit a user
+		'student_edit'	=> array(
+			'regexp'	=> '^student/([a-z0-9-]+)/edit(?=\?|$)',
+			'vars'		=> 'controller=Student&action=edit&username=$1',
+			'url'		=> 'student/{username}/edit'
+		),
+		// Delete a user
+		'student_delete'	=> array(
+			'regexp'	=> '^student/([a-z0-9-]+)/delete(?=\?|$)',
+			'vars'		=> 'controller=Student&action=delete&username=$1',
+			'url'		=> 'student/{username}/delete'
+		),
+		
 		// Edit personnal information
 		'profile_edit'	=> array(
 			'regexp'	=> '^profile/edit(?=\?|$)',

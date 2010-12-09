@@ -5,7 +5,7 @@
 	<div class="profile-info">
 		<h1><?php echo htmlspecialchars($firstname.' '.$lastname); ?></h1>
 		
-		<strong><?php echo __('PROFILE_PROMO'); ?></strong> <?php echo $promo; ?><br />
+		<strong><?php echo __('PROFILE_PROMO'); ?></strong> <?php echo $promo; if($cesure=='1') echo ' '.__('PROFILE_CESURE') ?><br />
 		<strong><?php echo __('PROFILE_STUDENT_NUMBER'); ?></strong> <?php echo $student_number; ?><br />
 		<br />
 		
@@ -48,7 +48,18 @@
 		
 		<?php if($is_owner){ ?>
 		<br />
-		<a href="<?php echo Config::URL_ROOT.Routes::getPage('profile_edit'); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/edit.png" alt="" class="icon" /> <?php echo __('PROFILE_EDIT_PROFILE'); ?></a>
+		<a href="<?php echo Config::URL_ROOT.Routes::getPage('profile_edit'); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/edit.png" alt="" class="icon" /> <?php echo __('PROFILE_EDIT_PROFILE'); ?></a><br />
 		<?php } ?>
+		
+		<?php
+		if($is_admin){
+		?>
+		<a href="<?php echo Config::URL_ROOT.Routes::getPage('student_edit', array('username' => $username)); ?>"><img src="<?php echo Config::URL_STATIC; ?>images/icons/edit.png" alt="" class="icon" /> <?php echo __('PROFILE_EDIT'); ?></a>
+		<a href="<?php echo Config::URL_ROOT.Routes::getPage('student_delete', array('username' => $username)); ?>" onclick="if(!confirm(<?php echo htmlspecialchars(json_encode(__('PROFILE_DELETE_CONFIRM'))); ?>)) return false;"><img src="<?php echo Config::URL_STATIC; ?>images/icons/delete.png" alt="" class="icon" /> <?php echo __('PROFILE_DELETE'); ?></a>
+		<br />
+		<?php
+		}
+		?>
+		
 	</div>
 </div>

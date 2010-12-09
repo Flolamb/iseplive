@@ -89,7 +89,7 @@ class Post_Model extends Model {
 				if(!isset($comments_by_post_id[$post_id]))
 					$comments_by_post_id[$post_id] = array();
 				unset($comment['post_id']);
-				$comment['avatar_url'] = User_Model::getAvatarURL($comment['student_number'], true);
+				$comment['avatar_url'] = Student_Model::getAvatarURL($comment['student_number'], true);
 				$comments_by_post_id[$post_id][] = $comment;
 			}
 			unset($comments);
@@ -186,14 +186,13 @@ class Post_Model extends Model {
 					$post['event'] = & $events_by_post_id[$post_id];
 				if(isset($surveys_by_post_id[$post_id]))
 					$post['survey'] = & $surveys_by_post_id[$post_id];
-				if(isset($nb_photos_by_post_id[$post_id]))
-					$post['attachments_nb_photos'] = $nb_photos_by_post_id[$post_id];
+				$post['attachments_nb_photos'] = isset($nb_photos_by_post_id[$post_id]) ? $nb_photos_by_post_id[$post_id] : 0;
 				
 				// Avatar
 				if(isset($post['association_id']) && $post['official']=='1')
 					$post['avatar_url'] = Association_Model::getAvatarURL((int) $post['association_id'], true);
 				else if(isset($post['student_number']))
-					$post['avatar_url'] = User_Model::getAvatarURL((int) $post['student_number'], true);
+					$post['avatar_url'] = Student_Model::getAvatarURL((int) $post['student_number'], true);
 			}
 			
 		}

@@ -79,21 +79,19 @@ class User_Model extends Model {
 		// If the user is a student
 		if(isset(User_Model::$auth_data['student_number'])){
 			// Avatar
-			User_Model::$auth_data['avatar_url'] = User_Model::getAvatarURL(User_Model::$auth_data['student_number'], true);
-			User_Model::$auth_data['avatar_big_url'] = User_Model::getAvatarURL(User_Model::$auth_data['student_number'], false);
+			User_Model::$auth_data['avatar_url'] = Student_Model::getAvatarURL(User_Model::$auth_data['student_number'], true);
+			User_Model::$auth_data['avatar_big_url'] = Student_Model::getAvatarURL(User_Model::$auth_data['student_number'], false);
 		}
 	}
 	
 	
 	/**
-	 * Save the data of the authenticated user
+	 * Save the data of a user
 	 *
+	 * @param int $id		user's id
 	 * @param array $data	user's data
 	 */
-	public function saveProfile($data){
-		if(!isset(self::$auth_data))
-			throw new Exception('User not logged');
-		
+	public function save($id, $data){
 		$user_data = array();
 		
 		// Email
@@ -148,7 +146,7 @@ class User_Model extends Model {
 		
 		// Birthday
 		if(isset($data['birthday'])){
-			if(!($birthday = strptime($data['birthday'], __('USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT_PARSE'))))
+			if(!($birthday = strptime($data['birthday'], __('USER_EDIT_FORM_BIRTHDAY_FORMAT_PARSE'))))
 					throw new FormException('birthday');
 			$user_data['birthday'] = ($birthday['tm_year']+1900).'-'.($birthday['tm_mon']+1).'-'.$birthday['tm_mday'];
 		}
@@ -156,33 +154,8 @@ class User_Model extends Model {
 		// Update the DB
 		$this->createQuery()
 			->set($user_data)
-			->update((int) User_Model::$auth_data['id']);
+			->update($id);
 		
-	}
-	
-	
-	/**
-	 * Returns  the path of an avatar
-	 *
-	 * @param int $student_number	Number of the student
-	 * @param boolean $thumb		Thumb's path if true, big photo otherwise
-	 * @return string
-	 */
-	public static function getAvatarPath($student_number, $thumb=false){
-		$student_number = (string) ((int) $student_number);
-		return DATA_DIR.Config::DIR_DATA_STORAGE.'avatars/'.substr($student_number, 0, -2).'/'.$student_number.($thumb ? '_thumb' : '').'.jpg';
-	}
-	
-	/**
-	 * Returns  the absolute URL of an avatar
-	 *
-	 * @param int $student_number	Number of the student
-	 * @param boolean $thumb		Thumb's path if true, big photo otherwise
-	 * @return string
-	 */
-	public static function getAvatarURL($student_number, $thumb=false){
-		$student_number = (string) ((int) $student_number);
-		return Config::URL_STORAGE.'avatars/'.substr($student_number, 0, -2).'/'.$student_number.($thumb ? '_thumb' : '').'.jpg';
 	}
 	
 }

@@ -46,12 +46,13 @@ class User_Controller extends Controller {
 		$user = User_Model::$auth_data;
 		
 		// Birthday
-		$user['birthday'] = date(__('USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT'), strtotime($user['birthday']));
+		$user['birthday'] = date(__('USER_EDIT_FORM_BIRTHDAY_FORMAT'), strtotime($user['birthday']));
 		
 		// Saving data
-		if(isset($_POST['mail']) && isset($_POST['msn']) && isset($_POST['jabber']) && isset($_POST['address']) && isset($_POST['zipcode']) && isset($_POST['city']) && isset($_POST['cellphone']) && isset($_POST['phone']) && isset($_POST['birthday'])){
+		if(isset($_POST['mail']) && isset($_POST['msn']) && isset($_POST['jabber'])
+		&& isset($_POST['address']) && isset($_POST['zipcode']) && isset($_POST['city'])
+		&& isset($_POST['cellphone']) && isset($_POST['phone']) && isset($_POST['birthday'])){
 			
-			$uploaded_files = array();
 			try {
 				
 				// Other info
@@ -67,7 +68,7 @@ class User_Controller extends Controller {
 					'birthday'	=> $_POST['birthday']
 				);
 				
-				$this->model->saveProfile($data);
+				$this->model->save((int) User_Model::$auth_data['id'], $data);
 				Routes::redirect('student', array('username' => User_Model::$auth_data['username']));
 				
 			}catch(FormException $e){
@@ -77,7 +78,6 @@ class User_Controller extends Controller {
 				$this->set('form_error', $e->getError());
 			}
 		}
-		
 		
 		$this->set('user', $user);
 		$this->addJSCode('User.initEdit();');

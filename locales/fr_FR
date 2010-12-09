@@ -147,6 +147,8 @@ POST_ADD_ERROR_SURVEY_ANSWERS
 # View: view
 PROFILE_PROMO
 	Promo :
+PROFILE_CESURE
+	(césure)
 PROFILE_STUDENT_NUMBER
 	Numéro :
 PROFILE_MAIL_ISEP
@@ -167,6 +169,40 @@ PROFILE_BIRTHDAY_FORMAT
 	d/m/Y
 PROFILE_EDIT_PROFILE
 	Modifier mes informations personnelles
+PROFILE_EDIT
+	Éditer
+PROFILE_DELETE
+	Supprimer
+PROFILE_DELETE_CONFIRM
+	Êtes-vous sûr de vouloir supprimer cet utilisateur ?
+	Tous ses messages seront supprimés.
+
+
+# View: edit
+STUDENT_EDIT_TITLE
+	Édition de l'utilisateur "{username}"
+STUDENT_EDIT_FORM_AVATAR
+	Photo :
+STUDENT_EDIT_ERROR_AVATAR
+	La photo ne doit pas excéder {size} et doit être au format jpg, png, ou gif
+STUDENT_EDIT_FORM_FIRSTNAME
+	Prénom :
+STUDENT_EDIT_ERROR_FIRSTNAME
+	Prénom invalide
+STUDENT_EDIT_FORM_LASTNAME
+	Nom :
+STUDENT_EDIT_ERROR_LASTNAME
+	Nom invalide
+STUDENT_EDIT_FORM_STUDENT_NUMBER
+	Numéro d'étudiant :
+STUDENT_EDIT_ERROR_STUDENT_NUMBER
+	Numéro d'étudiant invalide
+STUDENT_EDIT_FORM_PROMO
+	Promo (année) :
+STUDENT_EDIT_ERROR_PROMO
+	Année de promo invalide
+STUDENT_EDIT_FORM_CESURE
+	césure
 
 
 ### Controller: User
@@ -184,49 +220,53 @@ SIGNIN_BAD_USERNAME_OR_PASSWORD
 	Nom d'utilisateur ou mot de passe incorrect
 
 # View: profile_edit
-USER_PROFILE_EDIT_TITLE
+USER_EDIT_TITLE
 	Modification des informations personnelles
-USER_PROFILE_EDIT_FORM_MAIL
+USER_EDIT_FORM_MAIL
 	Adresse email :
-USER_PROFILE_EDIT_ERROR_MAIL
+USER_EDIT_ERROR_MAIL
 	Adresse email invalide
-USER_PROFILE_EDIT_FORM_MSN
+USER_EDIT_FORM_MSN
 	Adresse MSN :
-USER_PROFILE_EDIT_ERROR_MSN
+USER_EDIT_ERROR_MSN
 	Adresse MSN invalide
-USER_PROFILE_EDIT_FORM_JABBER
+USER_EDIT_FORM_JABBER
 	Adresse Jabber :
-USER_PROFILE_EDIT_ERROR_JABBER
+USER_EDIT_ERROR_JABBER
 	Adresse Jabber invalide
-USER_PROFILE_EDIT_FORM_ADDRESS
+USER_EDIT_FORM_ADDRESS
 	Adresse postale
-USER_PROFILE_EDIT_FORM_ZIPCODE
+USER_EDIT_FORM_ZIPCODE
 	Code postal
-USER_PROFILE_EDIT_ERROR_ZIPCODE
+USER_EDIT_ERROR_ZIPCODE
 	Code postal invalide
-USER_PROFILE_EDIT_FORM_CITY
+USER_EDIT_FORM_CITY
 	Ville
-USER_PROFILE_EDIT_FORM_CELLPHONE
+USER_EDIT_FORM_CELLPHONE
 	Tél portable :
-USER_PROFILE_EDIT_ERROR_CELLPHONE
+USER_EDIT_ERROR_CELLPHONE
 	Numéro invalide. Veuillez entrez un numéro de la forme 06 01 23 45 67
-USER_PROFILE_EDIT_FORM_PHONE
+USER_EDIT_FORM_PHONE
 	Tél fixe :
-USER_PROFILE_EDIT_ERROR_PHONE
+USER_EDIT_ERROR_PHONE
 	Numéro invalide. Veuillez entrez un numéro de la forme 01 23 45 67 89
-USER_PROFILE_EDIT_FORM_BIRTHDAY
+USER_EDIT_FORM_BIRTHDAY
 	Date de naissance :
-USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT
+USER_EDIT_FORM_BIRTHDAY_FORMAT
 	d/m/Y
-USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT_PARSE
+USER_EDIT_FORM_BIRTHDAY_FORMAT_PARSE
 	%d/%m/%Y
-USER_PROFILE_EDIT_ERROR_BIRTHDAY
+USER_EDIT_ERROR_BIRTHDAY
 	Date de naissance invalide
-USER_PROFILE_EDIT_FORM_SUBMIT
+USER_EDIT_FORM_AVATAR
+	Photo :
+USER_EDIT_ERROR_AVATAR
+	La photo ne doit pas excéder {size} et doit être au format jpg, png, ou gif
+USER_EDIT_FORM_SUBMIT
 	Enregistrer
 
 
-### Controller: Student
+### Controller: Association
 
 # View: index
 ASSOCIATION_ADD

@@ -267,13 +267,16 @@ var Post = {
 					options.addClass("hidden");
 				}
 			});
-		var associationOfficial = $("publish-association-official").addClass("hidden");
-		$("publish-association-select").addEvent("change", function(){
-			if(this.options[this.options.selectedIndex].hasClass("publish-association-admin"))
-				associationOfficial.removeClass("hidden");
-			else
-				associationOfficial.addClass("hidden");
-		});
+		
+		if($("publish-association")){
+			var associationOfficial = $("publish-association-official").addClass("hidden");
+			$("publish-association-select").addEvent("change", function(){
+				if(this.options[this.options.selectedIndex].hasClass("publish-association-admin"))
+					associationOfficial.removeClass("hidden");
+				else
+					associationOfficial.addClass("hidden");
+			});
+		}
 	},
 	
 	attach : function(type){
@@ -677,13 +680,13 @@ var Association = {
 
 var User = {
 	initEdit : function(){
-		if(!$("user_profile_edit_mail"))
+		if(!$("user_edit_mail"))
 			return;
 		
 		// Creation date
-		new Picker.Date($("user_profile_edit_birthday"), {
+		new Picker.Date($("user_edit_birthday"), {
 			pickerClass: "datepicker_jqui",
-			format: __("USER_PROFILE_EDIT_FORM_BIRTHDAY_FORMAT_PARSE")
+			format: __("USER_EDIT_FORM_BIRTHDAY_FORMAT_PARSE")
 		});
 		
 	}

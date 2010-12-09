@@ -40,9 +40,8 @@ class Post_Controller extends Controller {
 				), Config::POST_DISPLAYED)
 			));
 			
-			if($is_student){
+			if($is_student)
 				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
-			}
 		
 		}
 		
@@ -167,9 +166,11 @@ class Post_Controller extends Controller {
 			$this->set(array(
 				'username'		=> User_Model::$auth_data['username'],
 				'firstname'		=> User_Model::$auth_data['firstname'],
-				'lastname'		=> User_Model::$auth_data['lastname'],
-				'avatar_url'	=> User_Model::$auth_data['avatar_url']
+				'lastname'		=> User_Model::$auth_data['lastname']
 			));
+			
+			if($is_student)
+				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
 		}
 		
 		if($post['attachments_nb_photos'] != 0){
@@ -259,7 +260,7 @@ class Post_Controller extends Controller {
 			));
 			
 			if($is_student)
-			$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
+				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
 		}
 		
 	}

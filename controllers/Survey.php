@@ -11,7 +11,7 @@ class Survey_Controller extends Controller {
 		if(!isset(User_Model::$auth_data))
 			throw new Exception('You must be logged in');
 		if(!isset(User_Model::$auth_data['student_number']))
-			throw Exception('You must be a student to vote');
+			throw new Exception('You must be a student to vote');
 		
 		$votes = array();
 		foreach($_POST as $key => $value){

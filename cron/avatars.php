@@ -25,8 +25,8 @@ try{
 	
 	foreach($students as $student){
 		try {
-			$avatar_path = User_Model::getAvatarPath((int) $student['student_number']);
-			$avatar_thumb_path = User_Model::getAvatarPath((int) $student['student_number'], true);
+			$avatar_path = Student_Model::getAvatarPath((int) $student['student_number']);
+			$avatar_thumb_path = Student_Model::getAvatarPath((int) $student['student_number'], true);
 			if(file_exists($avatar_path))
 				continue;
 			$original_path = $avatars_tmp_path.'/'.$student['student_number'].'.jpg';
