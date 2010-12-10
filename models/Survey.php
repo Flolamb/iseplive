@@ -23,6 +23,9 @@ class Survey_Model extends Model {
 		if($survey['multiple'] != '1' && count($votes) != 1)
 			throw new Exception('You must choose exactly one answer');
 		
+		if(strtotime($survey['date_end']) < time())
+			throw new Exception('The survey is closed');
+		
 		$post_model = new Post_Model();
 		$post = $post_model->getRawPost((int) $survey['post_id']);
 		

@@ -53,16 +53,22 @@ if(isset($post['survey'])){
 	<img src="<?php echo Config::URL_STATIC; ?>images/icons/survey.png" alt="" class="icon" /> <strong><?php echo htmlspecialchars($post['survey']['question']); ?></strong><br />
 	<ul>
 <?php
-	$showresults = (isset($username) && $username != $post['username']) || strtotime($post['survey']['date_end']) < time();
+	$ended = strtotime($post['survey']['date_end']) < time();
 	$total_votes = 0;
+	$voting = array();
 	foreach($post['survey']['answers'] as &$answer){
 		$total_votes += (int) $answer['nb_votes'];
 		$answer['votes'] = $answer['votes'] == '' ? array() : json_decode($answer['votes'], true);
+		$voting = array_unique(array_merge($voting, $answer['votes']));
 	}
+	$nb_voting = count($voting);
 	
 	foreach($post['survey']['answers'] as &$answer){
 		// Results
-		$perc = $total_votes==0 ? 0 : ((int) $answer['nb_votes'])/$total_votes;
+		if($post['survey']['multiple']=='1')
+			$perc = $nb_voting==0 ? 0 : ((int) $answer['nb_votes'])/$nb_voting;
+		else
+			$perc = $total_votes==0 ? 0 : ((int) $answer['nb_votes'])/$total_votes;
 		$perc_s = round(100*$perc);
 		/*
 		* 	Graph of colors
@@ -94,7 +100,7 @@ if(isset($post['survey'])){
 <?php
 		
 		// Form to votes
-		if($is_student){
+		if($is_student && !$ended){
 ?>
 		<li class="survey-answer-vote">
 			<label>
@@ -109,7 +115,7 @@ if(isset($post['survey'])){
 	</ul>
 
 <?php
-	if($is_student){
+	if($is_student && !$ended){
 ?>
 	<div class="survey-choice-vote">
 		<input type="submit" value="<?php echo __('POST_SURVEY_SUBMIT'); ?>" />

@@ -66,7 +66,7 @@ foreach($cssFiles as $cssFile){
 					<?php } ?>
 			
 					<div id="search-box">
-						<input type="text" value="Recherche" id="search" class="search-default" />
+						<input type="text" value="<?php echo __('LAYOUT_SEARCH_FIELD'); ?>" id="search" class="search-default" />
 					</div>
 				</nav>
 			</header>

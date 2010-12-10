@@ -16,6 +16,8 @@ NAV_LOGOUT
 	Déconnexion
 NAV_SIGNIN
 	Connexion
+LAYOUT_SEARCH_FIELD
+	Rechercher
 
 ### Controller: Page
 
