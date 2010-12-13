@@ -6,7 +6,7 @@ exit;
  * @example /usr/bin/php -f directory_fill.php
  */
 
-define('CRON_MODE', true);
+define('CLI_MODE', true);
 define('APP_DIR', realpath(realpath(__DIR__).'/../').'/');
 define('CF_DIR', realpath(realpath(__DIR__).'/../../confeature/').'/');
 define('DATA_DIR', realpath(realpath(__DIR__).'/../../data/').'/');

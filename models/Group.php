@@ -74,6 +74,33 @@ class Group_Model extends Model {
 	
 	
 	/**
+	 * Returns information of groups by ids
+	 *
+	 * @param string $ids	List of ids
+	 * @return array
+	 */
+	public static function getInfoByIds($ids){
+		if(!isset($ids[0]))
+			return array();
+		
+		$groups = DB::createQuery('groups')
+			->fields('id', 'name', 'url_name')
+			->where('id IN ('.implode(',', $ids).')')
+			->select();
+		
+		Utils::arraySort($groups, 'id', $ids);
+		
+		// Avatar
+		foreach($groups as &$group){
+			$group['avatar_url'] = self::getAvatarURL((int) $group['id'], true);
+			$group['avatar_big_url'] = self::getAvatarURL((int) $group['id'], false);
+		}
+		
+		return $groups;
+	}
+	
+	
+	/**
 	 * Save the data of a group
 	 *
 	 * @param int $id		Group's id
@@ -84,7 +111,7 @@ class Group_Model extends Model {
 		$group_data = array();
 		
 		$old_data = DB::createQuery('groups')
-			->fields('name', 'url_name')
+			->fields('name', 'url_name', 'description')
 			->select($id);
 		if(!$old_data[0])
 			throw new Exception('Group not found');
@@ -213,8 +240,17 @@ class Group_Model extends Model {
 		
 		self::clearCache();
 		Cache::delete('group-'.$old_data['url_name']);
+		
 		if($change_name)
 			Post_Model::clearCache();
+		
+		// Update the search index
+		$search_model = new Search_Model();
+		$search_model->index(array(
+			'name'			=> Search_Model::sanitize(isset($group_data['name']) ? $group_data['name'] : $old_data['name']),
+			'url_name'		=> isset($group_data['url_name']) ? $group_data['url_name'] : $old_data['url_name'],
+			'description'	=> Search_Model::sanitize(isset($group_data['description']) ? $group_data['description'] : $old_data['description'])
+		), 'group', $id);
 		
 		return $url_name;
 	}
@@ -302,15 +338,23 @@ class Group_Model extends Model {
 					DB::createQuery('groups_users')
 						->set(array(
 							'group_id'	=> $id,
-							'user_id'			=> $user['id'],
-							'title'				=> $data['members'][(int) $user['id']]['title'],
-							'admin'				=> $data['members'][(int) $user['id']]['admin'] ? '1' : '0',
-							'order'				=> $data['members'][(int) $user['id']]['order']
+							'user_id'	=> $user['id'],
+							'title'		=> $data['members'][(int) $user['id']]['title'],
+							'admin'		=> $data['members'][(int) $user['id']]['admin'] ? '1' : '0',
+							'order'		=> $data['members'][(int) $user['id']]['order']
 						))
 						->insert();
 				}
 			}
 		}
+		
+		// Add to the search index
+		$search_model = new Search_Model();
+		$search_model->index(array(
+			'name'			=> Search_Model::sanitize($group_data['name']),
+			'url_name'		=> $group_data['url_name'],
+			'description'	=> Search_Model::sanitize($group_data['description'])
+		), 'group', $id);
 		
 		self::clearCache();
 		
@@ -327,6 +371,10 @@ class Group_Model extends Model {
 		$this->createQuery()->delete($id);
 		self::clearCache();
 		Post_Model::clearCache();
+		
+		// Delete from the search index
+		$search_model = new Search_Model();
+		$search_model->delete('group', $id);
 	}
 	
 	

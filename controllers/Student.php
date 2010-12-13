@@ -54,13 +54,15 @@ class Student_Controller extends Controller {
 				'is_logged'		=> true,
 				'is_student'	=> $is_student,
 				'is_admin'		=> $is_admin,
-				'username'			=> User_Model::$auth_data['username'],
-				'firstname'			=> User_Model::$auth_data['firstname'],
-				'lastname'			=> User_Model::$auth_data['lastname']
+				'username'		=> User_Model::$auth_data['username']
 			));
 			
 			if($is_student)
-				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
+				$this->set(array(
+					'firstname'		=> User_Model::$auth_data['firstname'],
+					'lastname'		=> User_Model::$auth_data['lastname'],
+					'avatar_url'	=> User_Model::$auth_data['avatar_url']
+				));
 			
 			// If the student is a user, we show their posts
 			if(isset($student['id'])){
@@ -94,7 +96,7 @@ class Student_Controller extends Controller {
 		
 		// If the user isn't logged in
 		if(!isset(User_Model::$auth_data))
-			throw new Exception('You must be a student');
+			throw new Exception('You must be logged');
 		
 		if(!isset($_GET['q']))
 			throw new Exception('Query parameter "q" not set');

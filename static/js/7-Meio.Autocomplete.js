@@ -793,6 +793,7 @@ provides: [Meio.Autocomplete]
 			this.node.scrollTop = 0;
 			this.node.setStyle('visibility', 'visible');
 			this.showing = true;
+			this.focusItem('down');	// Added by Godefroy
 		},
 		
 		hide: function(){

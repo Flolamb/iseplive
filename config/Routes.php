@@ -273,8 +273,17 @@ final class Routes extends RoutesAbstract {
 			'url'		=> 'logout{redirect}'
 		),
 		
-		
-		// Auto completion
+		// Search and Auto completion
+		'search'	=> array(
+			'regexp'	=> '^search(?=\?|$)',
+			'vars'		=> 'controller=Search&action=index',
+			'url'		=> 'search'
+		),
+		'autocomplete'	=> array(
+			'regexp'	=> '^ajax/autocomplete(?=\?|$)',
+			'vars'		=> 'controller=Search&action=autocomplete&mode=json',
+			'url'		=> 'ajax/autocomplete'
+		),
 		'autocompletion_student_name'	=> array(
 			'regexp'	=> '^ajax/autocomplete/student/name(?=\?|$)',
 			'vars'		=> 'controller=Student&action=autocomplete&mode=json',
@@ -284,7 +293,7 @@ final class Routes extends RoutesAbstract {
 		
 		// Other pages
 		'links'	=> array(
-			'regexp'	=> '^links(?=\?|$)$',
+			'regexp'	=> '^links(?=\?|$)',
 			'vars'		=> 'controller=Page&action=links',
 			'url'		=> 'links'
 		),

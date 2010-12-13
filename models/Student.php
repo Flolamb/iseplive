@@ -74,18 +74,33 @@ class Student_Model extends Model {
 	 * @return array
 	 */
 	public function autocomplete($query, $limit){
-		$query = str_replace('%', '', $query);
-		$query = '%'.$query.'%';
+		$search_model = new Search_Model();
+		$students = $search_model->autocomplete($query, 'student', $limit);
+		
+		if(count($students) == 0)
+			return array();
+		
+		$usernames = array();
+		foreach($students as $student)
+			$usernames[] = $student['_id'];
 		
 		$students = DB::select('
 			SELECT u.id AS user_id, s.username, s.firstname, s.lastname
 			FROM students s
 			INNER JOIN users u ON u.username = s.username
-			WHERE CONCAT_WS(" ", s.firstname, s.lastname) LIKE '.DB::quote($query).'
-			LIMIT '.$limit.'
+			WHERE s.username IN ("'.implode('","', $usernames).'")
 		');
 		
-		return $students;
+		$students_by_username = array();
+		$students_sorted = array();
+		foreach($students as $student)
+			$students_by_username[$student['username']] = $student;
+		foreach($usernames as $username){
+			if(isset($students_by_username[$username]))
+				$students_sorted[] = $students_by_username[$username];
+		}
+		
+		return $students_sorted;
 	}
 	
 	
@@ -106,14 +121,36 @@ class Student_Model extends Model {
 			WHERE u.id IN ('.implode(',', $ids).')
 		');
 		
-		$students_by_id = array();
-		foreach($students as &$student)
-			$students_by_id[(int) $student['user_id']] = &$student;
-		$students_ = array();
-		foreach($ids as $id)
-			$students_[] = &$students_by_id[$id];
+		Utils::arraySort($students, 'user_id', $ids);
 		
-		return $students_;
+		return $students;
+	}
+	
+	
+	/**
+	 * Returns information of students by usernames
+	 *
+	 * @param string $usernames	List of usernames
+	 * @return array
+	 */
+	public static function getInfoByUsernames($usernames){
+		if(!isset($usernames[0]))
+			return array();
+		
+		$students = DB::createQuery('students')
+			->fields('username', 'firstname', 'lastname', 'student_number')
+			->where('username IN ("'.implode('","', $usernames).'")')
+			->select();
+		
+		Utils::arraySort($students, 'username', $usernames);
+		
+		// Avatar
+		foreach($students as &$student){
+			$student['avatar_url'] = self::getAvatarURL($student['student_number'], true);
+			$student['avatar_big_url'] = self::getAvatarURL($student['student_number'], false);
+		}
+		
+		return $students;
 	}
 	
 	
@@ -127,25 +164,29 @@ class Student_Model extends Model {
 		$student_data = array();
 		
 		$old_data = DB::createQuery('students')
-			->fields('student_number')
+			->fields('firstname', 'lastname', 'student_number')
 			->where(array('username' => $username))
 			->select();
 		if(!$old_data[0])
 			throw new Exception('Student not found');
 		$old_data = $old_data[0];
 		
+		$change_name = false;
+		
 		// Firstname
-		if(isset($data['firstname'])){
+		if(isset($data['firstname']) && $old_data['firstname'] != trim($data['firstname'])){
 			if(trim($data['firstname']) == '')
-					throw new FormException('firstname');
+				throw new FormException('firstname');
 			$student_data['firstname'] = trim($data['firstname']);
+			$change_name = true;
 		}
 		
 		// Lastname
-		if(isset($data['lastname'])){
+		if(isset($data['lastname']) && $old_data['lastname'] != trim($data['lastname'])){
 			if(trim($data['lastname']) == '')
-					throw new FormException('lastname');
+				throw new FormException('lastname');
 			$student_data['lastname'] = trim($data['lastname']);
+			$change_name = true;
 		}
 		
 		// Student number
@@ -203,6 +244,18 @@ class Student_Model extends Model {
 			->set($student_data)
 			->where(array('username' => $username))
 			->update();
+		
+		if($change_name){
+			Post_Model::clearCache();
+			
+			// Update the search index
+			$search_model = new Search_Model();
+			$search_model->index(array(
+				'username'	=> $username,
+				'firstname'	=> Search_Model::sanitize(isset($student_data['firstname']) ? $student_data['firstname'] : $old_data['firstname']),
+				'lastname'	=> Search_Model::sanitize(isset($student_data['lastname']) ? $student_data['lastname']: $old_data['lastname'])
+			), 'student', $username);
+		}
 		
 	}
 	

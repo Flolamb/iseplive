@@ -65,9 +65,10 @@ foreach($cssFiles as $cssFile){
 					<a href="<?php echo Config::URL_ROOT.Routes::getPage('signin'); ?>"><?php echo __('NAV_SIGNIN'); ?></a>
 					<?php } ?>
 			
-					<div id="search-box">
-						<input type="text" value="<?php echo __('LAYOUT_SEARCH_FIELD'); ?>" id="search" class="search-default" />
-					</div>
+					<form action="<?php echo Config::URL_ROOT.Routes::getPage('search'); ?>" method="get" id="search-box">
+						<input type="text" name="q" value="<?php echo __('LAYOUT_SEARCH_FIELD'); ?>" id="search" class="search-default" />
+						<input type="hidden" value="<?php echo Config::URL_ROOT.Routes::getPage('autocomplete'); ?>" id="search-ajax-url" />
+					</form>
 				</nav>
 			</header>
 			

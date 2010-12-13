@@ -45,8 +45,11 @@ class Post_Model extends Model {
 			$where[] = 'c.url_name = '.DB::quote($params['category_name']);
 		if(isset($params['user_id']))
 			$where[] = 'p.user_id = '.DB::quote($params['user_id']);
-		if(isset($params['ids']) && is_array($params['ids']))
+		if(isset($params['ids']) && is_array($params['ids'])){
+			if(count($params['ids']) == 0)
+				return array();
 			$where[] = 'p.id IN ('.implode(',', $params['ids']).')';
+		}
 		if(isset($params['id']) && (is_int($params['id']) || ctype_digit($params['id'])))
 			$where[] = 'p.id = '.$params['id'];
 		
@@ -67,6 +70,9 @@ class Post_Model extends Model {
 		');
 		
 		if(count($posts) != 0){
+			
+			if(isset($params['ids']) && is_array($params['ids']))
+				Utils::arraySort($posts, 'id', $params['ids']);
 			
 			$post_ids = array();
 			foreach($posts as $post)
@@ -257,17 +263,26 @@ class Post_Model extends Model {
 	public function addPost($user_id, $message, $category_id, $group_id, $official, $private){
 		$id = $this->createQuery()
 			->set(array(
-				'user_id'			=> $user_id,
-				'message'			=> $message,
-				'time'				=> time(),
-				'category_id'		=> $category_id,
-				'group_id'	=> $group_id,
-				'official'			=> $official ? 1 : 0,
-				'private'			=> $private ? 1 : 0
+				'user_id'		=> $user_id,
+				'message'		=> $message,
+				'time'			=> time(),
+				'category_id'	=> $category_id,
+				'group_id'		=> $group_id,
+				'official'		=> $official ? 1 : 0,
+				'private'		=> $private ? 1 : 0
 			))
 			->insert();
 		
 		self::clearCache();
+		
+		// Add to the search index
+		$search_model = new Search_Model();
+		$search_model->index(array(
+			'message'	=> Search_Model::sanitize($message),
+			'official'	=> $official,
+			'private'	=> $private
+		), 'post', $id);
+		
 		return $id;
 	}
 	
@@ -367,6 +382,10 @@ class Post_Model extends Model {
 		// Delete the post
 		$this->createQuery()->delete($post_id);
 		self::clearCache();
+		
+		// Delete from the search index
+		$search_model = new Search_Model();
+		$search_model->delete('post', $post_id);
 	}
 	
 	

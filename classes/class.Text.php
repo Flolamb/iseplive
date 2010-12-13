@@ -90,4 +90,78 @@ class Text {
 		return $txt;
 	}
 	
+	
+	/**
+	 * Extract a summary of a text, optionaly with a keyword highlighted
+	 *
+	 * @param string $txt	Text
+	 * @param int $l		Max length of the summary
+	 * @param string|array $limiter		Prefix and Suffix. e.g: "..." or ["", "..."]
+	 * @param string $keyword	Highlighted keyword
+	 * @return string	Summary
+	 */
+	public static function summary($txt, $l, $limiter='', $keyword=null){
+		$start = 0;
+		$txt = trim(preg_replace('#\s+#', ' ', $txt));
+		$keyword = trim(preg_replace('#\s+#', ' ', $keyword));
+		
+		if(is_array($limiter)){
+			$limiterLeft = $limiter[0];
+			$limiterRight = $limiter[1];
+		}else{
+			$limiterLeft = $limiter;
+			$limiterRight = $limiter;
+		}
+		
+		if(strlen($txt)<=$l)
+			return $txt;
+		
+		if(isset($keyword)){
+			$txt_ = strtolower(text::removeAccents($txt));
+			$keyword = strtolower(text::removeAccents($keyword));
+			$p = strpos($txt_, $keyword);
+			
+			if($p === false && strpos($keyword, ' ') !== false){
+				$keyword = preg_split('# +#', $keyword);
+				foreach($keyword as $keyword_){
+					$p = strpos($txt_, $keyword_);
+					if($p !== false){
+						$keyword = $keyword_;
+						break;
+					}
+				}
+			}
+			
+			if($p !== false){
+				$start = round($p + strlen($keyword)/2 - $l/3);
+				if($start < 0)
+					$start = 0;
+				if($start > strlen($txt)-$l)
+					$start = strlen($txt)-$l;
+				
+				if($start != 0){
+					if(($pos = strpos($txt, ' ', $start)) !== false)
+						$start = strpos($txt, ' ', $start)+1;
+				}
+			}
+		}
+		
+		if($start+$l >= strlen($txt)){
+			$txt = substr($txt, $start);
+			$limiterRight = '';
+		}else{
+			$txt = substr($txt, $start, $l);
+			if(($pos = strrpos($txt, ' ')) !== false)
+				$txt = substr($txt, 0, $pos);
+		}
+		
+		if($start==0)
+			$limiterLeft = '';
+		
+		return
+			$limiterLeft.
+			trim($txt).
+			$limiterRight;
+	}
+	
 }

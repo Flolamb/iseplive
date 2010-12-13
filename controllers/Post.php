@@ -24,26 +24,27 @@ class Post_Controller extends Controller {
 		));
 		
 		// If the user is logged
-		if($is_logged){
-			
+		if($is_logged)
 			$this->set(array(
-				'username'			=> User_Model::$auth_data['username'],
-				'firstname'			=> User_Model::$auth_data['firstname'],
-				'lastname'			=> User_Model::$auth_data['lastname'],
+				'username'		=> User_Model::$auth_data['username'],
 				'groups_auth'	=> Group_Model::getAuth(),
 				// Non-official posts
-				'posts'				=> $this->model->getPosts(array(
+				'posts'			=> $this->model->getPosts(array(
 					'restricted'	=> true,
 					'official'		=> false,
 					'category_name'	=> $category,
 					'show_private'	=> $is_student
 				), Config::POST_DISPLAYED)
 			));
-			
-			if($is_student)
-				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
 		
-		}
+		// If the user is a student
+		if($is_student)
+			$this->set(array(
+				'firstname'		=> User_Model::$auth_data['firstname'],
+				'lastname'		=> User_Model::$auth_data['lastname'],
+				'avatar_url'	=> User_Model::$auth_data['avatar_url']
+			));
+		
 		
 		// Official posts
 		$this->set('official_posts', $this->model->getPosts(array(
@@ -91,8 +92,6 @@ class Post_Controller extends Controller {
 			
 			$this->set(array(
 				'username'			=> User_Model::$auth_data['username'],
-				'firstname'			=> User_Model::$auth_data['firstname'],
-				'lastname'			=> User_Model::$auth_data['lastname'],
 				'groups_auth'	=> Group_Model::getAuth()
 			));
 			
@@ -106,11 +105,14 @@ class Post_Controller extends Controller {
 					'show_private'	=> $is_student
 				), Config::POST_DISPLAYED, $offset));
 			
-			
-			if($is_student)
-				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
-		
 		}
+		if($is_student)
+			$this->set(array(
+				'firstname'		=> User_Model::$auth_data['firstname'],
+				'lastname'		=> User_Model::$auth_data['lastname'],
+				'avatar_url'	=> User_Model::$auth_data['avatar_url']
+			));
+		
 		
 		// Official posts
 		if(!isset($params['official']) && isset($params['group'])){
@@ -164,16 +166,17 @@ class Post_Controller extends Controller {
 			'one_post'		=> true
 		));
 		
-		if($is_logged){
+		if($is_logged)
 			$this->set(array(
-				'username'		=> User_Model::$auth_data['username'],
-				'firstname'		=> User_Model::$auth_data['firstname'],
-				'lastname'		=> User_Model::$auth_data['lastname']
+				'username'		=> User_Model::$auth_data['username']
 			));
 			
-			if($is_student)
-				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
-		}
+		if($is_student)
+			$this->set(array(
+				'firstname'		=> User_Model::$auth_data['firstname'],
+				'lastname'		=> User_Model::$auth_data['lastname'],
+				'avatar_url'	=> User_Model::$auth_data['avatar_url']
+			));
 		
 		if($post['attachments_nb_photos'] != 0){
 			$photos = array();
@@ -259,16 +262,17 @@ class Post_Controller extends Controller {
 			'day_time'			=> isset($day_time) ? $day_time : null
 		));
 		
-		if($is_logged){
+		if($is_logged)
 			$this->set(array(
-				'username'		=> User_Model::$auth_data['username'],
-				'firstname'		=> User_Model::$auth_data['firstname'],
-				'lastname'		=> User_Model::$auth_data['lastname']
+				'username'		=> User_Model::$auth_data['username']
 			));
 			
-			if($is_student)
-				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
-		}
+		if($is_student)
+			$this->set(array(
+				'firstname'		=> User_Model::$auth_data['firstname'],
+				'lastname'		=> User_Model::$auth_data['lastname'],
+				'avatar_url'	=> User_Model::$auth_data['avatar_url']
+			));
 		
 	}
 	

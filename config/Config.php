@@ -56,10 +56,10 @@ final class Config extends ConfigAbstract {
 	);
 	
 	// Solr
-	public static $SOLR	= array(
-		'host'	=> 'solr',
-		'port'	=> 8983,
-		'path'	=> '/solr/iseplive/'
+	public static $ELASTICSEARCH	= array(
+		'host'	=> 'localhost',
+		'port'	=> 9200,
+		'index'	=> 'iseplive'
 	);
 	
 	// Contact name and mail

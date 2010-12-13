@@ -19,6 +19,7 @@ NAV_SIGNIN
 LAYOUT_SEARCH_FIELD
 	Rechercher
 
+
 ### Controller: Page
 
 # View: links
@@ -354,6 +355,23 @@ GROUP_DELETE_TITLE
 	Suppression d'une association
 GROUP_DELETE_OK
 	Association "{group}" supprimée avec succès !
+
+
+### Controller: Search
+
+# View: index
+SEARCH_TITLE
+	Recherche de "{query}"
+SEARCH_POSTS
+	Publications
+SEARCH_GROUPS
+	Associations
+SEARCH_STUDENTS
+	Élèves
+
+# View: autocomplete
+SEARCH_AUTOCOMPLETE_SUBMIT
+	Rechercher "{query}"
 
 
 ### Common views

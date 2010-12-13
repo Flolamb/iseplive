@@ -312,7 +312,8 @@ var Post = {
 		new Picker.Date($$("#publish-form input[name=event_start], #publish-form input[name=event_end]"), {
 			pickerClass: "datepicker_jqui",
 			format: __("PUBLISH_EVENT_DATE_FORMAT"),
-			timePicker : true
+			timePicker : true,
+			draggable : false
 		});
 	},
 	
@@ -324,7 +325,8 @@ var Post = {
 		new Picker.Date($$("#publish-form input[name=survey_end]"), {
 			pickerClass: "datepicker_jqui",
 			format: __("PUBLISH_SURVEY_DATE_FORMAT"),
-			timePicker : true
+			timePicker : true,
+			draggable : false
 		});
 		$$("#publish-form .publish-survey-mulitple")[0]
 			.addEvent("click", function(){
@@ -597,7 +599,8 @@ var Group = {
 		// Creation date
 		new Picker.Date($("group_edit_creation_date"), {
 			pickerClass: "datepicker_jqui",
-			format: __("GROUP_EDIT_FORM_CREATION_DATE_FORMAT_PARSE")
+			format: __("GROUP_EDIT_FORM_CREATION_DATE_FORMAT_PARSE"),
+			draggable : false
 		});
 		
 		// Sortable list of members
@@ -614,7 +617,6 @@ var Group = {
 			minChars: 1,
 			cacheLength: 100,
 			maxVisibleItems: 10,
-			valueField: $('value-field'),
 			
 			onSelect: function(elements, data){
 				var i = $('group_edit_add_member').set('value', '');
@@ -686,7 +688,46 @@ var User = {
 		// Creation date
 		new Picker.Date($("user_edit_birthday"), {
 			pickerClass: "datepicker_jqui",
-			format: __("USER_EDIT_FORM_BIRTHDAY_FORMAT_PARSE")
+			format: __("USER_EDIT_FORM_BIRTHDAY_FORMAT_PARSE"),
+			draggable : false
+		});
+		
+	}
+};
+
+
+var Search = {
+	init : function(){
+		// Search field auto-completion
+		new Meio.Autocomplete('search', $('search-ajax-url').value, {
+			delay: 200,
+			minChars: 1,
+			cacheLength: 100,
+			maxVisibleItems: 20,
+			
+			onSelect: function(elements, data){
+				document.location = data.url
+				$('search').set('value', '').blur();
+			},
+			
+			urlOptions: { 
+				queryVarName: 'q',
+				max: 20
+			},
+			filter: {
+				filter: function(text, data){
+					return true;
+				},
+				formatMatch: function(text, data, i){
+					return data.value;
+				},
+				formatItem: function(text, data){
+					return data.value;
+				}
+			},
+			listOptions: { 
+				width: 300
+			}
 		});
 		
 	}
@@ -732,6 +773,9 @@ window.addEvent("domready", function(){
 	
 	// Calendar
 	Calendar.init();
+	
+	// Search
+	Search.init();
 	
 	// Video resizing
 	resizeVideos();

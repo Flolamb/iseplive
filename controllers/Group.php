@@ -73,19 +73,17 @@ class Group_Controller extends Controller {
 		));
 		
 		// If the user is logged
-		if($is_logged){
-			
+		if($is_logged)
 			$this->set(array(
 				'username'		=> User_Model::$auth_data['username'],
-				'firstname'		=> User_Model::$auth_data['firstname'],
-				'lastname'		=> User_Model::$auth_data['lastname'],
 				'groups_auth'	=> Group_Model::getAuth()
 			));
-			
-			if($is_student)
-				$this->set('avatar_url', User_Model::$auth_data['avatar_url']);
-		
-		}
+		if($is_student)
+			$this->set(array(
+				'firstname'		=> User_Model::$auth_data['firstname'],
+				'lastname'		=> User_Model::$auth_data['lastname'],
+				'avatar_url'	=> User_Model::$auth_data['avatar_url']
+			));
 		
 	}
 	

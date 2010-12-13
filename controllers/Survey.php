@@ -25,8 +25,12 @@ class Survey_Controller extends Controller {
 			$this->set(array(
 				'is_logged'		=> true,
 				'is_student'	=> true,
-				'username'	=> User_Model::$auth_data['username'],
-				'post'		=> $post
+				'is_admin'		=> User_Model::$auth_data['admin']=='1',
+				'username'		=> User_Model::$auth_data['username'],
+				'firstname'		=> User_Model::$auth_data['firstname'],
+				'lastname'		=> User_Model::$auth_data['lastname'],
+				'avatar_url'	=> User_Model::$auth_data['avatar_url'],
+				'post'			=> $post
 			));
 		}catch(Exception $e){}
 	}
