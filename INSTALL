@@ -1,7 +1,36 @@
 
 This website uses the Confeature framework:
 	http://github.com/Skreo/confeature
-You should rename the ISEPLive's root dir "app" and put it in the Confeature's root dir.
+You should rename the ISEPLive's root dir "app" and put it in the same dir than Confeature's dir.
+
+INSTALL FROM THE GIT REPO
+=========================
+
+mkdir iseplive
+cd iseplive
+
+# Confeature dir
+git clone git://github.com/Godefroy/confeature.git confeature
+
+# App dir
+wget --no-check-certificate https://github.com/Godefroy/iseplive/tarball/master -O app.tar.gz
+tar -xf app.tar.gz
+rm app.tar.gz
+mv *-iseplive-* app
+
+# Data dir
+mkdir -p data/logs
+mkdir -p data/tmp
+
+
+Quick deployment
+----------------
+
+project/app/cli/export.sh
+
+
+Dependencies
+------------
 
 Required packages :
 	apache2
@@ -15,12 +44,26 @@ Required packages :
 	memmcached
 	mysql-server
 	
-Required Apache mods :
+Required Apache mods:
 	rewrite
 	deflate
 	headers
 	expires
 
-PHP config :
+PHP config:
 	upload_max_filesize = 700M
 	post_max_size = 700M
+
+ElasticSearch:
+	The last stable release is here: http://www.elasticsearch.com/download/
+	
+	wget --no-check-certificate http://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.13.1.tar.gz
+	tar -xf elasticsearch-*.tar.gz
+	cd elasticsearch-*
+	wget --no-check-certificate https://github.com/elasticsearch/elasticsearch-servicewrapper/tarball/master
+	tar -xf elasticsearch-elasticsearch-servicewrapper-*.tar.gz
+	rm elasticsearch-elasticsearch-servicewrapper-*.tar.gz
+	mv elasticsearch-elasticsearch-servicewrapper-*/service ./bin/
+	rm -r elasticsearch-elasticsearch-servicewrapper-*
+	bin/service/elasticsearch install
+	/etc/init.d/elasticsearch start
