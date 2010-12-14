@@ -17,8 +17,6 @@ license: MIT-style license
 	background-color: #fff;
 	position: absolute;
 	visibility: hidden;
-	overflow-y: auto;
-	overflow-x: hidden;
 }
 .ma-container ul{
 	list-style: none;
