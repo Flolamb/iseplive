@@ -372,6 +372,10 @@ class Group_Model extends Model {
 		self::clearCache();
 		Post_Model::clearCache();
 		
+		// Delete the avatar
+		File::delete(self::getAvatarPath($id, true));
+		File::delete(self::getAvatarPath($id, false));
+		
 		// Delete from the search index
 		$search_model = new Search_Model();
 		$search_model->delete('group', $id);
