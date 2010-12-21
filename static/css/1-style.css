@@ -721,13 +721,13 @@ a:hover {
 	display: none;
 }
 
-input[type=text], textarea {
+input[type=text], input[type=password], textarea {
 	border-width: 1px;
 	border-style: solid;
 	border-color: #ddd #bbb #bbb #ddd;
 	background-color: white;
 }
-input[type=text]:focus, textarea:focus {
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	border-color: #9CB9C7 #166a95 #166a95 #9CB9C7;
 	outline: none;
 }
