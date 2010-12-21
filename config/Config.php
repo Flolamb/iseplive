@@ -35,9 +35,6 @@ final class Config extends ConfigAbstract {
 	// Encryption secret key (for Encryption class)
 	const ENCRYPTION_KEY	= 'OyFDrRd3db';
 	
-	// Md5 salt for more security
-	const MD5_SALT	= 'g64erta54bi';
-
 	// Directories
 	// relative to "app" dir
 	const DIR_APP_STATIC	= 'static/';		// Fichiers statics

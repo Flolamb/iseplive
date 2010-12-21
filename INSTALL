@@ -41,7 +41,7 @@ Required packages :
 	php-apc
 	php5-ffmpeg
 	ffmpeg
-	memmcached
+	memcached
 	mysql-server
 	
 Required Apache mods:
@@ -57,12 +57,13 @@ PHP config:
 ElasticSearch:
 	The last stable release is here: http://www.elasticsearch.com/download/
 	
-	wget --no-check-certificate http://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.13.1.tar.gz
-	tar -xf elasticsearch-*.tar.gz
+	wget --no-check-certificate http://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.13.1.tar.gz -O elasticsearch.tar.gz
+	tar -xf elasticsearch.tar.gz
+	rm elasticsearch.tar.gz
 	cd elasticsearch-*
-	wget --no-check-certificate https://github.com/elasticsearch/elasticsearch-servicewrapper/tarball/master
-	tar -xf elasticsearch-elasticsearch-servicewrapper-*.tar.gz
-	rm elasticsearch-elasticsearch-servicewrapper-*.tar.gz
+	wget --no-check-certificate https://github.com/elasticsearch/elasticsearch-servicewrapper/tarball/master -O elasticsearch-servicewrapper.tar.gz
+	tar -xf elasticsearch-servicewrapper.tar.gz
+	rm elasticsearch-servicewrapper.tar.gz
 	mv elasticsearch-elasticsearch-servicewrapper-*/service ./bin/
 	rm -r elasticsearch-elasticsearch-servicewrapper-*
 	bin/service/elasticsearch install
