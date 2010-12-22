@@ -7,7 +7,7 @@ class Group_Controller extends Controller {
 	 */
 	public function index($params){
 		$this->setView('index.php');
-		$this->setTitle(__('STUDENTS_TITLE'));
+		$this->setTitle(__('GROUPS_TITLE'));
 		
 		$is_logged = isset(User_Model::$auth_data);
 		$is_admin = $is_logged && User_Model::$auth_data['admin']=='1';

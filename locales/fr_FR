@@ -290,6 +290,8 @@ USER_EDIT_FORM_SUBMIT
 ### Controller: Group
 
 # View: index
+GROUPS_TITLE
+	Associations
 GROUP_ADD
 	Ajouter une association
 
