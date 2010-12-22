@@ -11,7 +11,7 @@ class Student_Controller extends Controller {
 		
 		$is_logged = isset(User_Model::$auth_data);
 		if(!$is_logged)
-			throw new ActionException('User', 'signin', array('referrer' => $_SERVER['REQUEST_URI']));
+			throw new ActionException('User', 'signin', array('redirect' => $_SERVER['REQUEST_URI']));
 		
 		$last_promo = ((int) date('Y')) + 5;
 		if((int) date('m') < 9)
@@ -38,7 +38,7 @@ class Student_Controller extends Controller {
 		
 		// If the user isn't logged in
 		if(!$is_logged)
-			throw new ActionException('User', 'signin', array('referrer' => $_SERVER['REQUEST_URI']));
+			throw new ActionException('User', 'signin', array('redirect' => $_SERVER['REQUEST_URI']));
 		
 		try {
 			
