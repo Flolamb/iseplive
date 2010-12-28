@@ -7,9 +7,9 @@ exit;
  */
 
 define('CLI_MODE', true);
-define('APP_DIR', realpath(realpath(__DIR__).'/../').'/');
-define('CF_DIR', realpath(realpath(__DIR__).'/../../confeature/').'/');
-define('DATA_DIR', realpath(realpath(__DIR__).'/../../data/').'/');
+define('APP_DIR', realpath(dirname(__FILE__).'/../').'/');
+define('CF_DIR', realpath(dirname(__FILE__).'/../../confeature/').'/');
+define('DATA_DIR', realpath(dirname(__FILE__).'/../../data/').'/');
 
 try{
 	
