@@ -8,7 +8,7 @@ final class Config extends ConfigAbstract {
 	// Absolute URL of the website
 	const URL_ABSOLUTE	= 'http://test.iseplive.fr/';
 	// Absolute URL of the storage dir
-	const URL_STORAGE	= 'http://storage.iseplive.fr/';
+	const URL_STORAGE	= 'http://test-storage.iseplive.fr/';
 	// Absolute path of the website on the domain
 	const URL_ROOT		= '/';
 	// Absolute path for static files
@@ -66,6 +66,8 @@ final class Config extends ConfigAbstract {
 	// SMTP server
 	const SMTP_HOST		= 'smtp.iseplive.fr';
 	
+	// Google Analytics tracker ID
+	const GA_TRACKER	= 'UA-2659605-1';
 	
 	// Languages
 	public static $LOCALES = array('fr_FR');
