@@ -284,6 +284,8 @@ class Post_Controller extends Controller {
 	public function iframe_add(){
 		$this->setView('iframe_add.php');
 		
+		@set_time_limit(0);
+		
 		$uploaded_files = array();
 		try {
 			if(!isset(User_Model::$auth_data))
